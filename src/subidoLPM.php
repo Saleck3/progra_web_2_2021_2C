@@ -1,3 +1,5 @@
 //asadsadsad
 //kslfdjfkls
 
+<?php phpinfo(); ?>
+
