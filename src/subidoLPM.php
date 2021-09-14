@@ -1,5 +1,0 @@
-//asadsadsad
-//kslfdjfkls
-
-<?php phpinfo(); ?>
-
