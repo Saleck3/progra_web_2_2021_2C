@@ -7,7 +7,6 @@ if (isset($post_limpio)) {
     $user = new Usuario($post_limpio["user"], $post_limpio["pass"]);
     
     if ($user->realizar_login($mysqli)) {
-        mensaje_al_usuario("exito", "Ingreso exitoso");
         header('Location:index.php');
     }
 }

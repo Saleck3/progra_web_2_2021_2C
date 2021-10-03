@@ -18,6 +18,11 @@ class Usuario
         $this->password = md5($password);
     }
     
+    /**
+     * Realiza el login de un usuario
+     * @param $mysqli Objeto de base de datos con la coneccion
+     * @return bool Retorna verdadero si se hizo el login y falso si hubo algun error
+     */
     public function realizar_login($mysqli)
     {
         
@@ -26,7 +31,7 @@ class Usuario
             return FALSE;
         }
         
-        if (isset($_SESSION["mail_usuario"])) {
+        if (isset($_SESSION["usuario"])) {
             mensaje_al_usuario("error", "Ya esta logueado");
             return FALSE;
         }
@@ -47,15 +52,16 @@ class Usuario
                     mensaje_al_usuario("error", "Usuario o contraseña incorrectos");
                     return FALSE;
                 } else {
+                    
+                    
                     $this->id = $resultado['id'];
                     $this->nombre = $resultado['nombre'];
                     $this->rol = $resultado['rol'];
                     $_SESSION['usuario'] = $this;
+                    mensaje_al_usuario("exito", "Ingreso exitoso");
                     return TRUE;
                     
                 }
-                
-                //fin logica logueo
                 
             } else {
                 mensaje_al_usuario('error', "error de conexion a la base de datos");
@@ -74,16 +80,13 @@ class Usuario
         }
     }
     
-    public function desloguear()
+    /**
+     * @return Nombre
+     */
+    public function getNombre()
     {
-        if (isset($_SESSION["mail_usuario"])) {
-            unset($_SESSION["mail_usuario"]);
-            unset($_SESSION['id_usuario']);
-            unset($_SESSION['nombre_usuario']);
-            unset($_SESSION['rol_usuario']);
-        }
+        return $this->nombre;
     }
-    
 }
 
 ?>

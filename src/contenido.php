@@ -1,3 +1,12 @@
+<?php
+ /**
+  *
+  * Eeste archivo se encarga de imprimir la pagina,los mensajes y normaliza el header y footer
+  * Lo que se quiera imprimir desde PHP tiene que estar en la variable $contenido como texto
+  * */
+?>
+
+
 <!DOCTYPE html>
 <html>
 <title><?= $titulo ?></title>
@@ -22,11 +31,10 @@
 </nav>
 
 <?php
-debug_formateado($_SESSION);
+//debug_formateado($_SESSION);
 mostrar_mensaje();
 if (isset($contenido))
     echo $contenido;
-
 ?>
 
 </div>

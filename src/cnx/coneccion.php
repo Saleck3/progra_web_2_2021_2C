@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Este es el archivo de coneccion a la base de datos
+ * Este archivo tiene que variar segun donde este la base
+ */
+
+
 $hostname_cnx = "mysql";
 $database_cnx = "prograweb";
 $username_cnx = "root";
