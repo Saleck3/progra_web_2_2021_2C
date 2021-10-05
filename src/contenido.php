@@ -20,16 +20,18 @@
 
 <body class="background w3-display-container w3-opacity-min">
 
-<nav class="w3-bar">
-    <a class="w3-bar-item w3-button w3-card-4" href="/">Home</a>
+<nav class="w3-bar w3-black w3-border-bottom w3-xlarge">
+    <a class="w3-bar-item w3-button w3-button w3-mobile" href="/">Home</a>
     <?php if (isset($_SESSION["usuario"])) {
-        echo '<a class="w3-bar-item w3-button w3-card-4" href="/unlog.php">Desloguear</a>';
+        echo '<a class="w3-bar-item w3-button w3-button w3-mobile" href="/unlog.php">Desloguear</a>';
     } else {
-        echo '<a class="w3-bar-item w3-button w3-card-4" href="/login.php">Login</a>';
+        echo '<a class="w3-bar-item w3-button w3-button w3-mobile" href="/login.php">Login</a>';
     }
     ?>
 </nav>
-
+<header class="w3-display-container w3-content w3-hide-small" style="max-width:1500px">
+  <img class="w3-image" src="/images/fondo.jpg" alt="Space" width="1500" height="700">
+  <div class="w3-display-middle" style="width:65%">
 <?php
 //debug_formateado($_SESSION);
 mostrar_mensaje();
