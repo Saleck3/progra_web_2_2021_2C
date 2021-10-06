@@ -1,9 +1,13 @@
+--CREATE DATABASE grupo7;
+--USE DATABASE grupo7;
+
 CREATE TABLE IF NOT EXISTS usuario(
 	id INT AUTO_INCREMENT PRIMARY KEY,
     nombre varchar(50),
     mail varchar(50) unique,
     password varchar(32),
-    rol varchar(10)
+    rol varchar(10),
+    validado varchar(32)
 );
 
 insert into usuario 

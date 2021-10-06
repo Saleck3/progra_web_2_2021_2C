@@ -11,6 +11,18 @@ body, html {
     font-family: "Lato", sans-serif;
 }
 
+body::after {
+    content: "";
+    background: url(/images/fondo.jpg);
+    opacity: 0.8;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1;
+}
+
 .background {
 
     min-height: 100%;
@@ -21,18 +33,18 @@ body, html {
     text-align: center;
 }
 
-iframe{
+iframe {
     width: 100%;
     min-height: 70em;
 }
 
-img{
+img {
     opacity: 1;
     max-width: 100%;
 }
 
-.grilla{
- display: grid;
+.grilla {
+    display: grid;
 }
 
 .mensaje {

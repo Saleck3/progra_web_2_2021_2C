@@ -6,10 +6,10 @@
  */
 
 
-$hostname_cnx = "localhost";
+$hostname_cnx = "mysql";
 $database_cnx = "prograweb";
 $username_cnx = "root";
-$password_cnx = "";
+$password_cnx = "rootpassword";
 
 $mysqli = new mysqli($hostname_cnx, $username_cnx, $password_cnx, $database_cnx);
 $mysqli->set_charset("utf8");

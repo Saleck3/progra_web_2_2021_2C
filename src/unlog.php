@@ -3,6 +3,6 @@
 include_once ("header.php");
 
 mensaje_al_usuario("exito", "Se deslogueo el usuario" .$_SESSION["usuario"]->getNombre);
-unset($_SESSION["usuario"]);
+Usuario::desloguear();
 
 header('Location:index.php');

@@ -6,7 +6,7 @@
 
 /**
  * Esta funcion agrega <pre> para que los debugs se vean mas comodamente
- * @param $var variable que se quiere imprimir en pantalla
+ * @param $var mixed variable que se quiere imprimir en pantalla
  */
 function debug_formateado($var)
 {
@@ -18,13 +18,13 @@ function debug_formateado($var)
 /**
  * Envia un mensaje al usuario con lo que se quiera
  *
- * @param $tipomensaje Es la clase de CSS con la que se pinta el div, los defaults son exito, error y advertencia
- * @param $mensaje El mensaje a mostrar
+ * @param $tipomensaje String Es la clase de CSS con la que se pinta el div, los defaults son exito, error y advertencia
+ * @param $mensaje String El mensaje a mostrar
  */
 
 function mensaje_al_usuario($tipomensaje, $mensaje)
 {
-    $mensaje_formateado = sprintf('<div class="w3-container mensaje %s">%s</div>', $tipomensaje, $mensaje);
+    $mensaje_formateado = sprintf('<div class="w3-panel mensaje %s">%s</div>', $tipomensaje, $mensaje);
     
     if (isset($_SESSION['mensaje'])) {
         $_SESSION['mensaje'] .= $mensaje_formateado;
