@@ -11,16 +11,20 @@ class MyDatabase{
         }
     }
 
+    public function 
+
     public function __destruct(){
         mysqli_close($this->connection);
     }
 
     public function query($sql){
         $databaseResult = mysqli_query($this->connection, $sql);
-
+        var_dump($databaseResult);
         if (mysqli_num_rows($databaseResult) <= 0)
             return [];
 
         return mysqli_fetch_all($databaseResult,MYSQLI_ASSOC);
     }
+
+
 }

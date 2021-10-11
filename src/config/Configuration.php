@@ -23,6 +23,11 @@ class Configuration{
         return new QuieroSerParteController( $this->createPrinter());
     }
 
+    public function createLoginController(){
+        require_once("controller/LoginController.php");
+        return new LoginController($this->createUsuarioModel(),$this->getLogger() ,$this->createPrinter());
+    }
+
     private  function createCancionesModel(){
         require_once("model/CancionesModel.php");
         $database = $this->getDatabase();
@@ -33,6 +38,12 @@ class Configuration{
         require_once("model/PresentacionesModel.php");
         $database = $this->getDatabase();
         return new PresentacionesModel($database);
+    }
+
+    private  function createUsuarioModel(){
+        require_once("model/UsuarioModel.php");
+        $database = $this->getDatabase();
+        return new UsuarioModel($database);
     }
 
     private  function getDatabase(){
