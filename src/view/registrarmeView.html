@@ -1,0 +1,31 @@
+{{> header}}
+<div class="bgimg-1 w3-container">
+    <div class="mensaje {{class}}">
+        <h2>{{mensaje}}</h2>
+    </div>
+    <div id="registrarme" class="w3-card-4 w3-auto w3-margin w3-white w3-display-middle formulario">
+        <div class="w3-container w3-black ">
+            <h3>Registrate!</h3>
+        </div>
+        <div class="w3-container">
+            <!-- TODO Validar que las contraseñas sean iguales y que sea un mail valido con JS-->
+            <form method="post" name="registro" action="/Registrarme/registro">
+                <label for="nombre">Nombre</label>
+                <input class="w3-input" type="text" name="nombre" id="nombre" required>
+                <label for="apellido">Apellido</label>
+                <input class="w3-input" type="text" name="apellido" id="apellido" required>
+                <label for="fechaNac">Fecha Nacimiento</label>
+                <input class="w3-input" type="date" name="fechaNac" id="fechaNac" required>
+                <label for="mail">Mail</label>
+                <input class="w3-input" type="mail" name="mail" id="mail" required>
+                <label for="pass">Contraseña</label>
+                <input class="w3-input w3-margin-bottom" type="password" name="pass" id="pass" required>
+                <label for="rep_pass">Repetir Contraseña</label>
+                <input class="w3-input w3-margin-bottom" type="password" name="rep_pass" id="rep_pass" required>
+                <button class="w3-button w3-black w3-margin">Registrarme</button>
+            </form>
+            <a class="w3-text-black w3-small w3-hover-black" href="/Login">Iniciar sesion</a>
+        </div>
+    </div>
+</div>
+{{> footer}}

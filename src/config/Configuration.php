@@ -74,5 +74,15 @@ class Configuration{
         require_once("helpers/MustachePrinter.php");
         return new MustachePrinter("view/partials");
     }
-
+    
+    public function createHomeController(){
+        require_once("controller/HomeController.php");
+        return new HomeController( $this->createPrinter());
+    }
+    
+    
+    public function createRegistrarmeController(){
+        require_once("controller/RegistrarmeController.php");
+        return new RegistrarmeController($this->createUsuarioModel(),$this->getLogger(),$this->createPrinter());
+    }
 }
