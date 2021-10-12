@@ -1,0 +1,65 @@
+body, h1, h2, h3, h4, h5, h6 {
+    font-family: "Raleway", sans-serif
+}
+
+body, html {
+    height: 100%;
+    line-height: 1.8;
+}
+
+/* Full height image header */
+.bgimg-1 {
+    background-position: center;
+    background-size: cover;
+    background-image: url("../images/galaxy.jpg");
+    min-height: 100%;
+}
+
+.w3-bar .w3-button {
+    padding: 16px;
+}
+
+
+.formulario {
+    width: 33%;
+}
+
+.mensaje {
+    width: 100%;
+    margin: auto;
+    padding: 1.5em;
+    color: var(--color_contextual_oscuro);
+    border: var(--color_contextual_oscuro) 3px solid;
+    background-color: var(--color_contextual_claro);
+}
+
+.exito {
+    --color_contextual_oscuro: green;
+    --color_contextual_claro: lightgreen;
+}
+
+.error {
+    --color_contextual_oscuro: darkred;
+    --color_contextual_claro: lightsalmon;
+}
+
+.advertencia::before,
+.warning::before {
+    content: "⚠️";
+    background-color: #fcba03;
+    width: 2em;
+    margin-top: -3rem;
+    padding-bottom: 1rem;
+    display: block;
+    text-align: center;
+    font-size: 30px;
+    border: 2px solid black;
+}
+
+.advertencia,
+.warning {
+    border: solid thick black;
+    padding: 1rem;
+    --color_contextual_oscuro: darkred;
+    --color_contextual_claro: #fcba03;
+}

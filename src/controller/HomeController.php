@@ -11,6 +11,6 @@ class HomeController{
 
     public function show()
     {
-        echo $this->printer->render( "view/labandaView.html");
+        echo $this->printer->render( "view/homeView.html");
     }
 }

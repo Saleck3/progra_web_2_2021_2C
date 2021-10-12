@@ -8,8 +8,7 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="public/style.css">
+    <link rel="stylesheet" href="/public/css/style.css">
     <script src="https://kit.fontawesome.com/2b2506e7ac.js" crossorigin="anonymous"></script>
     <title>GauchoRocket</title>
 
@@ -18,14 +17,14 @@
 <!-- Navbar (sit on top) -->
 <div class="">
     <div class="w3-bar w3-white w3-card" id="myNavbar">
-        <a href="/index.php" class="w3-bar-item w3-button w3-wide">GauchoRocket<i class="fa fa-rocket"></i></a>
+        <a href="/" class="w3-bar-item w3-button w3-wide">GauchoRocket<i class="fa fa-rocket"></i></a>
         <!-- Right-sided navbar links -->
         <div class="w3-right w3-hide-small">
             <a href="/login" class="w3-bar-item w3-button"><i class="fa fa-user"></i> INICIAR SESIÓN</a>
-            <a href="#about" class="w3-bar-item w3-button"><i class="fa fa-suitcase-rolling"></i> TOUR</a>
-            <a href="#work" class="w3-bar-item w3-button"><i class="fa fa-th"></i> RESERVAS</a>
-            <a href="#pricing" class="w3-bar-item w3-button"><i class="fa fa-suitcase"></i> VIAJES</a>
-            <a href="#contact" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i> CONTACTO</a>
+            <a href="/about" class="w3-bar-item w3-button"><i class="fa fa-suitcase-rolling"></i> TOUR</a>
+            <a href="/work" class="w3-bar-item w3-button"><i class="fa fa-th"></i> RESERVAS</a>
+            <a href="/pricing" class="w3-bar-item w3-button"><i class="fa fa-suitcase"></i> VIAJES</a>
+            <a href="/contact" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i> CONTACTO</a>
         </div>
         <!-- Hide right-floated links on small screens and replace them with a menu icon -->
         <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="w3_open()">
@@ -36,11 +35,11 @@
 <!-- Sidebar on small screens when clicking the menu icon -->
 <nav class="w3-sidebar w3-bar-block w3-black w3-card w3-animate-left w3-hide-medium w3-hide-large" style="display:none" id="mySidebar">
     <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-large w3-padding-16">Close ×</a>
-    <a href="http://localhost/GauchoRocket/view/iniciarSesion.html" onclick="w3_close()" class="w3-bar-item w3-button">INICIAR SESIÓN</a>
-    <a href="#team" onclick="w3_close()" class="w3-bar-item w3-button">RESERVAS</a>
-    <a href="#work" onclick="w3_close()" class="w3-bar-item w3-button">VIAJES</a>
-    <a href="#pricing" onclick="w3_close()" class="w3-bar-item w3-button">TOUR</a>
-    <a href="#contact" onclick="w3_close()" class="w3-bar-item w3-button">CONTACTO</a>
+    <a href="/login" onclick="w3_close()" class="w3-bar-item w3-button">INICIAR SESIÓN</a>
+    <a href="/team" onclick="w3_close()" class="w3-bar-item w3-button">RESERVAS</a>
+    <a href="/work" onclick="w3_close()" class="w3-bar-item w3-button">VIAJES</a>
+    <a href="/pricing" onclick="w3_close()" class="w3-bar-item w3-button">TOUR</a>
+    <a href="/contact" onclick="w3_close()" class="w3-bar-item w3-button">CONTACTO</a>
 </nav>
 <script>
     // Modal Image Gallery
