@@ -51,8 +51,8 @@ CREATE TABLE `Usuario` (
   `nombre` varchar(30) NOT NULL,
   `apellido` varchar(30) NOT NULL,
   `fechaNacimiento` date NOT NULL,
-  `email` varchar(30) NOT NULL,
-  `contraseña` varchar(30) NOT NULL,
+  `email` varchar(30) NOT NULL UNIQUE,
+  `password` varchar(32) NOT NULL,
   `id_cargo` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -60,7 +60,7 @@ CREATE TABLE `Usuario` (
 -- Dumping data for table `Usuario`
 --
 
-INSERT INTO `Usuario` (`id`, `nombre`, `apellido`, `fechaNacimiento`, `email`, `contraseña`, `id_cargo`) VALUES
+INSERT INTO `Usuario` (`id`, `nombre`, `apellido`, `fechaNacimiento`, `email`, `password`, `id_cargo`) VALUES
 (1, 'Braian', 'Guzman', '1988-09-04', 'brian_user@hotmail.com', '1234', 2),
 (2, 'Elsie ', 'Vazquez', '1998-08-19', 'elsie@hotmail.com', '1234', 1),
 (3, 'Miguel', 'Vazquez', '2018-12-04', 'miguel@hotmail.com', '1234', 0);
