@@ -3,42 +3,13 @@ class Configuration{
 
     private $config;
 
-    public  function createPresentacionesController(){
-        require_once("controller/PresentacionesController.php");
-        return new PresentacionesController( $this->createPresentacionesModel() , $this->createPrinter());
-    }
 
-    public  function createCancionesController(){
-        require_once("controller/CancionesController.php");
-        return new CancionesController( $this->createCancionesModel(), $this->getLogger() , $this->createPrinter());
-    }
-
-    public function createLaBandaController(){
-        require_once("controller/LaBandaController.php");
-        return new LaBandaController( $this->createPrinter());
-    }
-
-    public function createQuieroSerParteController(){
-        require_once("controller/QuieroSerParteController.php");
-        return new QuieroSerParteController( $this->createPrinter());
-    }
 
     public function createLoginController(){
         require_once("controller/LoginController.php");
         return new LoginController($this->createUsuarioModel(),$this->getLogger() ,$this->createPrinter());
     }
 
-    private  function createCancionesModel(){
-        require_once("model/CancionesModel.php");
-        $database = $this->getDatabase();
-        return new CancionesModel($database);
-    }
-
-    private  function createPresentacionesModel(){
-        require_once("model/PresentacionesModel.php");
-        $database = $this->getDatabase();
-        return new PresentacionesModel($database);
-    }
 
     private  function createUsuarioModel(){
         require_once("model/UsuarioModel.php");

@@ -23,6 +23,7 @@ class LoginController
     {
         $login = $this->usuarioModel->getUsuario($_POST["email"], md5($_POST["pass"]));
         
+        //TODO Chequear que el mail este validado
         if($login){
             $_SESSION["id"] = $login["id"];
             $_SESSION["nombre"] = $login["nombre"];

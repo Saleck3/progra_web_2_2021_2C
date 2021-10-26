@@ -51,4 +51,14 @@ class MyDatabase
         return $databaseResult;
     }
     
+    public function update($sql)
+    {
+        return $this->insert($sql);
+    }
+    
+    public function delete($sql)
+    {
+        return $this->insert($sql);
+    }
+    
 }
