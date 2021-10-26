@@ -24,13 +24,14 @@ class MyDatabase
      */
     public function query($sql)
     {
-        
-        if (!$databaseResult = mysqli_query($this->connection, $sql)) {
-            echo("ERROR");
-            var_dump($this->connection);
+        $databaseResult = mysqli_query($this->connection, $sql);
+    
+        if (mysqli_num_rows($databaseResult) <= 0)
             return [];
-        }
-        
+    
+        if (mysqli_num_rows($databaseResult) == 1)
+            return mysqli_fetch_assoc($databaseResult);
+    
         return mysqli_fetch_all($databaseResult, MYSQLI_ASSOC);
     }
     

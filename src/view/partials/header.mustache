@@ -20,7 +20,13 @@
         <a href="/" class="w3-bar-item w3-button w3-wide">GauchoRocket<i class="fa fa-rocket"></i></a>
         <!-- Right-sided navbar links -->
         <div class="w3-right w3-hide-small">
-            <a href="/login" class="w3-bar-item w3-button"><i class="fa fa-user"></i> INICIAR SESIÓN</a>
+            {{^logueado}}
+                <a href="/login" onclick="w3_close()" class="w3-bar-item w3-button">INICIAR SESIÓN</a>
+            {{/logueado}}
+
+            {{#logueado}}
+                <a href="/login/logout" onclick="w3_close()" class="w3-bar-item w3-button">CERRAR SESIÓN</a>
+            {{/logueado}}
             <a href="/about" class="w3-bar-item w3-button"><i class="fa fa-suitcase-rolling"></i> TOUR</a>
             <a href="/work" class="w3-bar-item w3-button"><i class="fa fa-th"></i> RESERVAS</a>
             <a href="/pricing" class="w3-bar-item w3-button"><i class="fa fa-suitcase"></i> VIAJES</a>
@@ -35,7 +41,15 @@
 <!-- Sidebar on small screens when clicking the menu icon -->
 <nav class="w3-sidebar w3-bar-block w3-black w3-card w3-animate-left w3-hide-medium w3-hide-large" style="display:none" id="mySidebar">
     <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-large w3-padding-16">Close ×</a>
-    <a href="/login" onclick="w3_close()" class="w3-bar-item w3-button">INICIAR SESIÓN</a>
+
+    {{^logueado}}
+        <a href="/login" onclick="w3_close()" class="w3-bar-item w3-button">INICIAR SESIÓN</a>
+    {{/logueado}}
+
+    {{#logueado}}
+        <a href="/logout" onclick="w3_close()" class="w3-bar-item w3-button">CERRAR SESIÓN</a>
+    {{/logueado}}
+
     <a href="/team" onclick="w3_close()" class="w3-bar-item w3-button">RESERVAS</a>
     <a href="/work" onclick="w3_close()" class="w3-bar-item w3-button">VIAJES</a>
     <a href="/pricing" onclick="w3_close()" class="w3-bar-item w3-button">TOUR</a>
@@ -63,3 +77,10 @@
         mySidebar.style.display = "none";
     }
 </script>
+
+{{#mensaje}}
+    <div class="mensaje {{class}}">
+        <h2>{{mensaje}}</h2>
+
+    </div>
+{{/mensaje}}

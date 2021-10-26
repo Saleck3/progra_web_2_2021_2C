@@ -23,30 +23,33 @@ class LoginController
     {
         $login = $this->usuarioModel->getUsuario($_POST["email"], md5($_POST["pass"]));
         
+        
         //TODO Chequear que el mail este validado
-        if($login){
+        if ($login) {
             $_SESSION["id"] = $login["id"];
             $_SESSION["nombre"] = $login["nombre"];
             $_SESSION["apellido"] = $login["apellido"];
             $_SESSION["fechaNacimiento"] = $login["fechaNacimiento"];
             $_SESSION["email"] = $login["email"];
             $_SESSION["id_cargo"] = $login["id_cargo"];
-            $data["class"] = "exito";
-            $data["mensaje"] = "Login correcto";
-            echo $this->printer->render("view/iniciarSesionView.html", $data);
-        }else{
-            $data["class"] = "error";
-            $data["mensaje"] = "Usuario o contraseña incorrectos";
+            $_SESSION["mensaje"]["class"] = "exito";
+            $_SESSION["mensaje"]["mensaje"] = "Login correcto";
+            header('Location: /');
+        } else {
+            $_SESSION["mensaje"]["class"] = "error";
+            $_SESSION["mensaje"]["mensaje"] = "Usuario o contraseña incorrectos";
             echo $this->printer->render("view/iniciarSesionView.html", $data);
         }
     }
     
-    function procesarFormulario()
+    function logout()
     {
-        $data["nombre"] = $_POST["nombre"];
-        $data["instrumento"] = $_POST["instrumento"];
-        
-        echo $this->printer->render("view/iniciarSesionView.html", $data);
+        session_destroy();
+        session_start();
+        $_SESSION["mensaje"]["class"] = "exito";
+        $_SESSION["mensaje"]["mensaje"] = "Sesion cerrada";
+        header('Location: /');
     }
+    
     
 }
