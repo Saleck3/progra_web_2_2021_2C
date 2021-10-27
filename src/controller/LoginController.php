@@ -31,14 +31,14 @@ class LoginController
             $_SESSION["apellido"] = $login["apellido"];
             $_SESSION["fechaNacimiento"] = $login["fechaNacimiento"];
             $_SESSION["email"] = $login["email"];
-            $_SESSION["id_cargo"] = $login["id_cargo"];
+            $_SESSION["id_cargo"] = $login["idCargo"];
             $_SESSION["mensaje"]["class"] = "exito";
             $_SESSION["mensaje"]["mensaje"] = "Login correcto";
             header('Location: /');
         } else {
             $_SESSION["mensaje"]["class"] = "error";
             $_SESSION["mensaje"]["mensaje"] = "Usuario o contraseña incorrectos";
-            echo $this->printer->render("view/iniciarSesionView.html", $data);
+            echo $this->printer->render("view/iniciarSesionView.html");
         }
     }
     

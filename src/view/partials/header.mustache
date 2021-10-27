@@ -21,16 +21,16 @@
         <!-- Right-sided navbar links -->
         <div class="w3-right w3-hide-small">
             {{^logueado}}
-                <a href="/login" onclick="w3_close()" class="w3-bar-item w3-button">INICIAR SESIÓN</a>
+                <a href="/login" onclick="w3_close()" class="w3-bar-item w3-button">Iniciar sesión</a>
             {{/logueado}}
 
             {{#logueado}}
-                <a href="/login/logout" onclick="w3_close()" class="w3-bar-item w3-button">CERRAR SESIÓN</a>
+                <a href="/login/logout" onclick="w3_close()" class="w3-bar-item w3-button ">Cerrar sesión</a>
+                <a href="/reservas" class="w3-bar-item w3-button"><i class="fa fa-th"></i> Reservas turnos medicos</a>
             {{/logueado}}
-            <a href="/about" class="w3-bar-item w3-button"><i class="fa fa-suitcase-rolling"></i> TOUR</a>
-            <a href="/work" class="w3-bar-item w3-button"><i class="fa fa-th"></i> RESERVAS</a>
-            <a href="/pricing" class="w3-bar-item w3-button"><i class="fa fa-suitcase"></i> VIAJES</a>
-            <a href="/contact" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i> CONTACTO</a>
+            <a href="/about" class="w3-bar-item w3-button"><i class="fa fa-suitcase-rolling"></i> Tour</a>
+            <a href="/pricing" class="w3-bar-item w3-button"><i class="fa fa-suitcase"></i> Viajes</a>
+            <a href="/contact" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i> Contacto</a>
         </div>
         <!-- Hide right-floated links on small screens and replace them with a menu icon -->
         <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="w3_open()">
@@ -43,17 +43,17 @@
     <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-large w3-padding-16">Close ×</a>
 
     {{^logueado}}
-        <a href="/login" onclick="w3_close()" class="w3-bar-item w3-button">INICIAR SESIÓN</a>
+        <a href="/login" onclick="w3_close()" class="w3-bar-item w3-button">Iniciar sesión</a>
     {{/logueado}}
 
     {{#logueado}}
-        <a href="/logout" onclick="w3_close()" class="w3-bar-item w3-button">CERRAR SESIÓN</a>
+        <a href="/logout" onclick="w3_close()" class="w3-bar-item w3-button">Cerrar sesión</a>
+        <a href="/reservas" onclick="w3_close()" class="w3-bar-item w3-button">Reservas turnos medicos</a>
     {{/logueado}}
 
-    <a href="/team" onclick="w3_close()" class="w3-bar-item w3-button">RESERVAS</a>
-    <a href="/work" onclick="w3_close()" class="w3-bar-item w3-button">VIAJES</a>
-    <a href="/pricing" onclick="w3_close()" class="w3-bar-item w3-button">TOUR</a>
-    <a href="/contact" onclick="w3_close()" class="w3-bar-item w3-button">CONTACTO</a>
+    <a href="/work" onclick="w3_close()" class="w3-bar-item w3-button">Viajes</a>
+    <a href="/pricing" onclick="w3_close()" class="w3-bar-item w3-button">Tour</a>
+    <a href="/contact" onclick="w3_close()" class="w3-bar-item w3-button">Contacto</a>
 </nav>
 <script>
     // Modal Image Gallery
@@ -84,3 +84,4 @@
 
     </div>
 {{/mensaje}}
+<div class="bgimg-1 w3-display-container">

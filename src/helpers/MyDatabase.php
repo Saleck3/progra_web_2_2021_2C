@@ -25,13 +25,17 @@ class MyDatabase
     public function query($sql)
     {
         $databaseResult = mysqli_query($this->connection, $sql);
-    
+        
+        if (!$databaseResult) {
+            return FALSE;
+        }
+        
         if (mysqli_num_rows($databaseResult) <= 0)
             return [];
-    
+        
         if (mysqli_num_rows($databaseResult) == 1)
             return mysqli_fetch_assoc($databaseResult);
-    
+        
         return mysqli_fetch_all($databaseResult, MYSQLI_ASSOC);
     }
     
