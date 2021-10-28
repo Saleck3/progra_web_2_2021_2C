@@ -1,19 +1,18 @@
 body, h1, h2, h3, h4, h5, h6 {
-    font-family: "Raleway", sans-serif
+    font-family: 'Enigmatic', sans-serif;
+
 }
 
-body, html {
-    height: 100%;
-    line-height: 1.8;
+
+body{
+    background-image: url("galaxy.jpg");
+}
+.gaucho{
+    font-family: 'SF Archery Black SC', sans-serif;
+
+
 }
 
-/* Full height image header */
-.bgimg-1 {
-    background-position: center;
-    background-size: cover;
-    background-image: url("../images/galaxy.jpg");
-    min-height: 100%;
-}
 
 .w3-bar .w3-button {
     padding: 16px;
@@ -62,4 +61,15 @@ body, html {
     padding: 1rem;
     --color_contextual_oscuro: darkred;
     --color_contextual_claro: #fcba03;
+}
+
+.footer {
+    position: relative;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+
+}
+a{
+    text-decoration: none;
 }

@@ -1,6 +1,8 @@
 {{>header}}
-
-<div class="w3-card-4 w3-auto w3-margin w3-display-middle w3-pale-blue ">
+<div class="w3-container w3-padding">
+<h1 class="w3-text-white">Centros Medicos</h1>
+<h4 class="w3-text-white">Seleccione centro medico en el cual desea realizar el estudio medico.</h4>
+</div>
     {{#conTipo}}
     <div class="w3-container w3-opacity">
 
@@ -8,16 +10,25 @@
 
     </div>
     {{/conTipo}}
-
+<div class="w3-row w3-theme">
     {{#sedes}}
-    <div class="w3-container">
-        <a href="/reservas/reservarTurno?sede={{id}}"><img src="/public/images/{{imagen}}"/>
-            <h2>{{nombre}}</h2>
+    <div class="w3-third "><a href="/reservas/reservarTurno?sede={{id}}">
+
+    <div class=" w3-card-4  w3-margin w3-black w3-hover-sepia">
+        <img style="width: 100%" src="/public/images/{{imagen}}"/>
+        <div class="w3-container ">
+            <h2 class="w3-text-white">{{nombre}}</h2>
+            <h3 class="w3-text-white">Turnos restantes: {{cantidadTurnos}}</h3>
+
+
+        </div>
+
+    </div>
         </a>
     </div>
     {{/sedes}}
-
-
 </div>
+
+
 
 {{>footer}}

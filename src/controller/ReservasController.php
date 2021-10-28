@@ -30,7 +30,8 @@ class ReservasController
         $codigo = MD5(time());
         $link = "/reservas/asignarTipo?codigo=" . $codigo;
         $data["link"] = $link;
-        $fechaYHora = $this->horaReserva();
+        $fechaYHora =$this->horaReserva();
+        var_dump($fechaYHora);
         $this->reservasModel->generarReserva($_SESSION["id"], $sede, $codigo, $fechaYHora);
         echo $this->printer->render("view/reservarTurnoView.html", $data);
     }
@@ -52,7 +53,7 @@ class ReservasController
         //Realiza la reserva (para que no se haga 2 veces) y asigna tipo
         if ($this->reservasModel->realizarReserva($codigo, $usuario)) {
             //Random segun enunciado
-            $tipo = randomConProbabilidadSeteada();
+            $tipo = $this->randomConProbabilidad();
             
             
             $this->usuarioModel->setTipo($tipo, $usuario);
@@ -76,11 +77,43 @@ class ReservasController
         } else
             return 1;
     }
-    
-    function horaReserva($sede){
+
+    function intervalo(){
+        $r = rand(1, 100);
+
+        if ($r <= 50) {
+            return 0;
+        } else if($r <= 100)
+            return 30;
+
+
+}
+
+    function randomDateInRange() {
+        $start = new DateTime('now');
+        $start->modify('+7 day');
+         $end = new DateTime('now');
+         $end ->modify('+14 day');
+        $randomTimestamp = mt_Rand($start->getTimestamp(), $end->getTimestamp());
+        $randomDate = new DateTime();
+        $randomDate->setTimestamp($randomTimestamp);
+        return $randomDate;
+    }
+    function horaReserva(){
     
         //TODO: Asignar hora y fecha que no este tomada en un futuro (no la actual)
-//        $flag = 0;
+            $randomDate=$this->randomDateInRange();
+            $minutos=$this->intervalo();
+            $turnoRandom =new DateTime();
+            $turnoRandom->setTimestamp($randomDate->getTimestamp());
+            $turnoRandom->setTime(mt_rand(9,18),$minutos);
+            return $turnoRandom->format('Y-m-d H:i:s');
+
+
+
+
+
+        //        $flag = 0;
 //        while ($flag){
 //            coseguir $turnoRandom (dia y hora segun array harcodeado)
 //	if(!select * from Reservas where fechaHora = XXXX AND sede = $sede)
