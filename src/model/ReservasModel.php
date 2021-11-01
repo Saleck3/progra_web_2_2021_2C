@@ -28,7 +28,7 @@ class ReservasModel
     public function generarReserva($id, $sede, $codigo, $fechaYHora)
     {
         
-        $SQL = "INSERT INTO Reservas (codigo,centroMedico,idUsuario,fechaHora) VALUES ('$codigo', $sede,$id,$fechaYHora)";
+        $SQL = "INSERT INTO Reservas (codigo,centroMedico,idUsuario,fechaHora) VALUES ('$codigo', $sede,$id,'$fechaYHora')";
         return $this->database->insert($SQL);
     }
     

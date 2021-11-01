@@ -31,7 +31,7 @@ class ReservasController
         $link = "/reservas/asignarTipo?codigo=" . $codigo;
         $data["link"] = $link;
         $fechaYHora =$this->horaReserva();
-        var_dump($fechaYHora);
+        //var_dump($fechaYHora);
         $this->reservasModel->generarReserva($_SESSION["id"], $sede, $codigo, $fechaYHora);
         echo $this->printer->render("view/reservarTurnoView.html", $data);
     }
