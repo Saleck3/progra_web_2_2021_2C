@@ -46,4 +46,17 @@ class ReservasModel
         
         
     }
+
+    public function validarDisponibilidad($sede, $fecha)
+    {
+        $SQL = "select convert(fechaHora,DATE) fechaHora, CM.nombre CentroMedico,CM.id idCentroMedico,cantidadTurnos-count(convert(fechaHora,DATE)) as Disponible 
+                    from reservas as R
+                    inner join centrosmedicos as CM on R.centroMedico = CM.id
+                    where CM.id = $sede and convert(fechaHora,DATE) = '$fecha' 
+                    group by convert(fechaHora,DATE),CM.id;";
+
+        return $this->database->query($SQL);
+
+
+    }
 }

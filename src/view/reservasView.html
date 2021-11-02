@@ -12,16 +12,19 @@
     {{/conTipo}}
 <div class="w3-row w3-theme">
     {{#sedes}}
-    <div class="w3-third "><a href="/reservas/reservarTurno?sede={{id}}">
+    <div class="w3-third ">
 
     <div class=" w3-card-4  w3-margin w3-black w3-hover-sepia">
-        <img style="width: 100%" src="/public/images/{{imagen}}"/>
-        <div class="w3-container ">
-            <h2 class="w3-text-white">{{nombre}}</h2>
-            <h3 class="w3-text-white">Turnos restantes: {{cantidadTurnos}}</h3>
-
-
-        </div>
+        <form action="/reservas/reservarTurno">
+            <img style="width: 100%" src="/public/images/{{imagen}}"/>
+            <div class="w3-container ">
+                <h2 class="w3-text-white">{{nombre}}</h2>
+                <!-- <h3 class="w3-text-white">Turnos restantes: {{cantidadTurnos}}</h3> -->
+                <input type="hidden" name="sede" id="sede" value="{{id}}">
+                <input type="date" name="fechaSolicitada" id="fechaSolicitada">
+                <input type="submit" value="Enviar">
+            </div>
+        </form>
 
     </div>
         </a>

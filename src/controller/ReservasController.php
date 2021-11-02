@@ -26,14 +26,39 @@ class ReservasController
     function reservarTurno()
     {
         $sede = $_GET["sede"];
+        $fechaSolicitada = $_GET["fechaSolicitada"];
+
+        $resultado = $this->reservasModel->validarDisponibilidad($sede, $fechaSolicitada);
+        if(empty($resultado)){
+            $codigo = MD5(time());
+            $link = "/reservas/asignarTipo?codigo=" . $codigo;
+            $this->reservasModel->generarReserva($_SESSION["id"], $sede, $codigo, $fechaSolicitada);
+            $data["link"] = $link;
+            echo $this->printer->render("view/reservarTurnoView.html", $data);
+        } else{
+            if($resultado['Disponible']>0){
+                $codigo = MD5(time());
+                $link = "/reservas/asignarTipo?codigo=" . $codigo;
+                $this->reservasModel->generarReserva($_SESSION["id"], $sede, $codigo, $fechaSolicitada);
+                $data["link"] = $link;
+                echo $this->printer->render("view/reservarTurnoView.html", $data);
+            } else{
+                $_SESSION["mensaje"]["class"] = "error";
+                $_SESSION["mensaje"]["mensaje"] = "No hay turnos disponibles para la fecha seleccionada";
+                header('Location: /reservas');
+            }
+        }
+        /*
+        var_dump($resultado);
+        exit();
         //Dar turno y mandar por mail
         $codigo = MD5(time());
         $link = "/reservas/asignarTipo?codigo=" . $codigo;
         $data["link"] = $link;
         $fechaYHora =$this->horaReserva();
-        //var_dump($fechaYHora);
         $this->reservasModel->generarReserva($_SESSION["id"], $sede, $codigo, $fechaYHora);
         echo $this->printer->render("view/reservarTurnoView.html", $data);
+        */
     }
     
     function asignarTipo()
