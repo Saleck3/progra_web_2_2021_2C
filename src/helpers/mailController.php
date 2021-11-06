@@ -8,7 +8,6 @@ class mailController
     
     public function __construct($config)
     {
-        
         require_once('third-party/phpmailer/exception.php');
         require_once('third-party/phpmailer/phpMailer.php');
         require_once('third-party/phpmailer/smtp.php');
@@ -23,7 +22,7 @@ class mailController
         // 0 = off (producción)
         // 1 = client messages
         // 2 = client and server messages
-        $mail->SMTPDebug = 2;
+        $mail->SMTPDebug = 0;
         //Ahora definimos gmail como servidor que aloja nuestro SMTP
         $mail->Host = 'smtp.gmail.com';
         //El puerto será el 587 ya que usamos encriptación TLS
@@ -45,8 +44,16 @@ class mailController
         $mail->AltBody = 'Mail de gauchorocket';
         
         $this->mail = $mail;
+        
     }
     
+    /**
+     * @param $destinatario Mail del destinatario
+     * @param $asunto Asunto del mail
+     * @param $mensaje Cuerpo del mail (por ahora texto plano)
+     * @param string $destinatarioNombre Nombre del Cliente
+     * @throws \PHPMailer\PHPMailer\Exception
+     */
     public function enviarMail($destinatario, $asunto, $mensaje, $destinatarioNombre = 'Cliente')
     {
         
@@ -56,7 +63,6 @@ class mailController
         //$mail->MsgHTML(file_get_contents('correomaquetado.html'), dirname(ruta_al_archivo));
         //Y por si nos bloquean el contenido HTML (algunos correos lo hacen por seguridad) una versión alternativa en texto plano (también será válida para lectores de pantalla)
         $this->mail->Body = $mensaje;
-        
         //Enviamos el correo
         if (!$this->mail->Send()) {
             if (isset($_SESSION["debug"])) {

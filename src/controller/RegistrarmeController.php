@@ -31,13 +31,12 @@ class RegistrarmeController
             $post_limpio["codigoValidacion"] = $codigo;
             
             $res = $this->usuarioModel->registrarUsuario($post_limpio);
-            var_dump($res);
             if (!is_array($res)) {
                 
-                $this->mailer->enviarMail($post_limpio["mail"], $post_limpio["Codigo de verificacion de usuario"], "El link de validacion de su usuario es http://localhost:81/registrarme/validacion?codigo=$codigo", $post_limpio["nombre"]);
+                $this->mailer->enviarMail($post_limpio["mail"], "Codigo de verificacion de usuario", "El link de validacion de su usuario es " . "http://" . $_SERVER['HTTP_HOST'] . "/registrarme/validacion?codigo=$codigo", $post_limpio["nombre"]);
                 
                 //TODO Mandar mail
-                $_SESSION["mensaje"]["mensaje"] = "Usuario registrado, chequee su casilla de correo para validarlo link = http://localhost:81/registrarme/validacion?codigo=$codigo";
+                $_SESSION["mensaje"]["mensaje"] = "Usuario registrado, chequee su casilla de correo para validarlo";
                 $_SESSION["mensaje"]["class"] = "exito";
                 
                 echo $this->printer->render("view/homeView.html");

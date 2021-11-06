@@ -30,7 +30,7 @@ class Configuration
     private function getConfig()
     {
         if (is_null($this->config))
-            $this->config = parse_ini_file("config/config.ini");
+            $this->config = parse_ini_file("config/config.ini",true);
         
         return $this->config;
     }
