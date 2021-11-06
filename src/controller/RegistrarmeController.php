@@ -5,12 +5,14 @@ class RegistrarmeController
     private $usuarioModel;
     private $log;
     private $printer;
+    private $mailer;
     
-    public function __construct($usuarioModel, $logger, $printer)
+    public function __construct($usuarioModel, $logger, $printer, $mailer)
     {
         $this->usuarioModel = $usuarioModel;
         $this->log = $logger;
         $this->printer = $printer;
+        $this->mailer = $mailer;
     }
     
     function show()
@@ -31,6 +33,8 @@ class RegistrarmeController
             $res = $this->usuarioModel->registrarUsuario($post_limpio);
             var_dump($res);
             if (!is_array($res)) {
+                
+                $this->mailer->enviarMail($post_limpio["mail"], $post_limpio["Codigo de verificacion de usuario"], "El link de validacion de su usuario es http://localhost:81/registrarme/validacion?codigo=$codigo", $post_limpio["nombre"]);
                 
                 //TODO Mandar mail
                 $_SESSION["mensaje"]["mensaje"] = "Usuario registrado, chequee su casilla de correo para validarlo link = http://localhost:81/registrarme/validacion?codigo=$codigo";

@@ -64,7 +64,7 @@ class Configuration
     public function createRegistrarmeController()
     {
         require_once("controller/RegistrarmeController.php");
-        return new RegistrarmeController($this->createUsuarioModel(), $this->getLogger(), $this->createPrinter());
+        return new RegistrarmeController($this->createUsuarioModel(), $this->getLogger(), $this->createPrinter(), $this->createMailer());
     }
     
     private function createReservasModel()
@@ -84,5 +84,11 @@ class Configuration
     {
         require_once("controller/DebugController.php");
         return new DebugController();
+    }
+    
+    public function createMailer()
+    {
+        require_once("helpers/mailController.php");
+        return new mailController($this->getConfig());
     }
 }
