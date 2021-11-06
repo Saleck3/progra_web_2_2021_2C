@@ -25,20 +25,45 @@ class RegistrarmeController
         
         
         if (isset($post_limpio) && isset($post_limpio["mail"])) {
-            if ($this->usuarioModel->registrarUsuario($post_limpio)) {
-                $data["mensaje"] = "Usuario registrado";
-                $data["class"] = "exito";
+            $codigo = md5(time());
+            $post_limpio["codigoValidacion"] = $codigo;
+            
+            $res = $this->usuarioModel->registrarUsuario($post_limpio);
+            var_dump($res);
+            if (!is_array($res)) {
                 
-                echo $this->printer->render("view/homeView.html", $data);
+                //TODO Mandar mail
+                $_SESSION["mensaje"]["mensaje"] = "Usuario registrado, chequee su casilla de correo para validarlo link = http://localhost:81/registrarme/validacion?codigo=$codigo";
+                $_SESSION["mensaje"]["class"] = "exito";
+                
+                echo $this->printer->render("view/homeView.html");
             } else {
-                $data["mensaje"] = "Error de conexion a la base de datos o datos incorrectos";
-                $data["class"] = "error";
-                echo $this->printer->render("view/registrarmeView.html", $data);
+                $_SESSION["mensaje"]["mensaje"] = "Datos incorrectos o el usuario ya existe";
+                $_SESSION["mensaje"]["class"] = "error";
+                echo $this->printer->render("view/registrarmeView.html");
             }
         } else {
-            $data["mensaje"] = "Es necesario setear un mail";
-            $data["class"] = "error";
-            echo $this->printer->render("view/registrarmeView.html", $data);
+            $_SESSION["mensaje"]["mensaje"] = "Es necesario setear un mail";
+            $_SESSION["mensaje"]["class"] = "error";
+            echo $this->printer->render("view/registrarmeView.html");
         }
+    }
+    
+    function validacion()
+    {
+        
+        if ($this->usuarioModel->validarUsuario($_GET["codigo"])) {
+            
+            //TODO Mandar mail
+            $_SESSION["mensaje"]["mensaje"] = "El usuario fue validado con exito, ya es posible iniciar sesion";
+            $_SESSION["mensaje"]["class"] = "exito";
+            
+            echo $this->printer->render("view/iniciarSesionView.html");
+        } else {
+            $_SESSION["mensaje"]["mensaje"] = "Codigo incorrecto";
+            $_SESSION["mensaje"]["class"] = "error";
+            echo $this->printer->render("view/homeView.html");
+        }
+        
     }
 }

@@ -27,11 +27,22 @@ class MyDatabase
         $databaseResult = mysqli_query($this->connection, $sql);
         
         if (!$databaseResult) {
+            
+            if (isset($_SESSION["debug"])) {
+                var_dump($sql);
+                var_dump($this->connection);
+            }
             return FALSE;
         }
         
-        if (mysqli_num_rows($databaseResult) <= 0)
+        if (mysqli_num_rows($databaseResult) <= 0) {
+            if (isset($_SESSION["debug"])) {
+                var_dump($sql);
+                var_dump($this->connection);
+            }
             return [];
+        }
+        
         
         if (mysqli_num_rows($databaseResult) == 1)
             return mysqli_fetch_assoc($databaseResult);
@@ -49,7 +60,11 @@ class MyDatabase
     {
         
         if (!$databaseResult = mysqli_query($this->connection, $sql)) {
-            var_dump($this->connection);
+            if (isset($_SESSION["debug"])) {
+                var_dump($sql);
+                var_dump($this->connection);
+            }
+            
             return mysqli_error_list($this->connection);
         }
         

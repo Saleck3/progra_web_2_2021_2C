@@ -79,4 +79,10 @@ class Configuration
         require_once("controller/ReservasController.php");
         return new ReservasController($this->createPrinter(), $this->createReservasModel(), $this->createUsuarioModel());
     }
+    
+    public function createDebugController()
+    {
+        require_once("controller/DebugController.php");
+        return new DebugController();
+    }
 }

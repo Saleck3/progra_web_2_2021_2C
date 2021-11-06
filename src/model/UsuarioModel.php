@@ -17,8 +17,9 @@ class UsuarioModel
     
     public function registrarUsuario($data)
     {
-        $SQL = "INSERT INTO Usuario (nombre, apellido, fechaNacimiento, email, password, idCargo) VALUES
-        ('" . $data["nombre"] . "', '" . $data["apellido"] . "', '" . $data["fechaNac"] . "', '" . $data["mail"] . "', MD5('" . $data["pass"] . "'), 2)";
+        $SQL = "INSERT INTO Usuario (nombre, apellido, fechaNacimiento, email, password, idCargo,codigoValidacion) VALUES
+        ('" . $data["nombre"] . "', '" . $data["apellido"] .
+            "', '" . $data["fechaNac"] . "', '" . $data["mail"] . "', MD5('" . $data["pass"] . "'), 2, '" . $data["codigoValidacion"] . "')";
         
         return $this->database->insert($SQL);
     }
@@ -27,6 +28,12 @@ class UsuarioModel
     {
         $SQL = "UPDATE Usuario SET tipo = $tipo WHERE id = $usuario";
         
+        return $this->database->update($SQL);
+    }
+    
+    public function validarUsuario($codigo)
+    {
+        $SQL = "update Usuario set codigoValidacion = null where codigoValidacion = '$codigo'";
         return $this->database->update($SQL);
     }
 }
