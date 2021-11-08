@@ -14,15 +14,18 @@
     {{#sedes}}
     <div class="w3-third ">
 
-    <div class=" w3-card-4  w3-margin w3-black w3-hover-sepia">
+    <div class=" w3-card-4  w3-margin w3-black ">
         <form action="/reservas/reservarTurno">
             <img style="width: 100%" src="/public/images/{{imagen}}"/>
             <div class="w3-container ">
                 <h2 class="w3-text-white">{{nombre}}</h2>
                 <!-- <h3 class="w3-text-white">Turnos restantes: {{cantidadTurnos}}</h3> -->
                 <input type="hidden" name="sede" id="sede" value="{{id}}">
-                <input type="date" name="fechaSolicitada" id="fechaSolicitada">
-                <input type="submit" value="Enviar">
+                <label for="fechaSolicitada">Seleccione fecha deseada para su turno</label>
+                <br>
+                <input class="w3-margin-top" type="date" name="fechaSolicitada" id="fechaSolicitada">
+                <br>
+                <input class="w3-margin-top w3-margin-bottom w3-button w3-white" type="submit" value="reservar">
             </div>
         </form>
 
