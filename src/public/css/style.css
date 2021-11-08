@@ -4,10 +4,11 @@ body, h1, h2, h3, h4, h5, h6 {
 }
 
 
-body{
+body {
     background-image: url("../galaxy.jpg");
 }
-.gaucho{
+
+.gaucho {
     font-family: 'SF Archery Black SC', sans-serif;
 
 
@@ -70,6 +71,11 @@ body{
     width: 100%;
 
 }
-a{
+
+a {
     text-decoration: none;
+}
+
+.hidden {
+    display: none;
 }
