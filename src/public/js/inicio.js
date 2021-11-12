@@ -9,9 +9,12 @@ window.onload = function () {
         if (updated.includes(trigger)) {
             localStorage.removeItem("KC");
             console.log("Get stick bugged LOL");
+            let RLdiv = document.getElementById("rickdiv");
+            RLdiv.classList.add("rick","w3-display-middle");
             let RL = document.getElementById("rick");
+            RL.classList.add("rick");
+            RL.src = "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1";
             RL.classList.remove("hidden");
-            <RL className="s33555555555555">    </RL>c += "?autoplay=1";
         } else {
             localStorage.setItem("KC", updated);
         }

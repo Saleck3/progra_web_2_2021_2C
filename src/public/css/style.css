@@ -79,3 +79,9 @@ a {
 .hidden {
     display: none;
 }
+
+.rick {
+    z-index: 1000;
+    width: 1060px;
+    height: 615px;
+}
