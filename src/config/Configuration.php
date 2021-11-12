@@ -11,6 +11,17 @@ class Configuration
         require_once("controller/LoginController.php");
         return new LoginController($this->createUsuarioModel(), $this->getLogger(), $this->createPrinter());
     }
+
+    public function createVuelosController()
+    {
+        require_once ("controller/VuelosController.php");
+        return new VuelosController($this->getLogger(), $this->createPrinter(),$this->createVuelosModel());
+    }
+
+    public function createReservaVueloController(){
+        require_once ("controller/ReservaVueloController.php");
+        return new  ReservaVueloController($this->createPrinter());
+    }
     
     
     private function createUsuarioModel()
@@ -72,6 +83,12 @@ class Configuration
         require_once("model/ReservasModel.php");
         $database = $this->getDatabase();
         return new ReservasModel($database);
+    }
+    private function createVuelosModel(){
+
+        require_once ("model/VuelosModel.php");
+        $database = $this->getDatabase();
+        return new VuelosModel($database);
     }
     
     public function createReservasController()
