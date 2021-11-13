@@ -1,5 +1,7 @@
 <?php
 
+static $DIAS = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sabado");
+
 class Configuration
 {
     

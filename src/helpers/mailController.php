@@ -11,8 +11,6 @@ class mailController
         require_once('third-party/phpmailer/exception.php');
         require_once('third-party/phpmailer/phpMailer.php');
         require_once('third-party/phpmailer/smtp.php');
-        $mail = new PHPMailer();
-        
         
         //Crear una instancia de PHPMailer
         $mail = new PHPMailer();
