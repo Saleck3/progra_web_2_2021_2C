@@ -17,7 +17,7 @@ class VuelosModel
     /**
      * @param $fecha
      */
-    public function getVuelosDia($fecha)
+    public function getVuelosDia($fecha, $desde = NULL)
     {
         global $DIAS;
         
@@ -25,8 +25,16 @@ class VuelosModel
         
         $diaDeLaSemana = $DIAS["$diaDeLaSemana"];
         
-        //TODO Agregar filtro de lugar de salida
-        return $this->database->query("SELECT * FROM suborbitales where dia = '$diaDeLaSemana' ORDER BY horario");
+        if ($desde) {
+            return $this->database->query("SELECT * FROM suborbitales where dia = '$diaDeLaSemana' AND partida = '$desde' ORDER BY horario;");
+        } else {
+            return $this->database->query("SELECT * FROM suborbitales where dia = '$diaDeLaSemana' ORDER BY horario");
+        }
+    }
+    
+    public function getVuelosDesde($desde)
+    {
+        return $this->database->query("SELECT * FROM suborbitales where partida = '$desde';");
     }
     
 }

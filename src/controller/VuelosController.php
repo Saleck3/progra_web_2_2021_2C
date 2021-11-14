@@ -20,23 +20,30 @@ class VuelosController
         echo $this->printer->render("view/vuelosView.html", $data);
     }
     
-    function buscar()
-    {
-    
-    
-    }
-    
+    /**
+     * Lista los vuelos Suborbitales, considerando los filtros
+     */
     function suborbital()
     {
+        
         $data["hoy"] = date('Y-m-d');
-        if (isset($_POST["date"])) {
+        if ($_POST["date"]) {
             $data['diaSeleccionado'] = $_POST["date"];
-            $data['vuelos'] = $this->vuelosModel->getVuelosDia($data["diaSeleccionado"]);
-            $this->agregarDia($data['vuelos'], $data["diaSeleccionado"]);
+            $data['vuelos'] = $this->vuelosModel->getVuelosDia($data["diaSeleccionado"], $_POST["desde"]);
+        } else if (isset($_POST["desde"])) {
+            $data['vuelos'] = $this->vuelosModel->getVuelosDesde($_POST["desde"]);
         } else {
             $data['vuelos'] = $this->vuelosModel->getVuelos();
-            $this->agregarDia($data['vuelos'], $data["hoy"], TRUE);
         }
+        
+        //Agrego debug porque seria raro tenes vacios
+        if (sizeof($data['vuelos']) == 0 && isset($_SESSION["debug"])) {
+            var_dump($_POST);
+        }
+        
+        //Agrego los dias, si me llego un dia paso ese, sino, la fecha de hoy
+        $this->agregarDia($data['vuelos'], isset($data["diaSeleccionado"]) ? $data["diaSeleccionado"] : $data["hoy"]);
+        
         echo $this->printer->render("view/suborbitalView.html", $data);
     }
     
@@ -45,7 +52,6 @@ class VuelosController
      *
      * @param $array Array de vuelos
      * @param $fechaEstatica fecha del vuelo o fecha de donde empezar a contar
-     * @param $esSemana boolean si es una semana, se agrega a partir del primer dia, a todos los dias, sin no, se agrega solo la fecha a empezar
      */
     private function agregarDia(&$array, $fechaEstatica)
     {
@@ -54,7 +60,7 @@ class VuelosController
         
         global $DIAS;
         $numeros = array();
-    
+        
         //Segun el nombre del dia, seteo el numero
         //Si hoy es sabado 15, el $numeros en sabado va a tener 15
         //Luego, va a recorrer, por lo que el viernes va a ser hoy +6 = 21
