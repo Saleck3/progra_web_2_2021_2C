@@ -136,15 +136,15 @@ DROP TABLE IF EXISTS `modelos`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `modelos` (
   `id` int(8) NOT NULL AUTO_INCREMENT,
-  `modelo` varchar(15) NOT NULL,
-  `tipo` varchar(10) NOT NULL,
+  `modelo` varchar(15) CHARACTER SET utf8 NOT NULL,
+  `tipo` varchar(10) CHARACTER SET utf8 NOT NULL,
   `capacidadTotal` int(10) NOT NULL,
-  `pasajeros` text NOT NULL,
+  `pasajeros` text CHARACTER SET utf8 NOT NULL,
   `cap_gen` int(11) NOT NULL DEFAULT '0',
   `cap_fam` int(11) NOT NULL DEFAULT '0',
   `cap_sui` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -165,12 +165,12 @@ DROP TABLE IF EXISTS `nave_espacial`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `nave_espacial` (
-  `matricula` varchar(10) NOT NULL,
+  `matricula` varchar(10) CHARACTER SET utf8 NOT NULL,
   `modelo` int(10) NOT NULL,
   PRIMARY KEY (`matricula`),
   KEY `fk_modelo` (`modelo`),
   CONSTRAINT `fk_modelo` FOREIGN KEY (`modelo`) REFERENCES `modelos` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -207,8 +207,38 @@ CREATE TABLE `suborbitales` (
 
 LOCK TABLES `suborbitales` WRITE;
 /*!40000 ALTER TABLE `suborbitales` DISABLE KEYS */;
-INSERT INTO `suborbitales` VALUES (1,'Lunes',8,'BA','09:00:00'),(2,'Lunes',8,'BA','13:00:00'),(3,'Lunes',8,'BA','18:00:00'),(4,'Lunes',8,'AK','09:00:00'),(5,'Lunes',8,'AK','13:00:00'),(6,'Martes',8,'BA','09:00:00'),(7,'Martes',8,'BA','13:00:00'),(8,'Martes',8,'BA','18:00:00'),(9,'Martes',8,'AK','09:00:00'),(10,'Martes',8,'AK','13:00:00'),(11,'Miercoles',8,'BA','09:00:00'),(12,'Miercoles',8,'BA','13:00:00'),(13,'Miercoles',8,'BA','18:00:00'),(14,'Miercoles',8,'AK','09:00:00'),(15,'Miercoles',8,'AK','13:00:00'),(16,'Jueves',8,'BA','09:00:00'),(17,'Jueves',8,'BA','13:00:00'),(18,'Jueves',8,'BA','18:00:00'),(19,'Jueves',8,'AK','09:00:00'),(20,'Jueves',8,'AK','13:00:00'),(21,'Viernes',8,'BA','09:00:00'),(22,'Viernes',8,'BA','13:00:00'),(23,'Viernes',8,'BA','18:00:00'),(24,'Viernes',8,'AK','09:00:00'),(25,'Viernes',8,'AK','13:00:00'),(26,'Sabado',8,'BA','09:00:00'),(27,'Sabado',8,'BA','13:00:00'),(28,'Sabado',8,'BA','18:00:00'),(29,'Sabado',8,'BA','21:00:00'),(30,'Sabado',8,'AK','09:00:00'),(31,'Sabado',8,'AK','13:00:00'),(32,'Sabado',8,'AK','18:00:00'),(33,'Sabado',8,'AK','21:00:00'),(34,'Domingo',8,'BA','09:00:00'),(35,'Domingo',8,'BA','13:00:00'),(36,'Domingo',8,'BA','18:00:00'),(37,'Domingo',8,'BA','21:00:00'),(38,'Domingo',8,'BA','00:00:00'),(39,'Domingo',8,'AK','09:00:00'),(40,'Domingo',8,'AK','13:00:00'),(41,'Domingo',8,'AK','18:00:00'),(42,'Domingo',8,'AK','21:00:00'),(43,'Domingo',8,'AK','00:00:00');
+INSERT INTO `suborbitales` VALUES (1,'Lunes',8,'Buenos aires','09:00:00'),(2,'Lunes',8,'Buenos aires','13:00:00'),(3,'Lunes',8,'Buenos aires','18:00:00'),(4,'Lunes',8,'Ankara','09:00:00'),(5,'Lunes',8,'Ankara','13:00:00'),(6,'Martes',8,'Buenos aires','09:00:00'),(7,'Martes',8,'Buenos aires','13:00:00'),(8,'Martes',8,'Buenos aires','18:00:00'),(9,'Martes',8,'Ankara','09:00:00'),(10,'Martes',8,'Ankara','13:00:00'),(11,'Miercoles',8,'Buenos aires','09:00:00'),(12,'Miercoles',8,'Buenos aires','13:00:00'),(13,'Miercoles',8,'Buenos aires','18:00:00'),(14,'Miercoles',8,'Ankara','09:00:00'),(15,'Miercoles',8,'Ankara','13:00:00'),(16,'Jueves',8,'Buenos aires','09:00:00'),(17,'Jueves',8,'Buenos aires','13:00:00'),(18,'Jueves',8,'Buenos aires','18:00:00'),(19,'Jueves',8,'Ankara','09:00:00'),(20,'Jueves',8,'Ankara','13:00:00'),(21,'Viernes',8,'Buenos aires','09:00:00'),(22,'Viernes',8,'Buenos aires','13:00:00'),(23,'Viernes',8,'Buenos aires','18:00:00'),(24,'Viernes',8,'Ankara','09:00:00'),(25,'Viernes',8,'Ankara','13:00:00'),(26,'Sabado',8,'Buenos aires','09:00:00'),(27,'Sabado',8,'Buenos aires','13:00:00'),(28,'Sabado',8,'Buenos aires','18:00:00'),(29,'Sabado',8,'Buenos aires','21:00:00'),(30,'Sabado',8,'Ankara','09:00:00'),(31,'Sabado',8,'Ankara','13:00:00'),(32,'Sabado',8,'Ankara','18:00:00'),(33,'Sabado',8,'Ankara','21:00:00'),(34,'Domingo',8,'Buenos aires','09:00:00'),(35,'Domingo',8,'Buenos aires','13:00:00'),(36,'Domingo',8,'Buenos aires','18:00:00'),(37,'Domingo',8,'Buenos aires','21:00:00'),(38,'Domingo',8,'Buenos aires','00:00:00'),(39,'Domingo',8,'Ankara','09:00:00'),(40,'Domingo',8,'Ankara','13:00:00'),(41,'Domingo',8,'Ankara','18:00:00'),(42,'Domingo',8,'Ankara','21:00:00'),(43,'Domingo',8,'Ankara','00:00:00');
 /*!40000 ALTER TABLE `suborbitales` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `suborbitales_reservas`
+--
+
+DROP TABLE IF EXISTS `suborbitales_reservas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `suborbitales_reservas` (
+  `id` int(10) unsigned NOT NULL,
+  `fechayhora` datetime NOT NULL,
+  `matricula` varchar(10) NOT NULL,
+  `asiento` varchar(10) DEFAULT NULL,
+  `usuario` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `usuario_idx` (`usuario`),
+  KEY `matricula_idx` (`matricula`),
+  CONSTRAINT `suborbitales_reservas_ibfk_1` FOREIGN KEY (`usuario`) REFERENCES `Usuario` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `suborbitales_reservas`
+--
+
+LOCK TABLES `suborbitales_reservas` WRITE;
+/*!40000 ALTER TABLE `suborbitales_reservas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `suborbitales_reservas` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -221,14 +251,14 @@ DROP TABLE IF EXISTS `vuelo`;
 CREATE TABLE `vuelo` (
   `id` int(8) NOT NULL AUTO_INCREMENT,
   `dia` datetime DEFAULT NULL,
-  `duracion` varchar(11) NOT NULL,
-  `equipo` varchar(10) NOT NULL,
-  `partida` varchar(40) NOT NULL,
-  `destino` varchar(40) NOT NULL,
+  `duracion` varchar(11) CHARACTER SET utf8 NOT NULL,
+  `equipo` varchar(10) CHARACTER SET utf8 NOT NULL,
+  `partida` varchar(40) CHARACTER SET utf8 NOT NULL,
+  `destino` varchar(40) CHARACTER SET utf8 NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_equipo` (`equipo`),
   CONSTRAINT `fk_equipo` FOREIGN KEY (`equipo`) REFERENCES `nave_espacial` (`matricula`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -249,4 +279,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-11-13 15:29:11
+-- Dump completed on 2021-11-14 20:05:50

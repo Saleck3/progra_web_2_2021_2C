@@ -85,5 +85,18 @@ class VuelosController
         
     }
     
+    function suborbital_reserva()
+    {
+        $data["fecha"] = date('Y-m-d',$_POST["nroDia"]);
+        
+        $data["partida"] = $_POST["partida"];
+        
+        $data["fecha"] = $_POST["fecha"];
+        $data["duracion"] = $_POST["duracion"];
+        $data["hora"] = $_POST["hora"];
+        
+        var_dump($_POST);
+        echo $this->printer->render("view/suborbital_reservaView.html", $data);
+    }
 }
 
