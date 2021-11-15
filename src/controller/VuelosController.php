@@ -16,13 +16,22 @@ class VuelosController
     
     function show()
     {
-        $data['vuelos'] = $this->vuelosModel->getVuelos();
-        echo $this->printer->render("view/vuelosView.html", $data);
+
+        echo $this->printer->render("view/vuelosView.html");
     }
     
     /**
      * Lista los vuelos Suborbitales, considerando los filtros
      */
+
+    function tour(){
+        echo $this->printer->render("view/tourView.html");
+    }
+
+    function entreDestinos(){
+        $data['vuelos'] = $this->vuelosModel->getVuelos();
+        echo $this->printer->render("view/entreDestinosView.html",$data);
+    }
     function suborbital()
     {
         
@@ -86,14 +95,17 @@ class VuelosController
     }
     
     function suborbital_reserva()
+
     {
-        $data["fecha"] = date('Y-m-d',$_POST["nroDia"]);
+       $nroDia= $_POST["nroDia"];
+       $nroDiaInt= (int)$nroDia;
+        $data["fecha"] = date('Y-m-d',$nroDiaInt);
         
         $data["partida"] = $_POST["partida"];
         
-        $data["fecha"] = $_POST["fecha"];
+
         $data["duracion"] = $_POST["duracion"];
-        $data["hora"] = $_POST["hora"];
+        $data["horario"] = $_POST["hora"];
         
         var_dump($_POST);
         echo $this->printer->render("view/suborbital_reservaView.html", $data);

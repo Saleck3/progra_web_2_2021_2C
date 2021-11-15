@@ -1,14 +1,16 @@
 {{> header}}
-<div class="w3-margin formulario w3-card ">
-    <div class="w3-container w3-black ">
-        <h3>Confirmar reserva</h3>
-    </div>
+<div class="w3-container w3-black ">
+    <h3>Reserva</h3>
+</div>
+<div id="registrarme" class="w3-container w3-content w3-white w3-margin-top w3-margin-bottom w3-round-xlarge">
+
     <h2 class="w3-margin">Datos de la reserva</h2>
+    <div class="w3-container w3-content">
     <form class="w3-container " method="post">
-        <label class="w3-margin-bottom" for="fecha" value="{{fecha}}">Fecha</label>
-        <input class="w3-input w3-margin-bottom" type="date" id="fecha" name="fecha" disabled>
+        <label class="w3-margin-bottom" for="fecha">Fecha</label>
+        <input class="w3-input w3-margin-bottom" type="date" id="fecha" name="fecha" value="{{fecha}}" disabled>
         <label class="w3-margin-bottom" for="hora">hora</label>
-        <input class="w3-input w3-margin-bottom" type="text" id="hora" name="hora" disabled>
+        <input class="w3-input w3-margin-bottom" type="text" id="hora" name="hora" value="{{horario}}" disabled>
         <label class="w3-margin-bottom" for="partida">Aeropuerto de salida</label>
         <input class="w3-input w3-margin-bottom" type="text" id="partida" name="partida" value=" {{partida}}"
                disabled></input>
@@ -32,8 +34,9 @@
             <option value="spa">Spa</option>
         </select>
 
-        <input type="submit" class="w3-button w3-black w3-margin-bottom" value="Confirmar">
+        <input type="submit" class="w3-button w3-black w3-margin-bottom w3-round-xlarge" value="Confirmar">
     </form>
-
+    </div>
 </div>
+
 {{> footer}}

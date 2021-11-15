@@ -1,83 +1,49 @@
 {{> header}}
 
-<div class="w3-card-4 w3-white w3-margin w3-round-xlarge">
-    <h3 class="w3-text w3-margin">Vuelos</h3>
-    <form>
-    <div class="w3-row ">
-
-
-            <div class="w3-quarter w3-container">
-            <label for="desde" >Desde</label>
-            <select class="w3-select" name="desde" id="desde">
-                <option value="" disabled selected>Seleccione Destino</option>
-                <option value="estacion espacial">Estación Espacial Internacional</option>
-                <option value="orbiter hotel">Orbiter Hotel</option>
-                <option value="luna">Luna</option>
-                <option value="marte">Marte</option>
-                <option value="genimedes">Genimedes</option>
-                <option value="europa">Europa</option>
-                <option value="io">Io</option>
-                <option value="encedalo">Encedalo</option>
-                <option value="titan">Titán</option>
-                <option value="buenos aires">Buenos Aires</option>
-                <option value="ankara">Ankara</option>
-            </select>
-            </div>
-            <div class="w3-quarter w3-container">
-            <label for="hasta" >Hasta</label>
-
-            <select class="w3-select " name="hasta" id="hasta">
-            <option value="" disabled selected>Seleccione Destino</option>
-            <option value="estacion espacial">Estación Espacial Internacional</option>
-            <option value="orbiter hotel">Orbiter Hotel</option>
-            <option value="luna">Luna</option>
-            <option value="marte">Marte</option>
-            <option value="genimedes">Genimedes</option>
-            <option value="europa">Europa</option>
-            <option value="io">Io</option>
-            <option value="encedalo">Encedalo</option>
-            <option value="titan">Titán</option>
-            <option value="buenos aires">Buenos Aires</option>
-            <option value="ankara">Ankara</option>
-            </select>
-            </div>
-            <div class="w3-quarter w3-container ">
-            <label for="date">Fecha</label>
-                <input type="date" class="w3-input " id="date">
-            </div>
-        <div class="w3-quarter w3-container w3-center">
-            <button type="submit" class="w3-button w3-round-xlarge w3-black w3-margin"><i class="fa fa-search"></i> Buscar</button>
-        </div>
-
-   </div>
-    </form>
+<div class="w3-container w3-padding">
+    <h1 class="w3-text-white">Vuelos</h1>
+    <h4 class="w3-text-white">Seleccione el tipo de vuelo que esta buscando.</h4>
 </div>
-<!--Resultados de la busqueda-->
 
-<div class="w3-card-4  w3-margin w3-round-xlarge">
 
-    <table class="w3-table-all  w3-centered w3-margin-bottom"  >
-        <tbody>
-        <tr class="w3-black">
-            <th>Día y Horario</th>
-            <th>Desde</th>
-            <th>Hasta</th>
-            <th>Duración</th>
-        </tr>
-        </tbody>
-        {{#vuelos}}
-        <tr>
-            <td>{{dia}}</td>
-            <td>{{partida}}</td>
-            <td>{{destino}}</td>
-            <td>{{duracion}}</td>
-            <td>
-                <a class="w3-button w3-round-xxlarge w3-center w3-black" href="/reservaVuelo">Reservar</a>
-            </td>
+<div class="w3-row w3-theme">
 
-        </tr>
-        {{/vuelos}}
-    </table>
+    <div class="w3-third ">
+
+        <div class=" w3-card-4  w3-margin w3-white w3-round-xlarge ">
+            <img style="width: 100%" src="/public/images/suborbital.jpg"/>
+                <div class="w3-container ">
+                    <h2 class="w3-text-black">Sub-orbitales</h2>
+                    <a href="/vuelos/suborbital" class="w3-margin-top w3-margin-bottom  w3-black w3-button w3-round-xlarge">Buscar</a>
+                </div>
+        </div>
+        </a>
+    </div>
+    <div class="w3-third ">
+
+        <div class=" w3-card-4  w3-margin w3-white w3-round-xlarge ">
+            <img style="width: 100%" src="/public/images/entreDestinos.jpeg"/>
+            <div class="w3-container ">
+                <h2 class="w3-text-black">Entre Destinos</h2>
+                <a href="/vuelos/entreDestinos" class="w3-margin-top w3-margin-bottom  w3-black w3-button w3-round-xlarge">Buscar</a>
+
+            </div>
+        </div>
+        </a>
+    </div>
+    <div class="w3-third ">
+
+        <div class=" w3-card-4  w3-margin w3-white w3-round-xlarge ">
+            <img style="width: 100%" src="/public/images/tour.jpg"/>
+            <div class="w3-container ">
+                <h2 class="w3-text-black">Tour</h2>
+                <a href="/vuelos/tour" class="w3-margin-top w3-margin-bottom  w3-black w3-button w3-round-xlarge">Buscar</a>
+            </div>
+        </div>
+        </a>
+    </div>
+
+
 </div>
 
 
