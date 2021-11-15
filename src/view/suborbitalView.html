@@ -31,7 +31,7 @@
 
 <div class="w3-card-4  w3-margin w3-round-xlarge">
 
-    <form action="/vuelos/suborbital_reserva" method="post">
+
     <table class="w3-table-all  w3-centered w3-margin-bottom">
         <tbody>
         <tr class="w3-black">
@@ -44,20 +44,22 @@
         </tr>
         </tbody>
         {{#vuelos}}
-        <tr>
-            <td><input class="hidden" name="nroDia" value="{{nroDia}}">{{nroDia}}</input></td>
-            <td><input class="hidden" name="dia" value="{{dia}}">{{dia}}</input></td>
-            <td><input class="hidden" type="text" name="hora" value="{{horario}}">{{horario}}</input></td>
-            <td><input class="hidden" name="partida" value="{{partida}}">{{partida}}</input></td>
-            <td><input class="hidden" name="duracion" value="{{duracion}}">{{duracion}} Horas</input></td>
-            <td>
-                <input type="submit" class="w3-button w3-round-xxlarge w3-center w3-black" value="Reservar!" ></button>
-            </td>
-
-        </tr>
+        <form action="/vuelos/suborbital_reserva" method="post">
+            <tr>
+                <td><input class="hidden" name="nroDia" value="{{nroDia}}">{{nroDia}}</input></td>
+                <td><input class="hidden" name="dia" value="{{dia}}">{{dia}}</input></td>
+                <td><input class="hidden" type="text" name="hora" value="{{horario}}">{{horario}}</input></td>
+                <td><input class="hidden" name="partida" value="{{partida}}">{{partida}}</input></td>
+                <td><input class="hidden" name="duracion" value="{{duracion}}">{{duracion}} Horas</input></td>
+                <td>
+                    <input type="submit" class="w3-button w3-round-xxlarge w3-center w3-black"
+                           value="Reservar!"></button>
+                </td>
+            </tr>
+        </form>
         {{/vuelos}}
     </table>
-    </form>
+
 </div>
 
 
