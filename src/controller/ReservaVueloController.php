@@ -14,4 +14,6 @@ class ReservaVueloController
     function show(){
         echo  $this->printer->render("view/reservaVueloView.html");
     }
+
+    
 }

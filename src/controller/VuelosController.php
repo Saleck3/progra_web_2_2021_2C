@@ -88,26 +88,26 @@ class VuelosController
         
         //Segun el dia del vuelo, asigno "nroDia"
         foreach ($array as &$vuelo) {
-            $vuelo["nroDia"] = date("d/m/y", $numeros[$vuelo["dia"]]);
+            $vuelo["nroDia"] = date("d/m/Y", $numeros[$vuelo["dia"]]);
         }
         
         
     }
     
     function suborbital_reserva()
-
     {
        $nroDia= $_POST["nroDia"];
-       $nroDiaInt= (int)$nroDia;
-        $data["fecha"] = date('Y-m-d',$nroDiaInt);
-        
+       $data["fecha"] = str_replace("/","-", $nroDia);
+       var_dump($data["fecha"]);
+       $data["fecha"] = date('Y-m-d', strtotime($data["fecha"]));
+
         $data["partida"] = $_POST["partida"];
         
 
         $data["duracion"] = $_POST["duracion"];
         $data["horario"] = $_POST["hora"];
         
-        var_dump($_POST);
+
         echo $this->printer->render("view/suborbital_reservaView.html", $data);
     }
 }
