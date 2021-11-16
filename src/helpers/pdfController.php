@@ -19,20 +19,20 @@ class pdfController{
         $this->pdf = $dompdf;
     }
 
-    public function generarPdf($contenido,$nombrePdf){
+    public function generarPdf($nombrePdf,$html){
+
         $options = new Options();
-//$options = $this->pdf->getOptions();
-$options->setIsHtml5ParserEnabled(true);
-$this->pdf->setOptions($options);
+        $options = $this->pdf->getOptions();
+        $options->set(array('isRemoteEnabled' => true));
+        $this->pdf->setOptions($options);
 
+        $this->pdf->loadHtml($html);
 
-        $this->pdf->loadHtml($contenido);
-        // Render the HTML as PDF
         $this->pdf->render();
-        $this->pdf->set_base_path('public/css/pdfStyle.css');
+        $output = $this->pdf->output();
+        file_put_contents("public/pdf/".$nombrePdf.".pdf",$output);
 
-        // Output the generated PDF to Browser
-        $this->pdf->stream($nombrePdf.".pdf" , ['Attachment' => 0]);
+        // $this->pdf->stream($nombrePdf.".pdf", array('Attachment' => false));
     }
 }
 

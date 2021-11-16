@@ -115,10 +115,23 @@ class VuelosController
 
     function generarComprobante()
     {
-        $contenido2 = '<html><head><link rel="stylesheet" href="/public/css/pdfStyle.css"></head>';
-        $contenido2 .= '<body><H1>HOLA MUNDO</H1></body></html>';
-        
-        $this->pdf->generarPdf($contenido2,"leandrocapo");
+        $data = array();
+        $data["fecha"] = $_POST["fecha"];
+        $data["hora"] = $_POST["hora"];
+        $data["partida"] = $_POST["partida"];
+        $data["duracion"] = $_POST["duracion"];
+        $data["matricula"] = $_POST["matricula"];
+        $data["tipo_asiento"] = $_POST["tipo_asiento"];
+        $data["num_asiento"] = $_POST["num_asiento"];
+        $data["servicio"] = $_POST["servicio"];
+
+        ob_start();
+        echo $this->printer->render("view/datosPdf.html", $data);
+        $html = ob_get_clean();
+
+        $numeroForm = rand(0,1000);
+
+        $this->pdf->generarPdf("formulario".$numeroForm,$html);
     }
 }
 
