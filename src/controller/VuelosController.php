@@ -6,12 +6,14 @@ class VuelosController
     private $vuelosModel;
     private $log;
     private $printer;
+    private $pdf;
     
-    public function __construct($logger, $printer, $vuelosModel)
+    public function __construct($logger, $printer, $vuelosModel, $pdf)
     {
         $this->vuelosModel = $vuelosModel;
         $this->log = $logger;
         $this->printer = $printer;
+        $this->pdf = $pdf;
     }
     
     function show()
@@ -36,7 +38,7 @@ class VuelosController
     {
         
         $data["hoy"] = date('Y-m-d');
-        if ($_POST["date"]) {
+        if (isset($_POST["date"]) && $_POST["date"]) {
             $data['diaSeleccionado'] = $_POST["date"];
             $data['vuelos'] = $this->vuelosModel->getVuelosDia($data["diaSeleccionado"], $_POST["desde"]);
         } else if (isset($_POST["desde"])) {
@@ -109,6 +111,14 @@ class VuelosController
         
 
         echo $this->printer->render("view/suborbital_reservaView.html", $data);
+    }
+
+    function generarComprobante()
+    {
+        $contenido2 = '<html><head><link rel="stylesheet" href="/public/css/pdfStyle.css"></head>';
+        $contenido2 .= '<body><H1>HOLA MUNDO</H1></body></html>';
+        
+        $this->pdf->generarPdf($contenido2,"leandrocapo");
     }
 }
 
