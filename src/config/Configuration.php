@@ -17,7 +17,7 @@ class Configuration
     public function createVuelosController()
     {
         require_once ("controller/VuelosController.php");
-        return new VuelosController($this->getLogger(), $this->createPrinter(),$this->createVuelosModel(),$this->createPdfController());
+        return new VuelosController($this->getLogger(), $this->createPrinter(),$this->createVuelosModel(),$this->createPdfController(),$this->createQrController());
     }
 
     public function createReservaVueloController(){
@@ -108,12 +108,18 @@ class Configuration
     public function createMailer()
     {
         require_once("helpers/MailController.php");
-        return new mailController($this->getConfig());
+        return new MailController($this->getConfig());
     }
 
     public function createPdfController()
     {
         require_once("helpers/PdfController.php");
-        return new pdfController();
+        return new PdfController();
+    }
+
+    public function createQrController()
+    {
+        require_once("helpers/QrController.php");
+        return new QrController();
     }
 }

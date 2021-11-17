@@ -3,7 +3,7 @@
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
-class pdfController{
+class PdfController{
 
     private $pdf;
 
@@ -32,7 +32,7 @@ class pdfController{
         $output = $this->pdf->output();
         file_put_contents("public/pdf/".$nombrePdf.".pdf",$output);
 
-        // $this->pdf->stream($nombrePdf.".pdf", array('Attachment' => false));
+        $this->pdf->stream($nombrePdf.".pdf", array('Attachment' => false));
     }
 }
 

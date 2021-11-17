@@ -7,13 +7,15 @@ class VuelosController
     private $log;
     private $printer;
     private $pdf;
+    private $qr;
     
-    public function __construct($logger, $printer, $vuelosModel, $pdf)
+    public function __construct($logger, $printer, $vuelosModel, $pdf,$qr)
     {
         $this->vuelosModel = $vuelosModel;
         $this->log = $logger;
         $this->printer = $printer;
         $this->pdf = $pdf;
+        $this->qr = $qr;
     }
     
     function show()
@@ -98,19 +100,27 @@ class VuelosController
     
     function suborbital_reserva()
     {
-       $nroDia= $_POST["nroDia"];
-       $data["fecha"] = str_replace("/","-", $nroDia);
-       var_dump($data["fecha"]);
-       $data["fecha"] = date('Y-m-d', strtotime($data["fecha"]));
+        if(isset($_SESSION["id"])){
+            $nroDia= $_POST["nroDia"];
+            $data["fecha"] = str_replace("/","-", $nroDia);
+            var_dump($data["fecha"]);
+            $data["fecha"] = date('Y-m-d', strtotime($data["fecha"]));
 
-        $data["partida"] = $_POST["partida"];
+            $data["partida"] = $_POST["partida"];
         
 
-        $data["duracion"] = $_POST["duracion"];
-        $data["horario"] = $_POST["hora"];
+            $data["duracion"] = $_POST["duracion"];
+            $data["horario"] = $_POST["hora"];
         
 
-        echo $this->printer->render("view/suborbital_reservaView.html", $data);
+            echo $this->printer->render("view/suborbital_reservaView.html", $data);
+        }
+        else{
+            $_SESSION["mensaje"]["class"] = "error";
+            $_SESSION["mensaje"]["mensaje"] = "Debe loguearse para poder reservar un vuelo";
+            header('Location: /');
+        }
+       
     }
 
     function generarComprobante()
@@ -124,6 +134,8 @@ class VuelosController
         $data["tipo_asiento"] = $_POST["tipo_asiento"];
         $data["num_asiento"] = $_POST["num_asiento"];
         $data["servicio"] = $_POST["servicio"];
+        $qrComprobante = $this->qr->generarQr();
+        $data["qr"] = $qrComprobante;
 
         ob_start();
         echo $this->printer->render("view/datosPdf.html", $data);
