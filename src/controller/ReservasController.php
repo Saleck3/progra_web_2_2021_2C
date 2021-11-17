@@ -5,12 +5,14 @@ class ReservasController
     private $printer;
     private $reservasModel;
     private $usuarioModel;
+    private $mailer;
     
-    public function __construct($printer, $reservasModel, $usuarioModel)
+    public function __construct($printer, $reservasModel, $usuarioModel, $mailer)
     {
         $this->printer = $printer;
         $this->reservasModel = $reservasModel;
         $this->usuarioModel = $usuarioModel;
+        $this->mailer = $mailer;
     }
     
     function show()
@@ -29,24 +31,19 @@ class ReservasController
         $fechaSolicitada = $_GET["fechaSolicitada"];
 
         $resultado = $this->reservasModel->validarDisponibilidad($sede, $fechaSolicitada);
-        if(empty($resultado)){
+        if(empty($resultado) || $resultado['Disponible']>0){
             $codigo = MD5(time());
-            $link = "/reservas/asignarTipo?codigo=" . $codigo;
             $this->reservasModel->generarReserva($_SESSION["id"], $sede, $codigo, $fechaSolicitada);
-            $data["link"] = $link;
-            echo $this->printer->render("view/reservarTurnoView.html", $data);
+            $this->mailer->enviarMail($_SESSION["email"], "Codigo de verificacion para la reserva de turno medico", 
+            "El link de validacion para el turno es " . "http://" . $_SERVER['HTTP_HOST'] . 
+            "/reservas/asignarTipo?codigo=$codigo", $_SESSION["nombre"]);
+            $_SESSION["mensaje"]["class"] = "exito";
+                $_SESSION["mensaje"]["mensaje"] = "Revise su casilla de correo electronico";
+            header('Location: /home');
         } else{
-            if($resultado['Disponible']>0){
-                $codigo = MD5(time());
-                $link = "/reservas/asignarTipo?codigo=" . $codigo;
-                $this->reservasModel->generarReserva($_SESSION["id"], $sede, $codigo, $fechaSolicitada);
-                $data["link"] = $link;
-                echo $this->printer->render("view/reservarTurnoView.html", $data);
-            } else{
-                $_SESSION["mensaje"]["class"] = "error";
+            $_SESSION["mensaje"]["class"] = "error";
                 $_SESSION["mensaje"]["mensaje"] = "No hay turnos disponibles para la fecha seleccionada";
                 header('Location: /reservas');
-            }
         }
         /*
         var_dump($resultado);
@@ -147,4 +144,5 @@ class ReservasController
 //        }
     
     }
+
 }
