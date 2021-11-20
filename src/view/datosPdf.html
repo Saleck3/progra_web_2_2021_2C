@@ -13,30 +13,34 @@
 
             </head>
             <body>
-                    <table class="w3-table-all w3-card-4">
-                    <tr>
-                        <th>Fecha</th>
-                        <th>Hora</th>
-                        <th>Partida</th>
-                        <th>Duracion</th>
-                        <th>Matricula</th>
-                        <th>Tipo de asiento</th>
-                        <th>Numero de asiento</th>
-                        <th>Servicio</th>
-                    </tr>
-                    <tr>
-                        <td>{{fecha}}</td>
-                        <td>{{hora}}</td>
-                        <td>{{partida}}</td>
-                        <td>{{duracion}}</td>
-                        <td>{{matricula}}</td>
-                        <td>{{tipo_asiento}}</td>
-                        <td>{{num_asiento}}</td>
-                        <td>{{servicio}}</td>
-                    </tr>
-                    </table>
+                <div class="">
+                    <div>
+                        <table class="w3-table-all w3-card-4">
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Partida</th>
+                            <th>Duracion</th>
+                            <th>Matricula</th>
+                            <th>Tipo de asiento</th>
+                            <th>Numero de asiento</th>
+                            <th>Servicio</th>
+                        </tr>
+                        <tr>
+                            <td>{{fecha}}</td>
+                            <td>{{hora}}</td>
+                            <td>{{partida}}</td>
+                            <td>{{duracion}}</td>
+                            <td>{{matricula}}</td>
+                            <td>{{tipo_asiento}}</td>
+                            <td>{{num_asiento}}</td>
+                            <td>{{servicio}}</td>
+                        </tr>
+                        </table>
+                    </div>
+                    <div class="w3-content w3-border w3-round-xxlarge w3-blue-grey w3-content w3-padding-large w3-padding-64">
+                        <img src="{{qr}}" alt="qr" style="width:25%">
+                    </div>    
                 </div>
-                    <img src="C:\xampp\htdocs\src\public\imagenqr\qr_1637184248.png" alt="qr" style="width:100%">
-
             </body>
         </html>
