@@ -29,7 +29,23 @@ class VuelosController
      */
 
     function tour(){
-        echo $this->printer->render("view/tourView.html");
+        if($_POST){
+            $data["hoy"] = date('Y-m-d');
+            if (isset($_POST["date"]) && $_POST["date"]) {
+                $data['diaSeleccionado'] = $_POST["date"];
+                $data['vuelos'] = $this->vuelosModel->getVuelosDia($data["diaSeleccionado"], $_POST["desde"]);
+            } else if (isset($_POST["desde"])) {
+                $data['vuelos'] = $this->vuelosModel->getVuelosDesde($_POST["desde"]);
+            } else {
+                $data['vuelos'] = $this->vuelosModel->getVuelos();
+            }
+            $this->agregarDia($data['vuelos'], isset($data["diaSeleccionado"]) ? $data["diaSeleccionado"] : $data["hoy"]);
+            $data['post'] = "soy post";
+        } else {
+            $data['post'] = "no soy post";
+        }
+
+        echo $this->printer->render("view/tourView.html",$data);
     }
 
     function entreDestinos(){

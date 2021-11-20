@@ -279,4 +279,19 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
+CREATE TABLE `tour` (
+                                `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                                `dia` varchar(10) NOT NULL,
+                                `duracion` int(11) NOT NULL,
+                                `partida` varchar(45) NOT NULL,
+                                `horario` time NOT NULL,
+                                PRIMARY KEY (`id`),
+                                UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4;
+
+LOCK TABLES `tour` WRITE;
+/*!40000 ALTER TABLE `tour` DISABLE KEYS */;
+INSERT INTO `tour` VALUES (1,'Domingo',35,'Buenos aires','09:00:00'),(2,'Domingo',35,'Ankara','10:00:00');
+/*!40000 ALTER TABLE `tour` ENABLE KEYS */;
+UNLOCK TABLES;
 -- Dump completed on 2021-11-14 20:05:50
