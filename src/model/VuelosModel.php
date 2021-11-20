@@ -37,4 +37,24 @@ class VuelosModel
         return $this->database->query("SELECT * FROM suborbitales where partida = '$desde';");
     }
     
+    public function matriculaVuelo($fecha, $hora)
+    {
+        $sql = "SELECT matricula FROM suborbitales_reservas where fechayhora = '" . $fecha . ' ' . $hora . "';";
+        return $this->database->query($sql);
+    }
+    
+    public function asignarMatriculaOrbital($fecha, $hora)
+    {
+        $sql = "SELECT matricula FROM GauchoRocket.modelos m inner join nave_espacial ne on m.id = ne.modelo where tipo = 'Orbital';";
+        $matriculas = $this->database->query($sql);
+        
+        $matriculaAInsertar = $matriculas[rand(0, sizeof($matriculas))]["matricula"];
+        
+        $sql = "INSERT INTO suborbitales_reservas (fechayhora, matricula)
+                VALUES ('" . $fecha . ' ' . $hora . "','" . $matriculaAInsertar . "');";
+        
+        return $this->database->insert($sql) ? $matriculaAInsertar : FALSE;
+        
+    }
+    
 }

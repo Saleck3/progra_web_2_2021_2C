@@ -4,3 +4,6 @@ info.php
 .visual
 
 *config.ini*
+
+src/public/imagenqr
+src/public/pdf

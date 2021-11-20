@@ -9,7 +9,7 @@ class VuelosController
     private $pdf;
     private $qr;
     
-    public function __construct($logger, $printer, $vuelosModel, $pdf,$qr)
+    public function __construct($logger, $printer, $vuelosModel, $pdf, $qr)
     {
         $this->vuelosModel = $vuelosModel;
         $this->log = $logger;
@@ -20,16 +20,17 @@ class VuelosController
     
     function show()
     {
-
+        
         echo $this->printer->render("view/vuelosView.html");
     }
     
     /**
      * Lista los vuelos Suborbitales, considerando los filtros
      */
-
-    function tour(){
-        if($_POST){
+    
+    function tour()
+    {
+        if ($_POST) {
             $data["hoy"] = date('Y-m-d');
             if (isset($_POST["date"]) && $_POST["date"]) {
                 $data['diaSeleccionado'] = $_POST["date"];
@@ -44,14 +45,16 @@ class VuelosController
         } else {
             $data['post'] = "no soy post";
         }
-
-        echo $this->printer->render("view/tourView.html",$data);
+        
+        echo $this->printer->render("view/tourView.html", $data);
     }
-
-    function entreDestinos(){
+    
+    function entreDestinos()
+    {
         $data['vuelos'] = $this->vuelosModel->getVuelos();
-        echo $this->printer->render("view/entreDestinosView.html",$data);
+        echo $this->printer->render("view/entreDestinosView.html", $data);
     }
+    
     function suborbital()
     {
         
@@ -116,29 +119,42 @@ class VuelosController
     
     function suborbital_reserva()
     {
-        if(isset($_SESSION["id"])){
-            $nroDia= $_POST["nroDia"];
-            $data["fecha"] = str_replace("/","-", $nroDia);
-            var_dump($data["fecha"]);
-            $data["fecha"] = date('Y-m-d', strtotime($data["fecha"]));
-
-            $data["partida"] = $_POST["partida"];
-        
-
-            $data["duracion"] = $_POST["duracion"];
-            $data["horario"] = $_POST["hora"];
-        
-
-            echo $this->printer->render("view/suborbital_reservaView.html", $data);
-        }
-        else{
-            $_SESSION["mensaje"]["class"] = "error";
+        //Me aseguro que este logueado
+        if (!isset($_SESSION["id"])) {
+            $_SESSION["mensaje"]["class"] = "warning";
             $_SESSION["mensaje"]["mensaje"] = "Debe loguearse para poder reservar un vuelo";
-            header('Location: /');
+            header('Location: /login');
         }
-       
+        
+        //datos que vienen del post
+        $nroDia = $_POST["nroDia"];
+        $data["fecha"] = str_replace("/", "-", $nroDia);
+        $data["fecha"] = date('Y-m-d', strtotime($data["fecha"]));
+        $data["partida"] = $_POST["partida"];
+        $data["duracion"] = $_POST["duracion"];
+        $data["horario"] = $_POST["hora"];
+        
+        //chequear si ya alguien reservo en ese mismo vuelo, y traer la matricula
+        if ($data["matricula"] = $this->vuelosModel->matriculaVuelo($data["fecha"], $data["horario"])) {
+            //acomodo el array para que sea un string
+            //sino mustache explota
+            $data["matricula"] = $data["matricula"]["matricula"];
+        } else {
+            //asigno una matricula
+            $data["matricula"] = $this->vuelosModel->asignarMatriculaOrbital($data["fecha"], $data["horario"]);
+        }
+        
+        //Segun el tipo de avion, los asientos que tenga
+        //$cantidadDeAsientosPorTipo = $this->vuelosModel->cantidadAsientosPorTipo($data["matricula"]);
+        
+        //armar el combo box segun la cantidad
+//        $cantidadDeAsientosPorTipo - $cantidadReservada;
+//        $cantidadDeAsientosDisponiblesPorTipo;
+        
+        echo $this->printer->render("view/suborbital_reservaView.html", $data);
+        
     }
-
+    
     function generarComprobante()
     {
         $data = array();
@@ -150,16 +166,16 @@ class VuelosController
         $data["tipo_asiento"] = $_POST["tipo_asiento"];
         $data["num_asiento"] = $_POST["num_asiento"];
         $data["servicio"] = $_POST["servicio"];
-        $qrComprobante = $this->qr->generarQr();
-        $data["qr"] = $qrComprobante;
-
+        $data["qr"] = $this->qr->generarQr();
+        
+        
         ob_start();
         echo $this->printer->render("view/datosPdf.html", $data);
         $html = ob_get_clean();
-
-        $numeroForm = rand(0,1000);
-
-        $this->pdf->generarPdf("formulario".$numeroForm,$html);
+        
+        $numeroForm = rand(0, 1000);
+        
+        $this->pdf->generarPdf("formulario" . $numeroForm, $html);
     }
 }
 
