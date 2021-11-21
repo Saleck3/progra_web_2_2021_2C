@@ -41,14 +41,14 @@ class VuelosModel
     {
         global $DIAS;
 
-        $diaDeLaSemana = date('w', strtotime($fecha));
+        $domingo = date('w', strtotime($fecha));
 
-        $diaDeLaSemana = $DIAS["$diaDeLaSemana"];
+        $domingo = $DIAS["$domingo"];
 
         if ($desde) {
-            return $this->database->query("SELECT * FROM tour where dia = '$diaDeLaSemana' AND partida = '$desde' ORDER BY horario;");
+            return $this->database->query("SELECT * FROM tour where dia = '$domingo' AND partida = '$desde';");
         } else {
-            return $this->database->query("SELECT * FROM tour where dia = '$diaDeLaSemana' ORDER BY horario");
+            return $this->database->query("SELECT * FROM tour where dia = '$domingo';");
         }
     }
     

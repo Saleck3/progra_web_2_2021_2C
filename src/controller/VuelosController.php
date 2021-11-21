@@ -28,31 +28,32 @@ class VuelosController
      * Lista los vuelos Suborbitales, considerando los filtros
      */
 
-    function tour()
-    {
-        if ($_POST) {
-            $data["hoy"] = date('Y-m-d');
-            if (isset($_POST["date"]) && $_POST["date"]) {
-                $data['diaSeleccionado'] = $_POST["date"];
-                $data['vuelos'] = $this->vuelosModel->getTourDia($data["diaSeleccionado"], $_POST["desde"]);
-            } else if (isset($_POST["desde"])) {
-                $data['vuelos'] = $this->vuelosModel->getToursDesde($_POST["desde"]);
-            } else {
-                $data['vuelos'] = $this->vuelosModel->getTour();
-            }
-            $this->agregarDia($data['vuelos'], isset($data["diaSeleccionado"]) ? $data["diaSeleccionado"] : $data["hoy"]);
-            $data['post'] = "soy post";
-        } else {
-            $data['post'] = "no soy post";
-        }
-
-        echo $this->printer->render("view/tourView.html", $data);
-    }
-
     function entreDestinos()
     {
         $data['vuelos'] = $this->vuelosModel->getVuelos();
         echo $this->printer->render("view/entreDestinosView.html", $data);
+    }
+
+    function tour(){
+        $data["hoy"] = date('Y-m-d');
+        if (isset($_POST["date"]) && $_POST["date"]) {
+            $data['diaSeleccionado'] = $_POST["date"];
+            $data['vuelos'] = $this->vuelosModel->getTourDia($data["diaSeleccionado"], $_POST["desde"]);
+        } else if (isset($_POST["desde"])) {
+            $data['vuelos'] = $this->vuelosModel->getToursDesde($_POST["desde"]);
+        } else {
+            $data['vuelos'] = $this->vuelosModel->getTour();
+        }
+        var_dump($data['vuelos']);
+        //Agrego debug porque seria raro tenes vacios
+        if (sizeof($data['vuelos']) == 0 && isset($_SESSION["debug"])) {
+            var_dump($_POST);
+        }
+
+        //Agrego los dias, si me llego un dia paso ese, sino, la fecha de hoy
+        //$this->agregarDia($data['vuelos'], isset($data["diaSeleccionado"]) ? $data["diaSeleccionado"] : $data["hoy"]);
+
+        echo $this->printer->render("view/suborbitalView.html", $data);
     }
 
     function suborbital()
@@ -67,12 +68,11 @@ class VuelosController
         } else {
             $data['vuelos'] = $this->vuelosModel->getVuelos();
         }
-
+        var_dump($data['vuelos']);
         //Agrego debug porque seria raro tenes vacios
         if (sizeof($data['vuelos']) == 0 && isset($_SESSION["debug"])) {
             var_dump($_POST);
         }
-
         //Agrego los dias, si me llego un dia paso ese, sino, la fecha de hoy
         $this->agregarDia($data['vuelos'], isset($data["diaSeleccionado"]) ? $data["diaSeleccionado"] : $data["hoy"]);
 
@@ -86,8 +86,7 @@ class VuelosController
      * @param $fechaEstatica fecha del vuelo o fecha de donde empezar a contar
      */
     private function agregarDia(&$array, $fechaEstatica)
-    {
-        //convierto a formato unix
+    {        
         $fechaEstatica = strtotime($fechaEstatica);
 
         global $DIAS;
@@ -108,13 +107,33 @@ class VuelosController
             //$DIAS tiene del 0 al 6, empezando por domingo
             $numeros[$DIAS[date('w', $n)]] = $n;
         }
-
         //Segun el dia del vuelo, asigno "nroDia"
         foreach ($array as &$vuelo) {
             $vuelo["nroDia"] = date("d/m/Y", $numeros[$vuelo["dia"]]);
         }
 
 
+    }
+
+
+    private function agregarDiaTour(&$array, $fechaEstatica)
+    {
+        $fechaEstatica = strtotime($fechaEstatica);
+
+        global $DIAS;
+        $numeros = array();
+
+        for ($i = -1; $i <= 6; $i++) {
+            //El dia de entrada, mas los dias que ya recorri
+            $n = strtotime("+$i day", $fechaEstatica);
+
+            //$DIAS tiene del 0 al 6, empezando por domingo
+            $numeros[$DIAS[date('w', $n)]] = $n;
+        }
+        //Segun el dia del vuelo, asigno "nroDia"
+        foreach ($array as &$vuelo) {
+            $vuelo["nroDia"] = date("d/m/Y", $numeros[$vuelo["dia"]]);
+        }
     }
 
 
