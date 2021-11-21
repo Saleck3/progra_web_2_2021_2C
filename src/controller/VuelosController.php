@@ -113,8 +113,6 @@ class VuelosController
         foreach ($array as &$vuelo) {
             $vuelo["nroDia"] = date("d/m/Y", $numeros[$vuelo["dia"]]);
         }
-        
-        
     }
     
     function suborbital_reserva()
@@ -136,23 +134,22 @@ class VuelosController
         $data["horario"] = $_POST["hora"];
         
         //si usuario ya tiene vuelo para este viaje, le da error
-        if ($this->vuelosModel->usuarioTienePasajeVuelo($data["fecha"], $data["horario"],$data["partida"], $_SESSION["id"])) {
+        if ($this->vuelosModel->usuarioTienePasajeVuelo($data["fecha"], $data["horario"], $data["partida"], $_SESSION["id"])) {
             $_SESSION["mensaje"]["class"] = "error";
             $_SESSION["mensaje"]["mensaje"] = "Solo puede reservar un pasaje por vuelo";
             header('Location: /vuelos/suborbital');
         }
         
         //chequear si ya alguien reservo en ese mismo vuelo, y traer la matricula
-        $data["matricula"] = $this->vuelosModel->matriculaVuelo($data["fecha"], $data["horario"],$data["partida"]);
+        $data["matricula"] = $this->vuelosModel->matriculaVuelo($data["fecha"], $data["horario"], $data["partida"]);
         if ($data["matricula"] && $data["matricula"]["matricula"] != '') {
             
             //acomodo el array para que sea un string
             //sino mustache explota
             $data["matricula"] = $data["matricula"]["matricula"];
-            
         } else {
             //asigno una matricula
-            $data["matricula"] = $this->vuelosModel->asignarMatriculaOrbital($data["fecha"], $data["horario"],$data["partida"]);
+            $data["matricula"] = $this->vuelosModel->asignarMatriculaOrbital($data["fecha"], $data["horario"], $data["partida"]);
         }
         
         //Segun el tipo de avion, los asientos que tenga
@@ -166,7 +163,6 @@ class VuelosController
         //$cantidadDeAsientosDisponiblesPorTipo;
         
         echo $this->printer->render("view/suborbital_reservaView.html", $data);
-        
     }
     
     function reservaSuborbital()
@@ -214,7 +210,6 @@ class VuelosController
             $_SESSION["mensaje"]["mensaje"] = "Error al enviar los datos";
             echo $this->printer->render("view/suborbital_reservaView.html", $_POST);
         }
-        
     }
     
     function imprimirAsientos($cantidadDeAsientosPorTipo)
@@ -240,10 +235,5 @@ class VuelosController
         }
         
         return $res;
-        
-        
-        echo $this->printer->render("view/suborbital_reservaView.html", $data);
-        
     }
-    
 }

@@ -36,10 +36,10 @@ class MyDatabase
         }
         
         if (mysqli_num_rows($databaseResult) <= 0) {
-            if (isset($_SESSION["debug"])) {
+            /*if (isset($_SESSION["debug"])) {
                 var_dump($sql);
                 var_dump($this->connection);
-            }
+            }*/
             return [];
         }
         
