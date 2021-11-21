@@ -34,11 +34,11 @@ class VuelosController
             $data["hoy"] = date('Y-m-d');
             if (isset($_POST["date"]) && $_POST["date"]) {
                 $data['diaSeleccionado'] = $_POST["date"];
-                $data['vuelos'] = $this->vuelosModel->getVuelosDia($data["diaSeleccionado"], $_POST["desde"]);
+                $data['vuelos'] = $this->vuelosModel->getTourDia($data["diaSeleccionado"], $_POST["desde"]);
             } else if (isset($_POST["desde"])) {
-                $data['vuelos'] = $this->vuelosModel->getVuelosDesde($_POST["desde"]);
+                $data['vuelos'] = $this->vuelosModel->getToursDesde($_POST["desde"]);
             } else {
-                $data['vuelos'] = $this->vuelosModel->getVuelos();
+                $data['vuelos'] = $this->vuelosModel->getTour();
             }
             $this->agregarDia($data['vuelos'], isset($data["diaSeleccionado"]) ? $data["diaSeleccionado"] : $data["hoy"]);
             $data['post'] = "soy post";
@@ -127,7 +127,6 @@ class VuelosController
         }
         
         
-        
         //datos que vienen del post
         $nroDia = $_POST["nroDia"];
         $data["fecha"] = str_replace("/", "-", $nroDia);
@@ -135,24 +134,25 @@ class VuelosController
         $data["partida"] = $_POST["partida"];
         $data["duracion"] = $_POST["duracion"];
         $data["horario"] = $_POST["hora"];
-    
+        
         //si usuario ya tiene vuelo para este viaje, le da error
-        if ($this->vuelosModel->usuarioTienePasajeVuelo($data["fecha"],$data["horario"],$_SESSION["id"])){
+        if ($this->vuelosModel->usuarioTienePasajeVuelo($data["fecha"], $data["horario"],$data["partida"], $_SESSION["id"])) {
             $_SESSION["mensaje"]["class"] = "error";
             $_SESSION["mensaje"]["mensaje"] = "Solo puede reservar un pasaje por vuelo";
             header('Location: /vuelos/suborbital');
         }
         
         //chequear si ya alguien reservo en ese mismo vuelo, y traer la matricula
-        if ($data["matricula"] = $this->vuelosModel->matriculaVuelo($data["fecha"], $data["horario"])) {
-            var_dump($data["matricula"]);
+        $data["matricula"] = $this->vuelosModel->matriculaVuelo($data["fecha"], $data["horario"],$data["partida"]);
+        if ($data["matricula"] && $data["matricula"]["matricula"] != '') {
+            
             //acomodo el array para que sea un string
             //sino mustache explota
             $data["matricula"] = $data["matricula"]["matricula"];
-    
+            
         } else {
             //asigno una matricula
-            $data["matricula"] = $this->vuelosModel->asignarMatriculaOrbital($data["fecha"], $data["horario"]);
+            $data["matricula"] = $this->vuelosModel->asignarMatriculaOrbital($data["fecha"], $data["horario"],$data["partida"]);
         }
         
         //Segun el tipo de avion, los asientos que tenga
@@ -160,7 +160,7 @@ class VuelosController
         
         $data["asientos"] = $this->imprimirAsientos($cantidadDeAsientosPorTipo);
         
-        var_dump($data["asientos"]);
+        
         //armar el combo box segun la cantidad
         //$cantidadDeAsientosPorTipo - $cantidadReservada;
         //$cantidadDeAsientosDisponiblesPorTipo;
@@ -241,6 +241,9 @@ class VuelosController
         
         return $res;
         
+        
+        echo $this->printer->render("view/suborbital_reservaView.html", $data);
+        
     }
+    
 }
-
