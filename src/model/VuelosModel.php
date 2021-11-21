@@ -12,6 +12,11 @@ class VuelosModel
     public function getVuelos()
     {
         return $this->database->query("SELECT * FROM suborbitales");
+
+    }
+
+    public function getTour(){
+        return $this->database->query("SELECT * FROM tour");
     }
     
     /**
@@ -31,12 +36,32 @@ class VuelosModel
             return $this->database->query("SELECT * FROM suborbitales where dia = '$diaDeLaSemana' ORDER BY horario");
         }
     }
+
+    public function getTourDia($fecha, $desde = NULL)
+    {
+        global $DIAS;
+
+        $diaDeLaSemana = date('w', strtotime($fecha));
+
+        $diaDeLaSemana = $DIAS["$diaDeLaSemana"];
+
+        if ($desde) {
+            return $this->database->query("SELECT * FROM tour where dia = '$diaDeLaSemana' AND partida = '$desde' ORDER BY horario;");
+        } else {
+            return $this->database->query("SELECT * FROM tour where dia = '$diaDeLaSemana' ORDER BY horario");
+        }
+    }
     
     public function getVuelosDesde($desde)
     {
         return $this->database->query("SELECT * FROM suborbitales where partida = '$desde';");
     }
-    
+
+    public function getToursDesde($desde){
+        return $this->database->query("SELECT * FROM tour WHERE partida = '$desde';");
+    }
+
+
     public function matriculaVuelo($fecha, $hora)
     {
         $sql = "SELECT matricula FROM suborbitales_reservas where fechayhora = '" . $fecha . ' ' . $hora . "';";
@@ -56,5 +81,6 @@ class VuelosModel
         return $this->database->insert($sql) ? $matriculaAInsertar : FALSE;
         
     }
+
     
 }
