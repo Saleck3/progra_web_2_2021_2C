@@ -127,6 +127,7 @@ class VuelosController
         
         //datos que vienen del post
         $nroDia = $_POST["nroDia"];
+        //convierto fecha a unix
         $data["fecha"] = str_replace("/", "-", $nroDia);
         $data["fecha"] = date('Y-m-d', strtotime($data["fecha"]));
         $data["partida"] = $_POST["partida"];
@@ -165,13 +166,6 @@ class VuelosController
         echo $this->printer->render("view/suborbital_reservaView.html", $data);
     }
     
-    function reservaSuborbital()
-    {
-        var_dump($_POST);
-        var_dump($_SESSION);
-    }
-    
-    
     function generarComprobante()
     {
         $data = array();
@@ -195,6 +189,11 @@ class VuelosController
                 }
         
         $data["id_usuario"] = $_SESSION["id"];
+        if ($this->vuelosModel->asientoOcupado($data["fecha"], $data["hora"], $data["partida"], $data["tipo_asiento"], $data["num_asiento"])) {
+            $_SESSION["mensaje"]["class"] = "error";
+            $_SESSION["mensaje"]["mensaje"] = "El asiento ya esta ocupado, por favor, seleccione otro asiento";
+            header('Location: /vuelos/suborbital');
+        }
         
         if ($idReserva = $this->vuelosModel->generarReservaSuborbital($data)) {
             $data["qr"] = $this->qr->generarQr($idReserva);
@@ -214,6 +213,7 @@ class VuelosController
     
     function imprimirAsientos($cantidadDeAsientosPorTipo)
     {
+        //TODO Chequear si el asiento esta reservado
         $res = array();
         
         for ($i = 0; $i < $cantidadDeAsientosPorTipo["cap_gen"]; $i++) {

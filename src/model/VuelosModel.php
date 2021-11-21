@@ -64,7 +64,7 @@ class VuelosModel
     }
     
     
-    public function matriculaVuelo($fecha, $hora,$partida)
+    public function matriculaVuelo($fecha, $hora, $partida)
     {
         $sql = "SELECT matricula FROM suborbitales_reservas where fechayhora = '" . $fecha . ' ' . $hora . "'and desde = '$partida' and usuario IS NULL;";
         return $this->database->query($sql);
@@ -105,6 +105,12 @@ class VuelosModel
     public function usuarioTienePasajeVuelo($fecha, $hora, $partida, $id_usuario)
     {
         $sql = "SELECT * FROM suborbitales_reservas where fechayhora = '$fecha $hora' and desde = '$partida' and usuario = $id_usuario;";
+        return $this->database->query($sql);
+    }
+    
+    public function asientoOcupado($fecha, $hora, $partida, $tipoAsiento, $numeroAsiento)
+    {
+        $sql = "SELECT * FROM suborbitales_reservas where fechayhora = '$fecha $hora' and desde = '$partida' and tipoAsiento = '$tipoAsiento' and numeroAsiento = $numeroAsiento;";
         return $this->database->query($sql);
     }
 }

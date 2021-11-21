@@ -7,3 +7,4 @@ info.php
 
 src/public/imagenqr
 src/public/pdf
+src/third-party/dompdf/lib
