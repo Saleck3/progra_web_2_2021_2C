@@ -39,7 +39,7 @@ class VuelosModel
     
     public function matriculaVuelo($fecha, $hora)
     {
-        $sql = "SELECT matricula FROM suborbitales_reservas where fechayhora = '" . $fecha . ' ' . $hora . "';";
+        $sql = "SELECT matricula FROM suborbitales_reservas where fechayhora = '" . $fecha . ' ' . $hora . "' and usuario IS NULL;";
         return $this->database->query($sql);
     }
     
@@ -57,4 +57,26 @@ class VuelosModel
         
     }
     
+    public function cantidadAsientosPorTipo($matricula)
+    {
+        $sql = "SELECT cap_gen, cap_fam, cap_sui FROM modelos m inner join nave_espacial ne on m.id = ne.modelo where ne.matricula = '$matricula';";
+        return $this->database->query($sql);
+    }
+    
+    public function generarReservaSuborbital($datos)
+    {
+        
+        
+        $sql = "INSERT INTO suborbitales_reservas(fechayhora,matricula,usuario,tipoAsiento,numeroAsiento,servicio)
+                VALUES('" . $datos["fecha"] . " " . $datos["hora"] . "','" . $datos["matricula"] .
+            "'," . $datos["id_usuario"] . ",'" . $datos["tipo_asiento"] . "'," . $datos["num_asiento"] .
+            ",'" . $datos["servicio"] . "' );";
+        return $this->database->insert($sql);
+    }
+    
+    public function usuarioTienePasajeVuelo($fecha, $hora, $id_usuario)
+    {
+        $sql = "SELECT * FROM suborbitales_reservas where fechayhora = '" . $fecha . ' ' . $hora . "' and usuario = $id_usuario;";
+        return $this->database->query($sql);
+    }
 }

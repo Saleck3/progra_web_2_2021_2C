@@ -68,7 +68,7 @@ class MyDatabase
             return mysqli_error_list($this->connection);
         }
         
-        return $databaseResult;
+        return $this->connection->insert_id;
     }
     
     public function update($sql)

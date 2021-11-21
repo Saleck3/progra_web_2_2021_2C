@@ -126,6 +126,8 @@ class VuelosController
             header('Location: /login');
         }
         
+        
+        
         //datos que vienen del post
         $nroDia = $_POST["nroDia"];
         $data["fecha"] = str_replace("/", "-", $nroDia);
@@ -133,27 +135,46 @@ class VuelosController
         $data["partida"] = $_POST["partida"];
         $data["duracion"] = $_POST["duracion"];
         $data["horario"] = $_POST["hora"];
+    
+        //si usuario ya tiene vuelo para este viaje, le da error
+        if ($this->vuelosModel->usuarioTienePasajeVuelo($data["fecha"],$data["horario"],$_SESSION["id"])){
+            $_SESSION["mensaje"]["class"] = "error";
+            $_SESSION["mensaje"]["mensaje"] = "Solo puede reservar un pasaje por vuelo";
+            header('Location: /vuelos/suborbital');
+        }
         
         //chequear si ya alguien reservo en ese mismo vuelo, y traer la matricula
         if ($data["matricula"] = $this->vuelosModel->matriculaVuelo($data["fecha"], $data["horario"])) {
+            var_dump($data["matricula"]);
             //acomodo el array para que sea un string
             //sino mustache explota
             $data["matricula"] = $data["matricula"]["matricula"];
+    
         } else {
             //asigno una matricula
             $data["matricula"] = $this->vuelosModel->asignarMatriculaOrbital($data["fecha"], $data["horario"]);
         }
         
         //Segun el tipo de avion, los asientos que tenga
-        //$cantidadDeAsientosPorTipo = $this->vuelosModel->cantidadAsientosPorTipo($data["matricula"]);
+        $cantidadDeAsientosPorTipo = $this->vuelosModel->cantidadAsientosPorTipo($data["matricula"]);
         
+        $data["asientos"] = $this->imprimirAsientos($cantidadDeAsientosPorTipo);
+        
+        var_dump($data["asientos"]);
         //armar el combo box segun la cantidad
-//        $cantidadDeAsientosPorTipo - $cantidadReservada;
-//        $cantidadDeAsientosDisponiblesPorTipo;
+        //$cantidadDeAsientosPorTipo - $cantidadReservada;
+        //$cantidadDeAsientosDisponiblesPorTipo;
         
         echo $this->printer->render("view/suborbital_reservaView.html", $data);
         
     }
+    
+    function reservaSuborbital()
+    {
+        var_dump($_POST);
+        var_dump($_SESSION);
+    }
+    
     
     function generarComprobante()
     {
@@ -164,18 +185,62 @@ class VuelosController
         $data["duracion"] = $_POST["duracion"];
         $data["matricula"] = $_POST["matricula"];
         $data["tipo_asiento"] = $_POST["tipo_asiento"];
-        $data["num_asiento"] = $_POST["num_asiento"];
         $data["servicio"] = $_POST["servicio"];
-        $data["qr"] = $this->qr->generarQr();
         
         
-        ob_start();
-        echo $this->printer->render("view/datosPdf.html", $data);
-        $html = ob_get_clean();
+        if (isset($_POST["general"])) {
+            $data["num_asiento"] = $_POST["general"];
+        } else
+            if (isset($_POST["familiar"])) {
+                $data["num_asiento"] = $_POST["familiar"];
+            } else
+                if (isset($_POST["suite"])) {
+                    $data["num_asiento"] = $_POST["suite"];
+                }
         
-        $numeroForm = rand(0, 1000);
+        $data["id_usuario"] = $_SESSION["id"];
         
-        $this->pdf->generarPdf("formulario" . $numeroForm, $html);
+        if ($idReserva = $this->vuelosModel->generarReservaSuborbital($data)) {
+            $data["qr"] = $this->qr->generarQr($idReserva);
+            ob_start();
+            echo $this->printer->render("view/datosPdf.html", $data);
+            $html = ob_get_clean();
+            
+            $numeroForm = rand(0, 1000);
+            
+            $this->pdf->generarPdf("formulario" . $numeroForm, $html);
+        } else {
+            $_SESSION["mensaje"]["class"] = "error";
+            $_SESSION["mensaje"]["mensaje"] = "Error al enviar los datos";
+            echo $this->printer->render("view/suborbital_reservaView.html", $_POST);
+        }
+        
+    }
+    
+    function imprimirAsientos($cantidadDeAsientosPorTipo)
+    {
+        $res = array();
+        
+        for ($i = 0; $i < $cantidadDeAsientosPorTipo["cap_gen"]; $i++) {
+            
+            $res["general"] .= '<input type="radio" class="w3-radio" id="general' . $i . '" name="general" value="' . $i . '">';
+            $res["general"] .= '<label for="general' . $i . '" >' . $i . '</label>';
+        }
+        
+        for ($i = 0; $i < $cantidadDeAsientosPorTipo["cap_fam"]; $i++) {
+            
+            $res["familiar"] .= '<input type="radio" class="w3-radio" id="familiar' . $i . '" name="familiar" value="' . $i . '">';
+            $res["familiar"] .= '<label for="familiar' . $i . '" >' . $i . '</label>';
+        }
+        
+        for ($i = 0; $i < $cantidadDeAsientosPorTipo["cap_sui"]; $i++) {
+            
+            $res["suite"] .= '<input type="radio" class="w3-radio" id="suite' . $i . '" name="suite" value="' . $i . '">';
+            $res["suite"] .= '<label for="suite' . $i . '" >' . $i . '</label>';
+        }
+        
+        return $res;
+        
     }
 }
 
