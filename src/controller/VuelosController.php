@@ -173,12 +173,14 @@ class VuelosController
             $_SESSION["mensaje"]["class"] = "warning";
             $_SESSION["mensaje"]["mensaje"] = "Debe loguearse para poder reservar un vuelo";
             header('Location: /login');
+            die();
         }
         $tipo = $this->vuelosModel->tipoUsuario($_SESSION["id"]);
         if (!$tipo["tipo"]) {
             $_SESSION["mensaje"]["class"] = "warning";
             $_SESSION["mensaje"]["mensaje"] = "Debe chequear su capacidad para volar reservando turno medico";
             header('Location: /home');
+            die();
         }
 
 
@@ -196,6 +198,7 @@ class VuelosController
             $_SESSION["mensaje"]["class"] = "error";
             $_SESSION["mensaje"]["mensaje"] = "Solo puede reservar un pasaje por vuelo";
             header('Location: /vuelos/suborbital');
+            die();
         }
 
         //chequear si ya alguien reservo en ese mismo vuelo, y traer la matricula
