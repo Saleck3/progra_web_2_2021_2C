@@ -113,4 +113,10 @@ class VuelosModel
         $sql = "SELECT * FROM suborbitales_reservas where fechayhora = '$fecha $hora' and desde = '$partida' and tipoAsiento = '$tipoAsiento' and numeroAsiento = $numeroAsiento;";
         return $this->database->query($sql);
     }
+
+    public function tipoUsuario($idUsuario)
+    {
+        $sql = "SELECT tipo FROM Usuario where id = $idUsuario;";
+        return $this->database->query($sql);
+    }
 }
