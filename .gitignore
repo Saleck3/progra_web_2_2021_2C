@@ -8,3 +8,5 @@ info.php
 src/public/imagenqr
 src/public/pdf
 src/third-party/dompdf/lib
+src/third-party/phpqrcode/*.png-errors.txt
+

@@ -246,13 +246,13 @@ class VuelosController
         }
 
         $data["id_usuario"] = $_SESSION["id"];
+        var_dump($this->vuelosModel->asientoOcupado($data["fecha"], $data["hora"], $data["partida"], $data["tipo_asiento"], $data["num_asiento"]));
         if ($this->vuelosModel->asientoOcupado($data["fecha"], $data["hora"], $data["partida"], $data["tipo_asiento"], $data["num_asiento"])) {
             $_SESSION["mensaje"]["class"] = "error";
             $_SESSION["mensaje"]["mensaje"] = "El asiento ya esta ocupado, por favor, seleccione otro asiento";
             header('Location: /vuelos/suborbital');
         }
-
-        if ($idReserva = $this->vuelosModel->generarReservaSuborbital($data)) {
+        else if ($idReserva = $this->vuelosModel->generarReservaSuborbital($data)) {
             $data["qr"] = $this->qr->generarQr($idReserva);
             ob_start();
             echo $this->printer->render("view/datosPdf.html", $data);
