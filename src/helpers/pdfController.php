@@ -32,7 +32,9 @@ class PdfController{
         $output = $this->pdf->output();
         file_put_contents("public/pdf/".$nombrePdf.".pdf",$output);
 
-        $this->pdf->stream($nombrePdf.".pdf", array('Attachment' => false));
+        return $nombrePdf.".pdf";
+
+        //$this->pdf->stream($nombrePdf.".pdf", array('Attachment' => false));
     }
 }
 

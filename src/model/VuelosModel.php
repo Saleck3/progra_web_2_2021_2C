@@ -19,6 +19,11 @@ class VuelosModel
     {
         return $this->database->query("SELECT * FROM tour");
     }
+
+    public function getEntreDestinos()
+    {
+        return $this->database->query("SELECT * FROM entreDestinos");
+    }
     
     /**
      * @param $fecha

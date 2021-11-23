@@ -39,7 +39,7 @@ class ReservasController
                 "/reservas/asignarTipo?codigo=$codigo", $_SESSION["nombre"]);
             
             $_SESSION["mensaje"]["class"] = "exito";
-            $_SESSION["mensaje"]["mensaje"] = "Se le ah enviado un mail al correo con un mensaje de confirmacion";
+            $_SESSION["mensaje"]["mensaje"] = "Se le ha enviado un mail al correo con un mensaje de confirmacion";
             header('Location: /home');
         } else {
             $_SESSION["mensaje"]["class"] = "error";

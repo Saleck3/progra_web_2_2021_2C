@@ -8,19 +8,20 @@ class VuelosController
     private $printer;
     private $pdf;
     private $qr;
+    private $mailer;
 
-    public function __construct($logger, $printer, $vuelosModel, $pdf, $qr)
+    public function __construct($logger, $printer, $vuelosModel, $pdf, $qr, $mailer)
     {
         $this->vuelosModel = $vuelosModel;
         $this->log = $logger;
         $this->printer = $printer;
         $this->pdf = $pdf;
         $this->qr = $qr;
+        $this->mailer = $mailer;
     }
 
     function show()
     {
-
         echo $this->printer->render("view/vuelosView.html");
     }
 
@@ -30,6 +31,7 @@ class VuelosController
 
     function entreDestinos()
     {
+        
         $data['vuelos'] = $this->vuelosModel->getVuelos();
         echo $this->printer->render("view/entreDestinosView.html", $data);
     }
@@ -323,7 +325,9 @@ class VuelosController
 
             $numeroForm = rand(0, 1000);
 
-            $this->pdf->generarPdf("formulario" . $numeroForm, $html);
+            $path = $this->pdf->generarPdf("formulario" . $numeroForm, $html);
+            $this->mailer->enviarMail($_SESSION["email"], "Reserva de Tour", "Adjuntamos archivo de comprobante" , $_SESSION["nombre"], $path);
+            header('Location: /home');
         } else {
             $_SESSION["mensaje"]["class"] = "error";
             $_SESSION["mensaje"]["mensaje"] = "Error al enviar los datos";
@@ -369,7 +373,9 @@ class VuelosController
 
             $numeroForm = rand(0, 1000);
 
-            $this->pdf->generarPdf("formulario" . $numeroForm, $html);
+            $path = $this->pdf->generarPdf("formulario" . $numeroForm, $html);
+            $this->mailer->enviarMail($_SESSION["email"], "Reserva de Tour", "Adjuntamos archivo de comprobante" , $_SESSION["nombre"], $path);
+            header('Location: /home');
         } else {
             $_SESSION["mensaje"]["class"] = "error";
             $_SESSION["mensaje"]["mensaje"] = "Error al enviar los datos";

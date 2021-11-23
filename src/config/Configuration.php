@@ -17,7 +17,7 @@ class Configuration
     public function createVuelosController()
     {
         require_once ("controller/VuelosController.php");
-        return new VuelosController($this->getLogger(), $this->createPrinter(),$this->createVuelosModel(),$this->createPdfController(),$this->createQrController());
+        return new VuelosController($this->getLogger(), $this->createPrinter(),$this->createVuelosModel(),$this->createPdfController(),$this->createQrController(), $this->createMailer());
     }
 
     public function createReservaVueloController(){
