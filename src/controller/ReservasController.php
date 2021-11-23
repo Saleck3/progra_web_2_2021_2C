@@ -76,7 +76,7 @@ class ReservasController
             echo $this->printer->render("view/reservasView.html");
             die();
         }
-        header('Location: /');
+        header('Location: /reservas');
     }
     
     function randomConProbabilidad()
