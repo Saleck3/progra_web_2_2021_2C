@@ -92,7 +92,7 @@ class VuelosModel
 
     public function asignarMatriculaTour($fecha, $hora, $desde)
     {
-        $sql = "SELECT matricula FROM GauchoRocket.modelos m inner join nave_espacial ne on m.id = ne.modelo where tipo = 'BA' or tipo = 'AA';";
+        $sql = "SELECT matricula FROM GauchoRocket.modelos m inner join nave_espacial ne on m.id = ne.modelo where m.tipo = 'AA' and m.modelo like 'Guanaco'";
         $matriculas = $this->database->query($sql);
         
         $matriculaAInsertar = $matriculas[rand(0, sizeof($matriculas))]["matricula"];
