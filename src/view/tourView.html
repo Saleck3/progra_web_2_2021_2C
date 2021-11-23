@@ -4,16 +4,8 @@
     <h3 class="w3-text w3-margin">Tour {{post}}</h3>
     <h4 class="w3-text-black w3-margin"> Ofrecemos un tour completo con 2 equipos en especial
         que recorre todos los destinos  Estación Espacial Internacional, Orbital Hotel, Luna, Marte, Ganimedes, Europa, Io, Encedalo y Titán desde dos locaciones en la tierra, Buenos Aires y Ankara, continúa hasta Neptuno y regresa, todo el tour toma alrededor de 21 días.</h4>
-    <form method="post" action="/vuelos/tour">
+    <form method="post" action="/vuelos/tour_reserva">
         <div class="w3-row ">
-            <div class="w3-quarter w3-container">
-                <label for="desde">Desde</label>
-                <select class="w3-select" name="desde" id="desde">
-                    <option value="" disabled selected>Seleccione aeropuerto de salida</option>
-                    <option value="Buenos aires">Buenos Aires</option>
-
-                </select>
-            </div>
             <div class="w3-quarter w3-container ">
                 <label for="date">Fecha de salida</label>
                 <input type="date" class="w3-input " id="date" name="date" min="{{hoy}}" value="{{diaSeleccionado}}">
@@ -44,7 +36,7 @@
         </tr>
         </tbody>
         {{#vuelos}}
-        <form action="/vuelos/tour" method="post">
+        <form action="/vuelos/tour_reserva" method="post">
             <tr>
                 <td><input class="hidden" name="nroDia" value="{{nroDia}}">{{nroDia}}</input></td>
                 <td><input class="hidden" name="dia" value="{{dia}}">{{dia}}</input></td>

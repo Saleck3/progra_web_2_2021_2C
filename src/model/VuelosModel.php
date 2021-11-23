@@ -69,6 +69,12 @@ class VuelosModel
         $sql = "SELECT matricula FROM suborbitales_reservas where fechayhora = '" . $fecha . ' ' . $hora . "'and desde = '$partida' and usuario IS NULL;";
         return $this->database->query($sql);
     }
+
+    public function matriculaVueloTour($fecha, $hora, $partida)
+    {
+        $sql = "SELECT matricula FROM tour_reservas where fechayhora = '" . $fecha . ' ' . $hora . "'and desde = '$partida' and usuario IS NULL;";
+        return $this->database->query($sql);
+    }
     
     public function asignarMatriculaOrbital($fecha, $hora, $desde)
     {
@@ -78,6 +84,20 @@ class VuelosModel
         $matriculaAInsertar = $matriculas[rand(0, sizeof($matriculas))]["matricula"];
         
         $sql = "INSERT INTO suborbitales_reservas (fechayhora, matricula,desde)
+                VALUES ('$fecha $hora','$matriculaAInsertar', '$desde');";
+        
+        return $this->database->insert($sql) ? $matriculaAInsertar : FALSE;
+        
+    }
+
+    public function asignarMatriculaTour($fecha, $hora, $desde)
+    {
+        $sql = "SELECT matricula FROM GauchoRocket.modelos m inner join nave_espacial ne on m.id = ne.modelo where tipo = 'BA' or tipo = 'AA';";
+        $matriculas = $this->database->query($sql);
+        
+        $matriculaAInsertar = $matriculas[rand(0, sizeof($matriculas))]["matricula"];
+        
+        $sql = "INSERT INTO tour_reservas (fechayhora, matricula,desde)
                 VALUES ('$fecha $hora','$matriculaAInsertar', '$desde');";
         
         return $this->database->insert($sql) ? $matriculaAInsertar : FALSE;
@@ -101,6 +121,17 @@ class VuelosModel
             ",'" . $datos["servicio"] . "' );";
         return $this->database->insert($sql);
     }
+
+    public function generarReservaTour($datos)
+    {
+        
+        
+        $sql = "INSERT INTO tour_reservas(fechayhora,desde,matricula,usuario,tipoAsiento,numeroAsiento,servicio)
+                VALUES('" . $datos["fecha"] . " " . $datos["hora"] . "','" . $datos["partida"] . "','" . $datos["matricula"] .
+            "'," . $datos["id_usuario"] . ",'" . $datos["tipo_asiento"] . "'," . $datos["num_asiento"] .
+            ",'" . $datos["servicio"] . "' );";
+        return $this->database->insert($sql);
+    }
     
     public function usuarioTienePasajeVuelo($fecha, $hora, $partida, $id_usuario)
     {
@@ -111,6 +142,18 @@ class VuelosModel
     public function asientoOcupado($fecha, $hora, $partida, $tipoAsiento, $numeroAsiento)
     {
         $sql = "SELECT * FROM suborbitales_reservas where fechayhora = '$fecha $hora' and desde = '$partida' and tipoAsiento = '$tipoAsiento' and numeroAsiento = $numeroAsiento;";
+        return $this->database->query($sql);
+    }
+
+    public function usuarioTienePasajeVueloTour($fecha, $hora, $partida, $id_usuario)
+    {
+        $sql = "SELECT * FROM tour_reservas where fechayhora = '$fecha $hora' and desde = '$partida' and usuario = $id_usuario;";
+        return $this->database->query($sql);
+    }
+
+    public function asientoOcupadoTour($fecha, $hora, $partida, $tipoAsiento, $numeroAsiento)
+    {
+        $sql = "SELECT * FROM tour_reservas where fechayhora = '$fecha $hora' and desde = '$partida' and tipoAsiento = '$tipoAsiento' and numeroAsiento = $numeroAsiento;";
         return $this->database->query($sql);
     }
 

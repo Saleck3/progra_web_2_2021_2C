@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 22-11-2021 a las 21:08:30
+-- Tiempo de generación: 23-11-2021 a las 05:15:35
 -- Versión del servidor: 10.4.21-MariaDB
 -- Versión de PHP: 7.4.23
 
@@ -274,10 +274,13 @@ CREATE TABLE `suborbitales_reservas` (
 --
 
 INSERT INTO `suborbitales_reservas` (`id`, `fechayhora`, `desde`, `matricula`, `usuario`, `tipoAsiento`, `numeroAsiento`, `servicio`) VALUES
-(39, '2021-11-22 09:00:00', 'Buenos aires', 'O1', NULL, NULL, NULL, NULL),
-(40, '2021-11-22 09:00:00', 'Buenos aires', 'O1', 62, 'familiar', 51, 'gourmet'),
-(41, '2021-11-22 13:00:00', 'Buenos aires', 'O5', NULL, NULL, NULL, NULL),
-(42, '2021-11-22 09:00:00', 'Buenos aires', 'O1', 58, 'familiar', 51, 'gourmet');
+(42, '2021-11-22 09:00:00', 'Buenos aires', 'O4', 58, 'familiar', 10, 'gourmet'),
+(43, '2021-11-22 09:00:00', 'Buenos aires', 'O4', NULL, NULL, NULL, NULL),
+(53, '1970-01-01 00:00:00', '', 'O7', NULL, NULL, NULL, NULL),
+(54, '2021-11-29 09:00:00', 'Buenos aires', 'O5', NULL, NULL, NULL, NULL),
+(55, '2021-11-29 13:00:00', 'Buenos aires', 'O5', NULL, NULL, NULL, NULL),
+(56, '2021-11-29 09:00:00', 'Buenos aires', 'O5', 62, 'general', 11, 'gourmet'),
+(57, '2021-11-28 09:00:00', 'Buenos Aires', 'O4', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -300,6 +303,31 @@ CREATE TABLE `tour` (
 INSERT INTO `tour` (`id`, `dia`, `duracion`, `partida`, `horario`) VALUES
 (1, 'Domingo', 840, 'Buenos Aires', '09:00:00'),
 (2, 'Domingo', 840, 'Buenos Aires', '09:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tour_reservas`
+--
+
+CREATE TABLE `tour_reservas` (
+  `id` int(10) NOT NULL,
+  `fechayhora` datetime NOT NULL,
+  `desde` varchar(45) NOT NULL,
+  `matricula` varchar(10) NOT NULL,
+  `usuario` int(11) DEFAULT NULL,
+  `tipoAsiento` varchar(45) DEFAULT NULL,
+  `numeroAsiento` int(11) DEFAULT NULL,
+  `servicio` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `tour_reservas`
+--
+
+INSERT INTO `tour_reservas` (`id`, `fechayhora`, `desde`, `matricula`, `usuario`, `tipoAsiento`, `numeroAsiento`, `servicio`) VALUES
+(7, '2021-12-05 09:00:00', 'Buenos Aires', 'BA10', NULL, NULL, NULL, NULL),
+(11, '2021-12-05 09:00:00', 'Buenos Aires', 'BA10', 62, 'familiar', 1, 'standard');
 
 -- --------------------------------------------------------
 
@@ -404,6 +432,13 @@ ALTER TABLE `tour`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `tour_reservas`
+--
+ALTER TABLE `tour_reservas`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `usuario` (`usuario`);
+
+--
 -- Indices de la tabla `usuario`
 --
 ALTER TABLE `usuario`
@@ -456,13 +491,19 @@ ALTER TABLE `suborbitales`
 -- AUTO_INCREMENT de la tabla `suborbitales_reservas`
 --
 ALTER TABLE `suborbitales_reservas`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- AUTO_INCREMENT de la tabla `tour`
 --
 ALTER TABLE `tour`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de la tabla `tour_reservas`
+--
+ALTER TABLE `tour_reservas`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
@@ -491,6 +532,12 @@ ALTER TABLE `nave_espacial`
 --
 ALTER TABLE `suborbitales_reservas`
   ADD CONSTRAINT `suborbitales_reservas_ibfk_1` FOREIGN KEY (`usuario`) REFERENCES `usuario` (`id`);
+
+--
+-- Filtros para la tabla `tour_reservas`
+--
+ALTER TABLE `tour_reservas`
+  ADD CONSTRAINT `tour_reservas_ibfk_1` FOREIGN KEY (`usuario`) REFERENCES `usuario` (`id`);
 
 --
 -- Filtros para la tabla `vuelo`

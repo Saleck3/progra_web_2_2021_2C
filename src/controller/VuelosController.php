@@ -173,12 +173,14 @@ class VuelosController
             $_SESSION["mensaje"]["class"] = "warning";
             $_SESSION["mensaje"]["mensaje"] = "Debe loguearse para poder reservar un vuelo";
             header('Location: /login');
+            die();
         }
         $tipo = $this->vuelosModel->tipoUsuario($_SESSION["id"]);
         if (!$tipo["tipo"]) {
             $_SESSION["mensaje"]["class"] = "warning";
             $_SESSION["mensaje"]["mensaje"] = "Debe chequear su capacidad para volar reservando turno medico";
             header('Location: /home');
+            die();
         }
 
 
@@ -196,6 +198,7 @@ class VuelosController
             $_SESSION["mensaje"]["class"] = "error";
             $_SESSION["mensaje"]["mensaje"] = "Solo puede reservar un pasaje por vuelo";
             header('Location: /vuelos/suborbital');
+            die();
         }
 
         //chequear si ya alguien reservo en ese mismo vuelo, y traer la matricula
@@ -223,6 +226,65 @@ class VuelosController
         echo $this->printer->render("view/suborbital_reservaView.html", $data);
     }
 
+    function tour_reserva()
+    {
+        //Me aseguro que este logueado
+        if (!isset($_SESSION["id"])) {
+            $_SESSION["mensaje"]["class"] = "warning";
+            $_SESSION["mensaje"]["mensaje"] = "Debe loguearse para poder reservar un vuelo";
+            header('Location: /login');
+            die();
+        }
+        $tipo = $this->vuelosModel->tipoUsuario($_SESSION["id"]);
+        if (!$tipo["tipo"]) {
+            $_SESSION["mensaje"]["class"] = "warning";
+            $_SESSION["mensaje"]["mensaje"] = "Debe chequear su capacidad para volar reservando turno medico";
+            header('Location: /home');
+            die();
+        }
+
+
+        //datos que vienen del post
+        $nroDia = $_POST["nroDia"];
+        //convierto fecha a unix
+        $data["fecha"] = str_replace("/", "-", $nroDia);
+        $data["fecha"] = date('Y-m-d', strtotime($data["fecha"]));
+        $data["partida"] = $_POST["partida"];
+        $data["duracion"] = $_POST["duracion"];
+        $data["horario"] = $_POST["hora"];
+
+        //si usuario ya tiene vuelo para este viaje, le da error
+        if ($this->vuelosModel->usuarioTienePasajeVueloTour($data["fecha"], $data["horario"], $data["partida"], $_SESSION["id"])) {
+            $_SESSION["mensaje"]["class"] = "error";
+            $_SESSION["mensaje"]["mensaje"] = "Solo puede reservar un pasaje por vuelo";
+            header('Location: /vuelos/tour');
+            die();
+        }
+
+        //chequear si ya alguien reservo en ese mismo vuelo, y traer la matricula
+        $data["matricula"] = $this->vuelosModel->matriculaVueloTour($data["fecha"], $data["horario"], $data["partida"]);
+        if ($data["matricula"] && $data["matricula"]["matricula"] != '') {
+
+            //acomodo el array para que sea un string
+            //sino mustache explota
+            $data["matricula"] = $data["matricula"]["matricula"];
+        } else {
+            //asigno una matricula
+            $data["matricula"] = $this->vuelosModel->asignarMatriculaTour($data["fecha"], $data["horario"], $data["partida"]);
+        }
+
+        //Segun el tipo de avion, los asientos que tenga
+        $cantidadDeAsientosPorTipo = $this->vuelosModel->cantidadAsientosPorTipo($data["matricula"]);
+
+        $data["asientos"] = $this->imprimirAsientos($cantidadDeAsientosPorTipo);
+
+        //armar el combo box segun la cantidad
+        //$cantidadDeAsientosPorTipo - $cantidadReservada;
+        //$cantidadDeAsientosDisponiblesPorTipo;
+
+        echo $this->printer->render("view/tour_reservaView.html", $data);
+    }
+
     function generarComprobante()
     {
         $data = array();
@@ -246,7 +308,6 @@ class VuelosController
         }
 
         $data["id_usuario"] = $_SESSION["id"];
-        var_dump($this->vuelosModel->asientoOcupado($data["fecha"], $data["hora"], $data["partida"], $data["tipo_asiento"], $data["num_asiento"]));
         if ($this->vuelosModel->asientoOcupado($data["fecha"], $data["hora"], $data["partida"], $data["tipo_asiento"], $data["num_asiento"])) {
             $_SESSION["mensaje"]["class"] = "error";
             $_SESSION["mensaje"]["mensaje"] = "El asiento ya esta ocupado, por favor, seleccione otro asiento";
@@ -267,6 +328,52 @@ class VuelosController
             $_SESSION["mensaje"]["class"] = "error";
             $_SESSION["mensaje"]["mensaje"] = "Error al enviar los datos";
             echo $this->printer->render("view/suborbital_reservaView.html", $_POST);
+        }
+    }
+
+    function generarComprobanteTour()
+    {
+        $data = array();
+        $data["fecha"] = $_POST["fecha"];
+        $data["hora"] = $_POST["hora"];
+        $data["partida"] = $_POST["partida"];
+        $data["duracion"] = $_POST["duracion"];
+        $data["matricula"] = $_POST["matricula"];
+        $data["tipo_asiento"] = $_POST["tipo_asiento"];
+        $data["servicio"] = $_POST["servicio"];
+
+
+        if (isset($_POST["general"])) {
+            $data["num_asiento"] = $_POST["general"];
+        } else
+            if (isset($_POST["familiar"])) {
+            $data["num_asiento"] = $_POST["familiar"];
+        } else
+                if (isset($_POST["suite"])) {
+            $data["num_asiento"] = $_POST["suite"];
+        }
+
+        $data["id_usuario"] = $_SESSION["id"];
+        if ($this->vuelosModel->asientoOcupadoTour($data["fecha"], $data["hora"], $data["partida"], $data["tipo_asiento"], $data["num_asiento"])) {
+            $_SESSION["mensaje"]["class"] = "error";
+            $_SESSION["mensaje"]["mensaje"] = "El asiento ya esta ocupado, por favor, seleccione otro asiento";
+            header('Location: /vuelos/tour');
+            die();
+        }
+        
+        if ($idReserva = $this->vuelosModel->generarReservaTour($data)) {
+            $data["qr"] = $this->qr->generarQr($idReserva);
+            ob_start();
+            echo $this->printer->render("view/datosPdf.html", $data);
+            $html = ob_get_clean();
+
+            $numeroForm = rand(0, 1000);
+
+            $this->pdf->generarPdf("formulario" . $numeroForm, $html);
+        } else {
+            $_SESSION["mensaje"]["class"] = "error";
+            $_SESSION["mensaje"]["mensaje"] = "Error al enviar los datos";
+            echo $this->printer->render("view/tour_reservaView.html", $_POST);
         }
     }
 
