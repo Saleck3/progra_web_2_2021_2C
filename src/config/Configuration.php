@@ -17,7 +17,8 @@ class Configuration
     public function createVuelosController()
     {
         require_once("controller/VuelosController.php");
-        return new VuelosController($this->getLogger(), $this->createPrinter(), $this->createVuelosModel(), $this->createPdfController(), $this->createQrController(),$this->createMercadoPagoController());
+        return new VuelosController($this->getLogger(), $this->createPrinter(), $this->createVuelosModel(),
+            $this->createPdfController(), $this->createQrController(), $this->createMailer(), $this->createMercadoPagoController());
     }
     
     private function createUsuarioModel()

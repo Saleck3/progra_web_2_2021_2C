@@ -40,7 +40,7 @@ class ReservasModel
     
     public function validarCodigo($codigo, $usuario)
     {
-        $SQL = "select * from Reservas where id = $usuario AND codigo = '$codigo';";
+        $SQL = "SELECT * from Reservas where id = $usuario AND codigo = '$codigo';";
     
         return $this->database->query($SQL);
         
