@@ -99,8 +99,6 @@ class ReservasController
             return 0;
         } else if ($r <= 100)
             return 30;
-        
-        
     }
     
     function randomDateInRange()

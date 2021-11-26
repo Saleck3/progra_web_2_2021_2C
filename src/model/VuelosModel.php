@@ -41,11 +41,11 @@ class VuelosModel
     public function getTourDia($fecha, $desde = NULL)
     {
         global $DIAS;
-
+        
         $domingo = date('w', strtotime($fecha));
-
+        
         $domingo = $DIAS["$domingo"];
-
+        
         if ($desde) {
             return $this->database->query("SELECT * FROM tour where dia = '$domingo' AND partida = '$desde';");
         } else {
@@ -93,12 +93,11 @@ class VuelosModel
     
     public function generarReservaSuborbital($datos)
     {
-        
-        
         $sql = "INSERT INTO suborbitales_reservas(fechayhora,desde,matricula,usuario,tipoAsiento,numeroAsiento,servicio)
-                VALUES('" . $datos["fecha"] . " " . $datos["hora"] . "','" . $datos["partida"] . "','" . $datos["matricula"] .
-            "'," . $datos["id_usuario"] . ",'" . $datos["tipo_asiento"] . "'," . $datos["num_asiento"] .
+                VALUES('" . $datos["fechayhora"] . "','" . $datos["desde"] . "','" . $datos["matricula"] .
+            "'," . $datos["usuario"] . ",'" . $datos["tipoAsiento"] . "'," . $datos["numeroAsiento"] .
             ",'" . $datos["servicio"] . "' );";
+        //var_dump($sql);
         return $this->database->insert($sql);
     }
     
@@ -113,10 +112,32 @@ class VuelosModel
         $sql = "SELECT * FROM suborbitales_reservas where fechayhora = '$fecha $hora' and desde = '$partida' and tipoAsiento = '$tipoAsiento' and numeroAsiento = $numeroAsiento;";
         return $this->database->query($sql);
     }
-
+    
     public function tipoUsuario($idUsuario)
     {
         $sql = "SELECT tipo FROM Usuario where id = $idUsuario;";
         return $this->database->query($sql);
+    }
+    
+    public function guardarPagoSuborbitales($datos)
+    {
+        $sql = "INSERT INTO pagos_suborbitales(fechayhora,desde,matricula,usuario,tipoAsiento,numeroAsiento,servicio,id_preferencia)
+                VALUES('" . $datos["fecha"] . " " . $datos["hora"] . "','" . $datos["partida"] . "','" . $datos["matricula"] .
+            "'," . $datos["id_usuario"] . ",'" . $datos["tipo_asiento"] . "'," . $datos["num_asiento"] .
+            ",'" . $datos["servicio"] . "','" . $datos["preferencia"] . "' );";
+        
+        return $this->database->insert($sql);
+    }
+    
+    public function recuperarPago($preferencia)
+    {
+        $sql = "SELECT * FROM pagos_suborbitales where id_preferencia = '$preferencia';";
+        return $this->database->query($sql);
+    }
+    
+    public function eliminarPagoRealizado($preferencia)
+    {
+        $sql = "DELETE FROM pagos_suborbitales where id_preferencia = '$preferencia';";
+        return $this->database->delete($sql);
     }
 }
