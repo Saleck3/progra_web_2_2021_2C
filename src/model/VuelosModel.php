@@ -169,7 +169,17 @@ class VuelosModel
     
     public function guardarPagoSuborbitales($datos)
     {
-        $sql = "INSERT INTO pagos_suborbitales(fechayhora,desde,matricula,usuario,tipoAsiento,numeroAsiento,servicio,id_preferencia)
+        $sql = "INSERT INTO suborbitales_pagos(fechayhora,desde,matricula,usuario,tipoAsiento,numeroAsiento,servicio,id_preferencia)
+                VALUES('" . $datos["fecha"] . " " . $datos["hora"] . "','" . $datos["partida"] . "','" . $datos["matricula"] .
+            "'," . $datos["id_usuario"] . ",'" . $datos["tipo_asiento"] . "'," . $datos["num_asiento"] .
+            ",'" . $datos["servicio"] . "','" . $datos["preferencia"] . "' );";
+        
+        return $this->database->insert($sql);
+    }
+    
+    public function guardarPagoTour($datos)
+    {
+        $sql = "INSERT INTO tour_pagos(fechayhora,desde,matricula,usuario,tipoAsiento,numeroAsiento,servicio,id_preferencia)
                 VALUES('" . $datos["fecha"] . " " . $datos["hora"] . "','" . $datos["partida"] . "','" . $datos["matricula"] .
             "'," . $datos["id_usuario"] . ",'" . $datos["tipo_asiento"] . "'," . $datos["num_asiento"] .
             ",'" . $datos["servicio"] . "','" . $datos["preferencia"] . "' );";
@@ -179,13 +189,24 @@ class VuelosModel
     
     public function recuperarPago($preferencia)
     {
-        $sql = "SELECT * FROM pagos_suborbitales where id_preferencia = '$preferencia';";
+        $sql = "
+        select * from (
+                SELECT * FROM suborbitales_pagos sub
+            union all
+                SELECT * FROM tour_pagos tour
+        ) as a where id_preferencia = '$preferencia';";
         return $this->database->query($sql);
     }
     
     public function eliminarPagoRealizado($preferencia)
     {
-        $sql = "DELETE FROM pagos_suborbitales where id_preferencia = '$preferencia';";
+        $sql = "DELETE FROM suborbitales_pagos where id_preferencia = '$preferencia';";
+        return $this->database->delete($sql);
+    }
+    
+    public function eliminarPagoRealizadoTour($preferencia)
+    {
+        $sql = "DELETE FROM tour_pagos where id_preferencia = '$preferencia';";
         return $this->database->delete($sql);
     }
 }

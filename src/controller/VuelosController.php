@@ -239,6 +239,7 @@ class VuelosController
             header('Location: /login');
             die();
         }
+        
         $tipo = $this->vuelosModel->tipoUsuario($_SESSION["id"]);
         if (!$tipo["tipo"]) {
             $_SESSION["mensaje"]["class"] = "warning";
@@ -325,7 +326,7 @@ class VuelosController
         
         //Generar preferencia
         $preferencia = $this->MP->pagoReserva("Reserva suborbital",
-            "Vuelo desde " . $data["partida"] . " el dia " . $data["fecha"] . " a las " . $data["hora"] . " horas", 1100);
+            "Vuelo desde " . $data["partida"] . " el dia " . $data["fecha"] . " a las " . $data["hora"] . " horas", 1100, "suborbital");
         
         $data["preferencia"] = $preferencia->id;
         //Guardar el pago en la base de datos
@@ -340,7 +341,6 @@ class VuelosController
     
     function generarComprobante()
     {
-        //var_dump($_GET);
         //Chequear el ok del pago
         if ($_GET["collection_status"] != 'approved') {
             $_SESSION["mensaje"]["class"] = "error";
@@ -350,47 +350,61 @@ class VuelosController
         }
         //llamar a los datos en la BD
         $data = $this->vuelosModel->recuperarPago($_GET["preference_id"]);
-        //eliminar el registro
-        if ($data) {
-            $this->vuelosModel->eliminarPagoRealizado($_GET["preference_id"]);
+        $data["referencia"] = $_GET["external_reference"];
+        
+        if (!$data) {
+            $_SESSION["mensaje"]["class"] = "error";
+            $_SESSION["mensaje"]["mensaje"] = "Error al recuperar el pago";
+            header('Location: /vuelos');
+            die();
         }
         
+        //eliminar el registro
+        if (!isset($_SESSION["debug"])) {
+            if (strpos($data["referencia"], "suborbital"))
+                $this->vuelosModel->eliminarPagoRealizado($_GET["preference_id"]);
+            if (strpos($data["referencia"], "tour"))
+                $this->vuelosModel->eliminarPagoRealizadoTour($_GET["preference_id"]);
+        }
         
-        //var_dump($data);
+        //Genero la reserva segun el tipo de vuelo
+        if ($data["referencia"] == "suborbital") {
+            $idReserva = $this->vuelosModel->generarReservaSuborbital($data);
+        }
+        if ($data["referencia"] == "tour") {
+            $idReserva = $this->vuelosModel->generarReservaTour($data);
+        }
+        
         //generar el comprobante
-        if ($idReserva = $this->vuelosModel->generarReservaSuborbital($data)) {
+        if (isset($idReserva)) {
+            //Separo fecha y hora
             $explode = explode(' ', $data["fechayhora"]);
             $data["fecha"] = $explode[0];
             $data["hora"] = $explode[1];
-            $data["qr"] = $this->qr->generarQr($idReserva);
-            ob_start();
-            echo $this->printer->render("view/datosPdf.html", $data);
-            $html = ob_get_clean();
             
-            $numeroForm = rand(0, 1000);
-            $this->pdf->generarPdf("formulario" . $numeroForm, $html);
-            $path = $this->pdf->generarPdf("formulario" . $numeroForm, $html);
-            $this->mailer->enviarMail($_SESSION["email"], "Reserva de Tour", "Adjuntamos archivo de comprobante", $_SESSION["nombre"], $path);
+            //Genero el QR con el ID de la reserva
+            $data["qr"] = $this->qr->generarQr($idReserva);
+            
+            //Genero el PDF y guardo el path en una variable
+            $html = $this->printer->render("view/datosPdf.html", $data);
+            $path = $this->pdf->generarPdf("formulario" . time(), $html);
+            
+            //Mando el PDF por mail
+            $this->mailer->enviarMail($_SESSION["email"], "Reserva de vuelo " . $data["referencia"], "Adjuntamos archivo de comprobante", $_SESSION["nombre"], $path);
+            
+            //Exito
+            $_SESSION["mensaje"]["class"] = "exito";
+            $_SESSION["mensaje"]["mensaje"] = "Su reserva se genero con exito! Va a estar recibiendo un correo en la casilla " . $_SESSION["email"] . " en breve";
             header('Location: /home');
         } else {
             $_SESSION["mensaje"]["class"] = "error";
-            $_SESSION["mensaje"]["mensaje"] = "Error al enviar los datos";
-            echo $this->printer->render("view/suborbital_reservaView.html", $_POST);
+            $_SESSION["mensaje"]["mensaje"] = "Error al generar la reserva";
+            header('Location: /vuelos');
+            die();
         }
     }
     
-    
-    public function errorDePago()
-    {
-        echo "Hubo un error en el pago";
-    }
-    
-    public function cobroPendiente()
-    {
-        echo "El pago esta pendiente de cobro";
-    }
-    
-    function generarComprobanteTour()
+    function generarPagoTour()
     {
         $data = array();
         $data["fecha"] = $_POST["fecha"];
@@ -420,23 +434,32 @@ class VuelosController
             die();
         }
         
-        if ($idReserva = $this->vuelosModel->generarReservaTour($data)) {
-            $data["qr"] = $this->qr->generarQr($idReserva);
-            ob_start();
-            echo $this->printer->render("view/datosPdf.html", $data);
-            $html = ob_get_clean();
-            
-            $numeroForm = rand(0, 1000);
-            
-            $path = $this->pdf->generarPdf("formulario" . $numeroForm, $html);
-            $this->mailer->enviarMail($_SESSION["email"], "Reserva de Tour", "Adjuntamos archivo de comprobante", $_SESSION["nombre"], $path);
-            header('Location: /home');
-        } else {
-            $_SESSION["mensaje"]["class"] = "error";
-            $_SESSION["mensaje"]["mensaje"] = "Error al enviar los datos";
-            echo $this->printer->render("view/tour_reservaView.html", $_POST);
+        //Generar preferencia
+        $preferencia = $this->MP->pagoReserva("Reserva tour",
+            "Vuelo desde " . $data["partida"] . " el dia " . $data["fecha"] . " a las " . $data["hora"] . " horas", 1100, "tour");
+        
+        $data["preferencia"] = $preferencia->id;
+        //Guardar el pago en la base de datos
+        if ($this->vuelosModel->guardarPagoTour($data)) {
+            //llamar al render del pago
+            //Aca va a estar el link de pago
+            echo $this->printer->render("view/pagarView.html", $data);
         }
     }
+    
+    
+    public function errorDePago()
+    {
+        //TODO generar error de pago
+        echo "Hubo un error en el pago";
+    }
+    
+    public function cobroPendiente()
+    {
+        //TODO generar Pago pendiente
+        echo "El pago esta pendiente de cobro";
+    }
+    
     
     function imprimirAsientos($cantidadDeAsientosPorTipo)
     {

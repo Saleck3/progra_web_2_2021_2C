@@ -20,7 +20,7 @@ class MercadoPagoController
      * @return \MercadoPago\Preference
      * @throws Exception
      */
-    public function pagoReserva($titulo, $descripcion, $costo)
+    public function pagoReserva($titulo, $descripcion, $costo, $referencia)
     {
         
         
@@ -39,6 +39,7 @@ class MercadoPagoController
             "pending" => "http://" . $_SERVER['HTTP_HOST'] . "/vuelos/cobroPendiente"
         );
         $preference->items = array($item);
+        $preference->external_reference = $referencia;
         $preference->save();
         return $preference;
     }

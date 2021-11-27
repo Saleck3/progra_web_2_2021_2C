@@ -184,38 +184,6 @@ INSERT INTO `nave_espacial` VALUES ('O1',2),('O2',2),('O6',2),('O7',2),('O3',3),
 UNLOCK TABLES;
 
 --
--- Table structure for table `pagos_suborbitales`
---
-
-DROP TABLE IF EXISTS `pagos_suborbitales`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `pagos_suborbitales` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `fechayhora` datetime NOT NULL,
-  `desde` varchar(45) NOT NULL,
-  `matricula` varchar(10) NOT NULL,
-  `usuario` int(11) NOT NULL,
-  `tipoAsiento` varchar(45) NOT NULL,
-  `numeroAsiento` int(11) NOT NULL,
-  `servicio` varchar(45) NOT NULL,
-  `id_preferencia` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `usuario_idx` (`usuario`),
-  CONSTRAINT `usuario` FOREIGN KEY (`usuario`) REFERENCES `Usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `pagos_suborbitales`
---
-
-LOCK TABLES `pagos_suborbitales` WRITE;
-/*!40000 ALTER TABLE `pagos_suborbitales` DISABLE KEYS */;
-/*!40000 ALTER TABLE `pagos_suborbitales` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `suborbitales`
 --
 
@@ -244,6 +212,38 @@ INSERT INTO `suborbitales` VALUES (1,'Lunes',8,'Buenos aires','09:00:00'),(2,'Lu
 UNLOCK TABLES;
 
 --
+-- Table structure for table `suborbitales_pagos`
+--
+
+DROP TABLE IF EXISTS `suborbitales_pagos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `suborbitales_pagos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `fechayhora` datetime NOT NULL,
+  `desde` varchar(45) NOT NULL,
+  `matricula` varchar(10) NOT NULL,
+  `usuario` int(11) NOT NULL,
+  `tipoAsiento` varchar(45) NOT NULL,
+  `numeroAsiento` int(11) NOT NULL,
+  `servicio` varchar(45) NOT NULL,
+  `id_preferencia` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `usuario_idx` (`usuario`),
+  CONSTRAINT `usuario` FOREIGN KEY (`usuario`) REFERENCES `Usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `suborbitales_pagos`
+--
+
+LOCK TABLES `suborbitales_pagos` WRITE;
+/*!40000 ALTER TABLE `suborbitales_pagos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `suborbitales_pagos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `suborbitales_reservas`
 --
 
@@ -264,7 +264,7 @@ CREATE TABLE `suborbitales_reservas` (
   KEY `usuario_idx` (`usuario`),
   KEY `matricula_idx` (`matricula`),
   CONSTRAINT `suborbitales_reservas_ibfk_1` FOREIGN KEY (`usuario`) REFERENCES `Usuario` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -273,7 +273,6 @@ CREATE TABLE `suborbitales_reservas` (
 
 LOCK TABLES `suborbitales_reservas` WRITE;
 /*!40000 ALTER TABLE `suborbitales_reservas` DISABLE KEYS */;
-INSERT INTO `suborbitales_reservas` VALUES (56,'2021-11-29 09:00:00','Buenos aires','O8',NULL,NULL,NULL,NULL),(57,'2021-11-29 09:00:00','Buenos aires','O8',58,'general',0,'standard');
 /*!40000 ALTER TABLE `suborbitales_reservas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -306,6 +305,38 @@ INSERT INTO `tour` VALUES (1,'Domingo',35,'Buenos aires','09:00:00'),(2,'Domingo
 UNLOCK TABLES;
 
 --
+-- Table structure for table `tour_pagos`
+--
+
+DROP TABLE IF EXISTS `tour_pagos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tour_pagos` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `fechayhora` datetime NOT NULL,
+  `desde` varchar(45) NOT NULL,
+  `matricula` varchar(10) NOT NULL,
+  `usuario` int(11) DEFAULT NULL,
+  `tipoAsiento` varchar(45) DEFAULT NULL,
+  `numeroAsiento` int(11) DEFAULT NULL,
+  `servicio` varchar(45) DEFAULT NULL,
+  `id_preferencia` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `usuario` (`usuario`),
+  CONSTRAINT `tour_pagos_usuario` FOREIGN KEY (`usuario`) REFERENCES `Usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tour_pagos`
+--
+
+LOCK TABLES `tour_pagos` WRITE;
+/*!40000 ALTER TABLE `tour_pagos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tour_pagos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `tour_reservas`
 --
 
@@ -324,7 +355,7 @@ CREATE TABLE `tour_reservas` (
   PRIMARY KEY (`id`),
   KEY `usuario` (`usuario`),
   CONSTRAINT `tour_reservas_ibfk_1` FOREIGN KEY (`usuario`) REFERENCES `Usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -333,7 +364,6 @@ CREATE TABLE `tour_reservas` (
 
 LOCK TABLES `tour_reservas` WRITE;
 /*!40000 ALTER TABLE `tour_reservas` DISABLE KEYS */;
-INSERT INTO `tour_reservas` VALUES (1,'2021-12-05 10:00:00','Ankara','AA16',NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `tour_reservas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -375,4 +405,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-11-26 21:07:05
+-- Dump completed on 2021-11-26 22:36:09
