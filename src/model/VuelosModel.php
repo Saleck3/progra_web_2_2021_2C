@@ -19,7 +19,7 @@ class VuelosModel
     {
         return $this->database->query("SELECT * FROM tour");
     }
-
+    
     public function getEntreDestinos()
     {
         return $this->database->query("SELECT * FROM entreDestinos");
@@ -74,7 +74,7 @@ class VuelosModel
         $sql = "SELECT matricula FROM suborbitales_reservas where fechayhora = '" . $fecha . ' ' . $hora . "'and desde = '$partida' and usuario IS NULL;";
         return $this->database->query($sql);
     }
-
+    
     public function matriculaVueloTour($fecha, $hora, $partida)
     {
         $sql = "SELECT matricula FROM tour_reservas where fechayhora = '" . $fecha . ' ' . $hora . "'and desde = '$partida' and usuario IS NULL;";
@@ -94,10 +94,10 @@ class VuelosModel
         return $this->database->insert($sql) ? $matriculaAInsertar : FALSE;
         
     }
-
+    
     public function asignarMatriculaTour($fecha, $hora, $desde)
     {
-        $sql = "SELECT matricula FROM GauchoRocket.modelos m inner join nave_espacial ne on m.id = ne.modelo where m.tipo = 'AA' and m.modelo like 'Guanaco'";
+        $sql = "SELECT matricula FROM GauchoRocket.modelos m inner join nave_espacial ne on m.id = ne.modelo where m.modelo like 'Guanaco'";
         $matriculas = $this->database->query($sql);
         
         $matriculaAInsertar = $matriculas[rand(0, sizeof($matriculas))]["matricula"];
@@ -125,7 +125,7 @@ class VuelosModel
         //var_dump($sql);
         return $this->database->insert($sql);
     }
-
+    
     public function generarReservaTour($datos)
     {
         
@@ -148,19 +148,19 @@ class VuelosModel
         $sql = "SELECT * FROM suborbitales_reservas where fechayhora = '$fecha $hora' and desde = '$partida' and tipoAsiento = '$tipoAsiento' and numeroAsiento = $numeroAsiento;";
         return $this->database->query($sql);
     }
-
+    
     public function usuarioTienePasajeVueloTour($fecha, $hora, $partida, $id_usuario)
     {
         $sql = "SELECT * FROM tour_reservas where fechayhora = '$fecha $hora' and desde = '$partida' and usuario = $id_usuario;";
         return $this->database->query($sql);
     }
-
+    
     public function asientoOcupadoTour($fecha, $hora, $partida, $tipoAsiento, $numeroAsiento)
     {
         $sql = "SELECT * FROM tour_reservas where fechayhora = '$fecha $hora' and desde = '$partida' and tipoAsiento = '$tipoAsiento' and numeroAsiento = $numeroAsiento;";
         return $this->database->query($sql);
     }
-
+    
     public function tipoUsuario($idUsuario)
     {
         $sql = "SELECT tipo FROM Usuario where id = $idUsuario;";
