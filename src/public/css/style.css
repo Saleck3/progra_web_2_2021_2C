@@ -5,7 +5,10 @@ body, h1, h2, h3, h4, h5, h6 {
 
 
 body {
-    background-image: url("../galaxy.jpg");
+    background-image: url("/public/images/galaxy.jpg");
+    min-height: 100vh;
+    padding-bottom: 100px;
+    position: relative;
 }
 
 .gaucho {
@@ -30,7 +33,7 @@ body {
     padding: 1.5em;
     color: var(--color_contextual_oscuro);
     border: var(--color_contextual_oscuro) 3px solid;
-    background-color: var(--color_contextual_claro);
+        background-color: var(--color_contextual_claro);
 }
 
 .exito {
@@ -64,11 +67,13 @@ body {
     --color_contextual_claro: #fcba03;
 }
 
-.footer {
-    position: relative;
+footer {
+    position: absolute;
     left: 0;
     bottom: 0;
     width: 100%;
+
+
 
 }
 

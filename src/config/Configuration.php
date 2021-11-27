@@ -1,5 +1,7 @@
 <?php
 
+static $DIAS = array("Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado");
+
 class Configuration
 {
     
@@ -11,18 +13,13 @@ class Configuration
         require_once("controller/LoginController.php");
         return new LoginController($this->createUsuarioModel(), $this->getLogger(), $this->createPrinter());
     }
-
+    
     public function createVuelosController()
     {
-        require_once ("controller/VuelosController.php");
-        return new VuelosController($this->getLogger(), $this->createPrinter(),$this->createVuelosModel());
+        require_once("controller/VuelosController.php");
+        return new VuelosController($this->getLogger(), $this->createPrinter(), $this->createVuelosModel(),
+            $this->createPdfController(), $this->createQrController(), $this->createMailer(), $this->createMercadoPagoController());
     }
-
-    public function createReservaVueloController(){
-        require_once ("controller/ReservaVueloController.php");
-        return new  ReservaVueloController($this->createPrinter());
-    }
-    
     
     private function createUsuarioModel()
     {
@@ -41,7 +38,7 @@ class Configuration
     private function getConfig()
     {
         if (is_null($this->config))
-            $this->config = parse_ini_file("config/config.ini",true);
+            $this->config = parse_ini_file("config/config.ini", TRUE);
         
         return $this->config;
     }
@@ -84,9 +81,11 @@ class Configuration
         $database = $this->getDatabase();
         return new ReservasModel($database);
     }
-    private function createVuelosModel(){
-
-        require_once ("model/VuelosModel.php");
+    
+    private function createVuelosModel()
+    {
+        
+        require_once("model/VuelosModel.php");
         $database = $this->getDatabase();
         return new VuelosModel($database);
     }
@@ -94,7 +93,7 @@ class Configuration
     public function createReservasController()
     {
         require_once("controller/ReservasController.php");
-        return new ReservasController($this->createPrinter(), $this->createReservasModel(), $this->createUsuarioModel());
+        return new ReservasController($this->createPrinter(), $this->createReservasModel(), $this->createUsuarioModel(), $this->createMailer());
     }
     
     public function createDebugController()
@@ -105,7 +104,25 @@ class Configuration
     
     public function createMailer()
     {
-        require_once("helpers/mailController.php");
-        return new mailController($this->getConfig());
+        require_once("helpers/MailController.php");
+        return new MailController($this->getConfig());
+    }
+    
+    public function createPdfController()
+    {
+        require_once("helpers/PdfController.php");
+        return new PdfController();
+    }
+    
+    public function createQrController()
+    {
+        require_once("helpers/QrController.php");
+        return new QrController();
+    }
+    
+    public function createMercadoPagoController()
+    {
+        require_once 'helpers/MercadoPagoController.php';
+        return new MercadoPagoController($this->getConfig());
     }
 }

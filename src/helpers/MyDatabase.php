@@ -36,10 +36,10 @@ class MyDatabase
         }
         
         if (mysqli_num_rows($databaseResult) <= 0) {
-            if (isset($_SESSION["debug"])) {
+            /*if (isset($_SESSION["debug"])) {
                 var_dump($sql);
                 var_dump($this->connection);
-            }
+            }*/
             return [];
         }
         
@@ -68,17 +68,37 @@ class MyDatabase
             return mysqli_error_list($this->connection);
         }
         
-        return $databaseResult;
+        return $this->connection->insert_id;
     }
     
     public function update($sql)
     {
-        return $this->insert($sql);
+        if (!$databaseResult = mysqli_query($this->connection, $sql)) {
+            if (!$databaseResult = mysqli_query($this->connection, $sql)) {
+                if (isset($_SESSION["debug"])) {
+                    var_dump($sql);
+                    var_dump($this->connection);
+                }
+                
+                return mysqli_error_list($this->connection);
+            }
+            
+            return $databaseResult;
+        }
     }
     
     public function delete($sql)
     {
-        return $this->insert($sql);
+        if (!$databaseResult = mysqli_query($this->connection, $sql)) {
+            if (isset($_SESSION["debug"])) {
+                var_dump($sql);
+                var_dump($this->connection);
+            }
+            
+            return mysqli_error_list($this->connection);
+        }
+        
+        return $databaseResult;
     }
     
 }

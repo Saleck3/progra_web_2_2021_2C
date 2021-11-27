@@ -1,0 +1,13 @@
+{{> header}}
+<div class="w3-card-4 w3-auto  w3-white w3-display-middle formulario">
+    <div class="w3-container w3-black ">
+        <h3>Para proceder con el pago, por favor presione el siguiente boton.</h3>
+    </div>
+    <form class="w3-center w3-margin" action="/vuelos/generarComprobante">
+        <script src="https://www.mercadopago.com.ar/integrations/v1/web-payment-checkout.js"
+                data-preference-id="{{preferencia}}"></script>
+    </form>
+
+</div>
+
+{{> footer}}

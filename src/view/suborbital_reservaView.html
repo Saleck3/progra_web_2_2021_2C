@@ -1,0 +1,53 @@
+{{> header}}
+<script src="/public/js/suborbital_reservas.js" crossorigin="anonymous"></script>
+<div class="w3-container w3-black ">
+    <h3>Reserva</h3>
+</div>
+<div id="registrarme" class="w3-container w3-content w3-white w3-margin-top w3-margin-bottom w3-round-xlarge">
+
+    <h2 class="w3-margin">Datos de la reserva</h2>
+    <div class="w3-container w3-content">
+        <form class="w3-container " action="/vuelos/generarPago" method="post">
+            <label class="w3-margin-bottom" for="fecha">Fecha</label>
+            <input class="w3-input w3-margin-bottom" type="date" id="fecha" name="fecha" value="{{fecha}}" readonly>
+            <label class="w3-margin-bottom" for="hora">hora</label>
+            <input class="w3-input w3-margin-bottom" type="text" id="hora" name="hora" value="{{horario}}" readonly>
+            <label class="w3-margin-bottom" for="partida">Aeropuerto de salida</label>
+            <input class="w3-input w3-margin-bottom" type="text" id="partida" name="partida" value="{{partida}}"
+                   readonly></input>
+            <label class="w3-margin-bottom" for="hora">Duracion del vuelo</label>
+            <input class="w3-input w3-margin-bottom" name="duracion" value="{{duracion}} Horas" readonly>
+            <label class="w3-margin-bottom" for="matricula">Aeronave</label>
+            <input class="w3-input w3-margin-bottom" name="matricula" id="matricula" value="{{matricula}}"
+                   readonly></input>
+            <label class="w3-margin-bottom" for="tipo_asiento">Tipo de asiento</label>
+            <select class="w3-select w3-margin-bottom" name="tipo_asiento" id="tipo_asiento">
+                <option value="general">General</option>
+                <option value="familiar">Familiar</option>
+                <option value="suite">Suite</option>
+            </select>
+            <label class="w3-margin-bottom" for="hora">Numero de asiento</label><br>
+            {{#asientos}}
+            <div id="general_container" class="w3-margin-bottom">
+                {{{general}}}
+            </div>
+            <div id="familiar_container" class="w3-margin-bottom" hidden>
+                {{{familiar}}}
+            </div>
+            <div id="suite_container" class="w3-margin-bottom" hidden>
+                {{{suite}}}
+            </div>
+            {{/asientos}}
+            <label class="w3-margin-bottom" for="servicio">Servicios</label>
+            <select class="w3-select w3-margin-bottom" name="servicio" id="servicio">
+                <option value="standard">Standard</option>
+                <option value="gourmet">Gourmet</option>
+                <option value="spa">Spa</option>
+            </select>
+
+            <input type="submit" class="w3-button w3-black w3-margin-bottom w3-round-xlarge" value="Confirmar">
+        </form>
+    </div>
+</div>
+
+{{> footer}}

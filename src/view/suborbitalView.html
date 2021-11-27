@@ -1,0 +1,66 @@
+{{> header}}
+
+<div class="w3-card-4 w3-white w3-margin w3-round-xlarge">
+    <h3 class="w3-text w3-margin">Vuelos</h3>
+    <form method="post">
+        <div class="w3-row ">
+
+
+            <div class="w3-quarter w3-container">
+                <label for="desde">Desde</label>
+                <select class="w3-select" name="desde" id="desde">
+                    <option value="" disabled selected>Seleccione aeropuerto de salida</option>
+                    <option value="Buenos aires">Buenos Aires</option>
+                    <option value="Ankara">Ankara</option>
+                </select>
+            </div>
+            <div class="w3-quarter w3-container ">
+                <label for="date">Fecha de salida</label>
+                <input type="date" class="w3-input " id="date" name="date" min="{{hoy}}" value="{{diaSeleccionado}}">
+            </div>
+            <div class="w3-quarter w3-container w3-center">
+                <button type="submit" class="w3-button w3-round-xlarge w3-black w3-margin"><i class="fa fa-search"></i>
+                    Buscar
+                </button>
+            </div>
+
+        </div>
+    </form>
+</div>
+<!--Resultados de la busqueda-->
+
+<div class="w3-card-4  w3-margin w3-round-xlarge">
+
+
+    <table class="w3-table-all  w3-centered w3-margin-bottom tablas">
+        <tbody>
+        <tr class="w3-black">
+            <th>Fecha</th>
+            <th>Día</th>
+            <th>Hora</th>
+            <th>Desde</th>
+            <th>Duración</th>
+            <th>Reservar</th>
+        </tr>
+        </tbody>
+        {{#vuelos}}
+        <form action="/vuelos/suborbital_reserva" method="post">
+            <tr>
+                <td><input class="hidden" name="nroDia" value="{{nroDia}}">{{nroDia}}</input></td>
+                <td><input class="hidden" name="dia" value="{{dia}}">{{dia}}</input></td>
+                <td><input class="hidden" type="text" name="hora" value="{{horario}}">{{horario}}</input></td>
+                <td><input class="hidden" name="partida" value="{{partida}}">{{partida}}</input></td>
+                <td><input class="hidden" name="duracion" value="{{duracion}}">{{duracion}} Horas</input></td>
+                <td>
+                    <input type="submit" class="w3-button w3-round-xxlarge w3-center w3-black"
+                           value="Reservar!"></button>
+                </td>
+            </tr>
+        </form>
+        {{/vuelos}}
+    </table>
+
+</div>
+
+
+{{> footer}}
