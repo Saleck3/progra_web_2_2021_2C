@@ -2,7 +2,7 @@
 
 class VuelosController
 {
-    
+
     private $vuelosModel;
     private $log;
     private $printer;
@@ -10,7 +10,7 @@ class VuelosController
     private $qr;
     private $MP;
     private $mailer;
-    
+
     public function __construct($logger, $printer, $vuelosModel, $pdf, $qr, $mailer, $MP)
     {
         $this->vuelosModel = $vuelosModel;
@@ -21,12 +21,12 @@ class VuelosController
         $this->MP = $MP;
         $this->mailer = $mailer;
     }
-    
+
     function show()
     {
         echo $this->printer->render("view/vuelosView.html");
     }
-    
+
     /**
      * Lista los vuelos Suborbitales, considerando los filtros
      */
@@ -48,18 +48,18 @@ class VuelosController
 
         return $resultado;
     }
-    
+
     function entreDestinos()
     {
         $data['vuelos'] = $this->vuelosModel->getVuelos();
         $data['desde'] = $this->partidaEntreDestinos();
         echo $this->printer->render("view/entreDestinosView.html", $data);
     }
-    
+
     function tour()
     {
         $data["hoy"] = $this->primerDomingo(date('Y-m-d'));
-        
+
         if (isset($_POST["date"])) {
             $data['diaSeleccionado'] = $this->primerDomingo($_POST["date"]);
             $data['vuelos'] = $this->vuelosModel->getTourDia($data["diaSeleccionado"]);
@@ -75,13 +75,13 @@ class VuelosController
         $data["hoy"] = date('Y-m-d');
         echo $this->printer->render("view/tourView.html", $data);
     }
-    
+
     function agregarFechasDeVuelo($vuelos, $fecha)
     {
         $esDomingo = strtotime($fecha);
         global $DIAS;
         $resultado = array();
-        
+
         for ($i = 0; sizeof($resultado) < 15; $i++) {
             if (!isset($vuelos[$i])) {
                 $i = 0;
@@ -92,7 +92,7 @@ class VuelosController
         }
         return $resultado;
     }
-    
+
     function primerDomingo($fecha)
     {
         $num = strtotime($fecha);
@@ -127,10 +127,10 @@ class VuelosController
                 break;
         }
     }
-    
+
     function suborbital()
     {
-        
+
         $data["hoy"] = date('Y-m-d');
         if (isset($_POST["date"]) && $_POST["date"]) {
             $data['diaSeleccionado'] = $_POST["date"];
@@ -140,18 +140,18 @@ class VuelosController
         } else {
             $data['vuelos'] = $this->vuelosModel->getVuelos();
         }
-        
+
         //Agrego debug porque seria raro tenes vacios
         if (sizeof($data['vuelos']) == 0 && isset($_SESSION["debug"])) {
             var_dump($_POST);
         }
-        
+
         //Agrego los dias, si me llego un dia paso ese, sino, la fecha de hoy
         $this->agregarDia($data['vuelos'], isset($data["diaSeleccionado"]) ? $data["diaSeleccionado"] : $data["hoy"]);
-        
+
         echo $this->printer->render("view/suborbitalView.html", $data);
     }
-    
+
     /**
      * Agrega el numero del dia a todos los vuelos
      *
@@ -162,10 +162,10 @@ class VuelosController
     {
         //convierto a formato unix
         $fechaEstatica = strtotime($fechaEstatica);
-        
+
         global $DIAS;
         $numeros = array();
-        
+
         //Segun el nombre del dia, seteo el numero
         //Si hoy es sabado 15, el $numeros en sabado va a tener 15
         //Luego, va a recorrer, por lo que el viernes va a ser hoy +6 = 21
@@ -177,17 +177,17 @@ class VuelosController
         for ($i = -1; $i <= 6; $i++) {
             //El dia de entrada, mas los dias que ya recorri
             $n = strtotime("+$i day", $fechaEstatica);
-            
+
             //$DIAS tiene del 0 al 6, empezando por domingo
             $numeros[$DIAS[date('w', $n)]] = $n;
         }
-        
+
         //Segun el dia del vuelo, asigno "nroDia"
         foreach ($array as &$vuelo) {
             $vuelo["nroDia"] = date("d/m/Y", $numeros[$vuelo["dia"]]);
         }
     }
-    
+
     function suborbital_reserva()
     {
         //Me aseguro que este logueado
@@ -213,7 +213,7 @@ class VuelosController
         $data["partida"] = $_POST["partida"];
         $data["duracion"] = $_POST["duracion"];
         $data["horario"] = $_POST["hora"];
-        
+
         //si usuario ya tiene vuelo para este viaje, le da error
         if ($this->vuelosModel->usuarioTienePasajeVuelo($data["fecha"], $data["horario"], $data["partida"], $_SESSION["id"])) {
             $_SESSION["mensaje"]["class"] = "error";
@@ -221,11 +221,11 @@ class VuelosController
             header('Location: /vuelos/suborbital');
             die();
         }
-        
+
         //chequear si ya alguien reservo en ese mismo vuelo, y traer la matricula
         $data["matricula"] = $this->vuelosModel->matriculaVuelo($data["fecha"], $data["horario"], $data["partida"]);
         if ($data["matricula"] && $data["matricula"]["matricula"] != '') {
-            
+
             //acomodo el array para que sea un string
             //sino mustache explota
             $data["matricula"] = $data["matricula"]["matricula"];
@@ -233,21 +233,21 @@ class VuelosController
             //asigno una matricula
             $data["matricula"] = $this->vuelosModel->asignarMatriculaOrbital($data["fecha"], $data["horario"], $data["partida"]);
         }
-        
+
         //Segun el tipo de avion, los asientos que tenga
         $cantidadDeAsientosPorTipo = $this->vuelosModel->cantidadAsientosPorTipo($data["matricula"]);
         $asientosOcupadosDelVuelo = $this->vuelosModel->asientosReservados($data["fecha"],$data["horario"], $data["partida"],$data["matricula"]);
         $data["asientos"] = $this->imprimirAsientos($cantidadDeAsientosPorTipo,$asientosOcupadosDelVuelo);
-        
-        
+
+
         //TODO armar el combo box segun la cantidad
         //$cantidadDeAsientosPorTipo - $cantidadReservada;
         //$cantidadDeAsientosDisponiblesPorTipo;
-        
+
         echo $this->printer->render("view/suborbital_reservaView.html", $data);
     }
-    
-    
+
+
     function tour_reserva()
     {
         //Me aseguro que este logueado
@@ -257,7 +257,7 @@ class VuelosController
             header('Location: /login');
             die();
         }
-        
+
         $tipo = $this->vuelosModel->tipoUsuario($_SESSION["id"]);
         if (!$tipo["tipo"]) {
             $_SESSION["mensaje"]["class"] = "warning";
@@ -265,8 +265,8 @@ class VuelosController
             header('Location: /home');
             die();
         }
-        
-        
+
+
         //datos que vienen del post
         $nroDia = $_POST["nroDia"];
         //convierto fecha a unix
@@ -275,7 +275,7 @@ class VuelosController
         $data["partida"] = $_POST["partida"];
         $data["duracion"] = $_POST["duracion"];
         $data["horario"] = $_POST["hora"];
-        
+
         //si usuario ya tiene vuelo para este viaje, le da error
         if ($this->vuelosModel->usuarioTienePasajeVueloTour($data["fecha"], $data["horario"], $data["partida"], $_SESSION["id"])) {
             $_SESSION["mensaje"]["class"] = "error";
@@ -283,11 +283,11 @@ class VuelosController
             header('Location: /vuelos/tour');
             die();
         }
-        
+
         //chequear si ya alguien reservo en ese mismo vuelo, y traer la matricula
         $data["matricula"] = $this->vuelosModel->matriculaVueloTour($data["fecha"], $data["horario"], $data["partida"]);
         if ($data["matricula"] && $data["matricula"]["matricula"] != '') {
-            
+
             //acomodo el array para que sea un string
             //sino mustache explota
             $data["matricula"] = $data["matricula"]["matricula"];
@@ -295,24 +295,24 @@ class VuelosController
             //asigno una matricula
             $data["matricula"] = $this->vuelosModel->asignarMatriculaTour($data["fecha"], $data["horario"], $data["partida"]);
         }
-        
+
         //Segun el tipo de avion, los asientos que tenga
         $cantidadDeAsientosPorTipo = $this->vuelosModel->cantidadAsientosPorTipo($data["matricula"]);
         $asientosOcupados = $this->vuelosModel->asientosReservados($data["fecha"],$data["horario"],$data["partida"],$data["matricula"]);
-        
+
         $data["asientos"] = $this->imprimirAsientos($cantidadDeAsientosPorTipo, $asientosOcupados);
-        
+
         //armar el combo box segun la cantidad
         //$cantidadDeAsientosPorTipo - $cantidadReservada;
         //$cantidadDeAsientosDisponiblesPorTipo;
-        
+
         echo $this->printer->render("view/tour_reservaView.html", $data);
     }
-    
-    
+
+
     public function generarPago()
     {
-        
+
         $data = array();
         $data["fecha"] = $_POST["fecha"];
         $data["hora"] = $_POST["hora"];
@@ -321,8 +321,8 @@ class VuelosController
         $data["matricula"] = $_POST["matricula"];
         $data["tipo_asiento"] = $_POST["tipo_asiento"];
         $data["servicio"] = $_POST["servicio"];
-        
-        
+
+
         if (isset($_POST["general"])) {
             $data["num_asiento"] = $_POST["general"];
         } else
@@ -332,35 +332,35 @@ class VuelosController
                 if (isset($_POST["suite"])) {
                     $data["num_asiento"] = $_POST["suite"];
                 }
-        
+
         $data["id_usuario"] = $_SESSION["id"];
-        
+
         if ($this->vuelosModel->asientoOcupado($data["fecha"], $data["hora"], $data["partida"], $data["tipo_asiento"], $data["num_asiento"])) {
             $_SESSION["mensaje"]["class"] = "error";
             $_SESSION["mensaje"]["mensaje"] = "El asiento ya esta ocupado, por favor, seleccione otro asiento";
             header('Location: /vuelos/suborbital');
             die();
         }
-        
-        
+
+
         //Generar preferencia
         $preferencia = $this->MP->pagoReserva("Reserva suborbital",
             "Vuelo desde " . $data["partida"] . " el dia " . $data["fecha"] . " a las " . $data["hora"] . " horas", 1100, "suborbital");
-        
+
         $data["preferencia"] = $preferencia->id;
         //Guardar el pago en la base de datos
         if ($this->vuelosModel->guardarPagoSuborbitales($data)) {
             //llamar al render del pago
             //Aca va a estar el link de pago
-            
+
             echo $this->printer->render("view/pagarView.html", $data);
         }
-        
+
     }
-    
+
     function generarComprobante()
     {
-        
+
         //Chequear el ok del pago
         if ($_GET["collection_status"] != 'approved') {
             $_SESSION["mensaje"]["class"] = "error";
@@ -371,15 +371,15 @@ class VuelosController
         //llamar a los datos en la BD
         $data = $this->vuelosModel->recuperarPago($_GET["preference_id"]);
         $data["referencia"] = $_GET["external_reference"];
-        
-        
+
+
         if (!$data) {
             $_SESSION["mensaje"]["class"] = "error";
             $_SESSION["mensaje"]["mensaje"] = "Error al recuperar el pago";
             header('Location: /vuelos');
             die();
         }
-        
+
         //eliminar el registro
         if (!isset($_SESSION["debug"])) {
             if ($data["referencia"] == "suborbital") {
@@ -389,7 +389,7 @@ class VuelosController
                 $this->vuelosModel->eliminarPagoRealizadoTour($_GET["preference_id"]);
             }
         }
-        
+
         //Genero la reserva segun el tipo de vuelo
         if ($data["referencia"] == "suborbital") {
             $idReserva = $this->vuelosModel->generarReservaSuborbital($data);
@@ -397,24 +397,24 @@ class VuelosController
         if ($data["referencia"] == "tour") {
             $idReserva = $this->vuelosModel->generarReservaTour($data);
         }
-        
+
         //generar el comprobante
         if (isset($idReserva)) {
             //Separo fecha y hora
             $explode = explode(' ', $data["fechayhora"]);
             $data["fecha"] = $explode[0];
             $data["hora"] = $explode[1];
-            
+
             //Genero el QR con el ID de la reserva
             $data["qr"] = $this->qr->generarQr($idReserva);
-            
+
             //Genero el PDF y guardo el path en una variable
             $html = $this->printer->render("view/datosPdf.html", $data);
             $path = $this->pdf->generarPdf("formulario" . time(), $html);
-            
+
             //Mando el PDF por mail
             $this->mailer->enviarMail($_SESSION["email"], "Reserva de vuelo " . $data["referencia"], "Adjuntamos archivo de comprobante", $_SESSION["nombre"], $path);
-            
+
             //Exito
             $_SESSION["mensaje"]["class"] = "exito";
             $_SESSION["mensaje"]["mensaje"] = "Su reserva se genero con exito! Va a estar recibiendo un correo en la casilla " . $_SESSION["email"] . " en breve";
@@ -426,7 +426,7 @@ class VuelosController
             die();
         }
     }
-    
+
     function generarPagoTour()
     {
         $data = array();
@@ -437,8 +437,8 @@ class VuelosController
         $data["matricula"] = $_POST["matricula"];
         $data["tipo_asiento"] = $_POST["tipo_asiento"];
         $data["servicio"] = $_POST["servicio"];
-        
-        
+
+
         if (isset($_POST["general"])) {
             $data["num_asiento"] = $_POST["general"];
         } else
@@ -448,7 +448,7 @@ class VuelosController
                 if (isset($_POST["suite"])) {
                     $data["num_asiento"] = $_POST["suite"];
                 }
-        
+
         $data["id_usuario"] = $_SESSION["id"];
         if ($this->vuelosModel->asientoOcupadoTour($data["fecha"], $data["hora"], $data["partida"], $data["tipo_asiento"], $data["num_asiento"])) {
             $_SESSION["mensaje"]["class"] = "error";
@@ -456,11 +456,11 @@ class VuelosController
             header('Location: /vuelos/tour');
             die();
         }
-        
+
         //Generar preferencia
         $preferencia = $this->MP->pagoReserva("Reserva tour",
             "Vuelo desde " . $data["partida"] . " el dia " . $data["fecha"] . " a las " . $data["hora"] . " horas", 1100, "tour");
-        
+
         $data["preferencia"] = $preferencia->id;
         //Guardar el pago en la base de datos
         if ($this->vuelosModel->guardarPagoTour($data)) {
@@ -469,93 +469,93 @@ class VuelosController
             echo $this->printer->render("view/pagarView.html", $data);
         }
     }
-    
-    
+
+
     public
     function errorDePago()
     {
         //TODO generar error de pago
         echo "Hubo un error en el pago";
     }
-    
+
     public
     function cobroPendiente()
     {
         //TODO generar Pago pendiente
         echo "El pago esta pendiente de cobro";
     }
-    
-    
+
+
     function imprimirAsientos($cantidadDeAsientosPorTipo, $asientosOcupadosDelVuelo)
     {
         $res = array();
         $numeroAsiento=0;
-        
+
         $res["general"] = $res["familiar"] = $res["suite"] = "";
-        for ($i = 0; $i < $cantidadDeAsientosPorTipo["cap_gen"]; $i++) 
+        for ($i = 0; $i < $cantidadDeAsientosPorTipo["cap_gen"]; $i++)
         {
             if(isset($asientosOcupadosDelVuelo[$i]['tipoAsiento']) && isset($asientosOcupadosDelVuelo[$i]['numeroAsiento']) )
             {
                 if($asientosOcupadosDelVuelo[$i]['tipoAsiento'] == 'general')
                 {
                     $numeroAsiento = (int)$asientosOcupadosDelVuelo[$i]['numeroAsiento'];
-                    $res["general"] .= '<i class="fa fa-user" aria-hidden="true"><input type="button" onclick="seleccionarAsiento.call(this)"  class="seat" id="general" name="general" value="' . $i . '" ></i>';
-                    
+                    $res["general"] .= '<input type="button" onclick="seleccionarAsiento.call(this)"  class="seat" id="general" name="general" value="' . $i . '" ></i>';
+
                 }
             }else
             {
                 if($numeroAsiento == $i && $numeroAsiento>0){
-                    $res["general"] .= '<i class="fa fa-user" aria-hidden="true"><input type="button"  class="reserved" id="general" name="general" value="' . $numeroAsiento . '" disabled></i>';
+                    $res["general"] .= '<input type="button"  class="reserved" id="general" name="general" value="' . $numeroAsiento . '" disabled></i>';
                 }
                 else{
-                    $res["general"] .= '<i class="fa fa-user" aria-hidden="true"><input type="button" onclick="seleccionarAsiento.call(this)"  class="seat" id="general" name="general" value="' . $i . '" ></i>';
+                    $res["general"] .= '<input type="button" onclick="seleccionarAsiento.call(this)"  class="seat" id="general" name="general" value="' . $i . '" ></i>';
                 }
             }
         }
-        
-        for ($i = 0; $i < $cantidadDeAsientosPorTipo["cap_gen"]; $i++) 
+
+        for ($i = 0; $i < $cantidadDeAsientosPorTipo["cap_fam"]; $i++)
         {
             if(isset($asientosOcupadosDelVuelo[$i]['tipoAsiento']) && isset($asientosOcupadosDelVuelo[$i]['numeroAsiento']) )
             {
                 if($asientosOcupadosDelVuelo[$i]['tipoAsiento'] == 'familiar')
                 {
                     $numeroAsiento = (int)$asientosOcupadosDelVuelo[$i]['numeroAsiento'];
-                    $res["familiar"] .= '<i class="fa fa-user" aria-hidden="true"><input type="button" onclick="seleccionarAsiento.call(this)"  class="seat" id="familiar" name="familiar" value="' . $i . '" ></i>';
-                    
+                    $res["familiar"] .= '<input type="button" onclick="seleccionarAsiento.call(this)"  class="seat" id="familiar" name="familiar" value="' . $i . '" ></i>';
+
                 }
             }else
             {
                 if($numeroAsiento == $i && $numeroAsiento>0){
-                    $res["familiar"] .= '<i class="fa fa-user" aria-hidden="true"><input type="button"  class="reserved" id="familiar" name="familiar" value="' . $numeroAsiento . '" disabled></i>';
+                    $res["familiar"] .= '<input type="button"  class="reserved" id="familiar" name="familiar" value="' . $numeroAsiento . '" disabled></i>';
                 }
                 else{
-                    $res["familiar"] .= '<i class="fa fa-user" aria-hidden="true"><input type="button" onclick="seleccionarAsiento.call(this)"  class="seat" id="familiar" name="familiar" value="' . $i . '" ></i>';
+                    $res["familiar"] .= '<input type="button" onclick="seleccionarAsiento.call(this)"  class="seat" id="familiar" name="familiar" value="' . $i . '" ></i>';
                 }
             }
         }
-        
-        for ($i = 0; $i < $cantidadDeAsientosPorTipo["cap_gen"]; $i++) 
+
+        for ($i = 0; $i < $cantidadDeAsientosPorTipo["cap_sui"]; $i++)
         {
             if(isset($asientosOcupadosDelVuelo[$i]['tipoAsiento']) && isset($asientosOcupadosDelVuelo[$i]['numeroAsiento']) )
             {
                 if($asientosOcupadosDelVuelo[$i]['tipoAsiento'] == 'familiar')
                 {
                     $numeroAsiento = (int)$asientosOcupadosDelVuelo[$i]['numeroAsiento'];
-                    $res["suite"] .= '<i class="fa fa-user" aria-hidden="true"><input type="button" onclick="seleccionarAsiento.call(this)"  class="seat" id="suite" name="suite" value="' . $i . '" ></i>';
-                    
+                    $res["suite"] .= '<input type="button" onclick="seleccionarAsiento.call(this)"  class="seat" id="suite" name="suite" value="' . $i . '" ></i>';
+
                 }
             }else
             {
                 if($numeroAsiento == $i && $numeroAsiento>0){
-                    $res["suite"] .= '<i class="fa fa-user" aria-hidden="true"><input type="button"  class="reserved" id="suite" name="suite" value="' . $numeroAsiento . '" disabled></i>';
+                    $res["suite"] .= '<input type="button"  class="reserved" id="suite" name="suite" value="' . $numeroAsiento . '" disabled></i>';
                 }
                 else{
-                    $res["suite"] .= '<i class="fa fa-user" aria-hidden="true"><input type="button" onclick="seleccionarAsiento.call(this)"  class="seat" id="suite" name="suite" value="' . $i . '" ></i>';
+                    $res["suite"] .= '<input type="button" onclick="seleccionarAsiento.call(this)"  class="seat" id="suite" name="suite" value="' . $i . '" ></i>';
                 }
             }
         }
-        
+
         return $res;
-        
+
     }
 }

@@ -100,12 +100,14 @@ a {
 
 .selected{
     border-style: inset;
+
     background-color: #0A0;
     color: #0F0;
 }
 
 .reserved{
     border-style: outset;
+    padding: 1em;
     background-color: gray;
     color: darkred;
 }
