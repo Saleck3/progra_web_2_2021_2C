@@ -131,8 +131,8 @@ class VuelosModel
         
         
         $sql = "INSERT INTO tour_reservas(fechayhora,desde,matricula,usuario,tipoAsiento,numeroAsiento,servicio)
-                VALUES('" . $datos["fecha"] . " " . $datos["hora"] . "','" . $datos["partida"] . "','" . $datos["matricula"] .
-            "'," . $datos["id_usuario"] . ",'" . $datos["tipo_asiento"] . "'," . $datos["num_asiento"] .
+                VALUES('" . $datos["fechayhora"] . "','" . $datos["desde"] . "','" . $datos["matricula"] .
+            "'," . $datos["usuario"] . ",'" . $datos["tipoAsiento"] . "'," . $datos["numeroAsiento"] .
             ",'" . $datos["servicio"] . "' );";
         return $this->database->insert($sql);
     }

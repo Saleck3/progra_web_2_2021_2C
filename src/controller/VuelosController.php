@@ -341,6 +341,7 @@ class VuelosController
     
     function generarComprobante()
     {
+        
         //Chequear el ok del pago
         if ($_GET["collection_status"] != 'approved') {
             $_SESSION["mensaje"]["class"] = "error";
@@ -352,6 +353,7 @@ class VuelosController
         $data = $this->vuelosModel->recuperarPago($_GET["preference_id"]);
         $data["referencia"] = $_GET["external_reference"];
         
+        
         if (!$data) {
             $_SESSION["mensaje"]["class"] = "error";
             $_SESSION["mensaje"]["mensaje"] = "Error al recuperar el pago";
@@ -361,10 +363,12 @@ class VuelosController
         
         //eliminar el registro
         if (!isset($_SESSION["debug"])) {
-            if (strpos($data["referencia"], "suborbital"))
+            if ($data["referencia"] == "suborbital") {
                 $this->vuelosModel->eliminarPagoRealizado($_GET["preference_id"]);
-            if (strpos($data["referencia"], "tour"))
+            }
+            if ($data["referencia"] == "tour") {
                 $this->vuelosModel->eliminarPagoRealizadoTour($_GET["preference_id"]);
+            }
         }
         
         //Genero la reserva segun el tipo de vuelo
@@ -448,13 +452,15 @@ class VuelosController
     }
     
     
-    public function errorDePago()
+    public
+    function errorDePago()
     {
         //TODO generar error de pago
         echo "Hubo un error en el pago";
     }
     
-    public function cobroPendiente()
+    public
+    function cobroPendiente()
     {
         //TODO generar Pago pendiente
         echo "El pago esta pendiente de cobro";

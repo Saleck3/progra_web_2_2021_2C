@@ -125,4 +125,16 @@ class Configuration
         require_once 'helpers/MercadoPagoController.php';
         return new MercadoPagoController($this->getConfig());
     }
+    
+    public function createReportesController()
+    {
+        require_once 'controller/ReportesController.php';
+        return new ReportesController($this->createReportesModel(), $this->createPrinter());
+    }
+    
+    public function createReportesModel()
+    {
+        require_once 'model/ReportesModel.php';
+        return new ReportesModel($this->getDatabase());
+    }
 }
