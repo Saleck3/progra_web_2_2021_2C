@@ -90,3 +90,22 @@ a {
     width: 1060px;
     height: 615px;
 }
+
+.seat{
+    border-style: outset;
+    padding: 1em;
+    background-color: black;
+    color: white;
+}
+
+.selected{
+    border-style: inset;
+    background-color: #0A0;
+    color: #0F0;
+}
+
+.reserved{
+    border-style: outset;
+    background-color: gray;
+    color: darkred;
+}

@@ -209,4 +209,14 @@ class VuelosModel
         $sql = "DELETE FROM tour_pagos where id_preferencia = '$preferencia';";
         return $this->database->delete($sql);
     }
+
+    public function asientosReservados($fecha,$hora,$partida,$matricula)
+    {
+        $sql = "SELECT tipoAsiento,numeroAsiento 
+        FROM suborbitales_reservas 
+        WHERE fechayhora = '$fecha $hora' 
+        and desde = '$partida'
+        and matricula = '$matricula'";
+        return $this->database->query($sql);
+    }
 }
