@@ -74,17 +74,15 @@ class MyDatabase
     public function update($sql)
     {
         if (!$databaseResult = mysqli_query($this->connection, $sql)) {
-            if (!$databaseResult = mysqli_query($this->connection, $sql)) {
-                if (isset($_SESSION["debug"])) {
-                    var_dump($sql);
-                    var_dump($this->connection);
-                }
-                
-                return mysqli_error_list($this->connection);
+            if (isset($_SESSION["debug"])) {
+                var_dump($sql);
+                var_dump($this->connection);
             }
             
-            return $databaseResult;
+            return mysqli_error_list($this->connection);
         }
+        
+        return $databaseResult;
     }
     
     public function delete($sql)

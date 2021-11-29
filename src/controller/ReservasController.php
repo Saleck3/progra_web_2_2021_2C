@@ -29,6 +29,7 @@ class ReservasController
     {
         $sede = $_GET["sede"];
         $fechaSolicitada = $_GET["fechaSolicitada"];
+        $fechaSolicitada = $this->horaReserva($fechaSolicitada);
         
         $resultado = $this->reservasModel->validarDisponibilidad($sede, $fechaSolicitada);
         if (empty($resultado) || $resultado['Disponible'] > 0) {
@@ -113,25 +114,15 @@ class ReservasController
         return $randomDate;
     }
     
-    function horaReserva()
+    function horaReserva($fecha)
     {
-        
         //TODO: Asignar hora y fecha que no este tomada en un futuro (no la actual)
-        $randomDate = $this->randomDateInRange();
         $minutos = $this->intervalo();
-        $turnoRandom = new DateTime();
-        $turnoRandom->setTimestamp($randomDate->getTimestamp());
-        $turnoRandom->setTime(mt_rand(9, 18), $minutos);
-        return $turnoRandom->format('Y-m-d H:i:s');
-        
-        
-        //        $flag = 0;
-//        while ($flag){
-//            coseguir $turnoRandom (dia y hora segun array harcodeado)
-//	if(!select * from Reservas where fechaHora = XXXX AND sede = $sede)
-//        if((select count(*) from Reservas where centroMedico = $sede AND fechaHora = $dia ) <  select cantidadTurnos from CentrosMedicos where id = $sede;){
-//            return $turnoRandom;
-//        }
+        $turno = new DateTime($fecha);
+        $turno->setTime(mt_rand(9, 18), $minutos);
+        $turno = date_format($turno,'Y-m-d H:i:s');
+
+        return $turno;
     
     }
     
