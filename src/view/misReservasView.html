@@ -1,0 +1,73 @@
+{{> header}}
+
+
+<div class="w3-third ">
+    <div class=" w3-card-4  w3-margin w3-white w3-round-xlarge ">
+        <div class="w3-container ">
+            <h2 class="w3-text-black">Sub-orbitales</h2>
+            {{#suborbitales}}
+            <ul>
+                <li><h4>Numero de reserva: {{id}}</h4></li>
+                <li>Fecha y hora de salida: {{fechayhora}}</li>
+                <li>Aeropuerto de salida: {{desde}}</li>
+                <li>Aeronave: {{matricula}}</li>
+                <li>Tipo y numero de asiento: {{tipoAsiento}} {{numeroAsiento}}</li>
+                <li>Servicio: {{servicio}}</li>
+            </ul>
+            {{#id_preferencia}}
+            <form class="w3-center w3-margin" action="/vuelos/generarComprobante">
+                <span class="w3-margin-top w3-margin-bottom w3-deep-orange w3-button w3-round-xlarge">Pendiente de pago!</span>
+                <script src="https://www.mercadopago.com.ar/integrations/v1/web-payment-checkout.js"
+                        data-preference-id="{{id_preferencia}}"></script>
+            </form>
+            {{/id_preferencia}}
+            {{/suborbitales}}
+            {{^suborbitales}}
+            <h3>Usted no posee reservas de vuelos suborbitales</h3>
+            <a href="/vuelos/suborbital"
+               class="w3-margin-top w3-margin-bottom w3-deep-purple w3-button w3-round-xlarge">Buscar Alguno</a>
+            {{/suborbitales}}
+        </div>
+    </div>
+</div>
+
+
+<div class="w3-third ">
+    <div class=" w3-card-4  w3-margin w3-white w3-round-xlarge ">
+        <div class="w3-container ">
+            <h2 class="w3-text-black">Entre Destinos</h2>
+            {{#entre_destinos}}
+            <h3>Proximamente</h3>
+            {{/entre_destinos}}
+            {{^entre_destinos}}
+            <h3>Proximamente</h3>
+            {{/entre_destinos}}
+        </div>
+    </div>
+</div>
+
+
+<div class="w3-third ">
+    <div class=" w3-card-4  w3-margin w3-white w3-round-xlarge ">
+        <div class="w3-container ">
+            <h2 class="w3-text-black">Tour</h2>
+            {{#tour}}
+            <ul>
+                <li><h4>Numero de reserva: {{id}}</h4></li>
+                <li>Fecha y hora de salida: {{fechayhora}}</li>
+                <li>Aeropuerto de salida: {{desde}}</li>
+                <li>Aeronave: {{matricula}}</li>
+                <li>Tipo y numero de asiento: {{tipoAsiento}} {{numeroAsiento}}</li>
+                <li>Servicio: {{servicio}}</li>
+            </ul>
+            {{/tour}}
+            {{^tour}}
+            <h3>Usted no posee reservas de tours</h3>
+            <a href="/vuelos/tour"
+               class="w3-margin-top w3-margin-bottom w3-deep-purple w3-button w3-round-xlarge">Buscar Alguno</a>
+            {{/tour}}
+        </div>
+    </div>
+</div>
+
+{{> footer}}
