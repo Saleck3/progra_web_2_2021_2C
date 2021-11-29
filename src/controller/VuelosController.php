@@ -30,10 +30,29 @@ class VuelosController
     /**
      * Lista los vuelos Suborbitales, considerando los filtros
      */
+    function partidaEntreDestinos(){
+        //Realizar algo parecido a agregar fechas, para que segun la partida que se elija tenga las opcines correspondientes
+        $cantBS = 3;
+        $cantAnkara = 6;
+        GLOBAL $EDBS;
+        GLOBAL $EDAK;
+
+        if(isset($_POST['partida'])){
+            if($_POST['partida'] = 'buenosAires'){
+                for($i = 0 ; $i<$cantBS ; $i++){
+                    $data[$i]['desde']= $EDBS[$i];
+                    array_push($resultado, $data[$i]['desde']);
+                }
+            }
+        }
+
+        return $resultado;
+    }
     
     function entreDestinos()
     {
         $data['vuelos'] = $this->vuelosModel->getVuelos();
+        $data['desde'] = $this->partidaEntreDestinos();
         echo $this->printer->render("view/entreDestinosView.html", $data);
     }
     
