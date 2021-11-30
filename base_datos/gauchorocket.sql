@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 30-11-2021 a las 06:30:44
+-- Tiempo de generación: 30-11-2021 a las 06:54:53
 -- Versión del servidor: 10.4.21-MariaDB
 -- Versión de PHP: 7.4.23
 
@@ -108,7 +108,10 @@ CREATE TABLE `entredestinos_pagos` (
 INSERT INTO `entredestinos_pagos` (`id`, `idvuelo`, `idusuario`, `tipoAsiento`, `numeroAsiento`, `tipoServicio`, `id_preferencia`) VALUES
 (1, 1, 61, 'general', 1, 'gourmet', '186927836-21f9bcf9-6389-43bf-a2df-82edfe9c035f'),
 (2, 1, 61, 'general', 133, 'standard', '186927836-758f21bb-3683-405b-9599-366955f3cd6e'),
-(3, 1, 61, 'general', 1, 'standard', '186927836-cd26aa55-dd94-4448-a928-7b31dee0b3c7');
+(3, 1, 61, 'general', 1, 'standard', '186927836-cd26aa55-dd94-4448-a928-7b31dee0b3c7'),
+(4, 1, 61, 'general', 3, 'standard', '186927836-e52fc36c-0a61-4809-8af1-e8fe5a53e7c1'),
+(5, 1, 61, 'general', 2, 'standard', '186927836-42ea1f31-6322-41a9-9d07-589662c7be72'),
+(6, 1, 61, 'general', 112, 'standard', '186927836-cbdb778b-144c-47a7-882d-a27d87800165');
 
 -- --------------------------------------------------------
 
@@ -124,6 +127,13 @@ CREATE TABLE `entredestinos_reservas` (
   `numeroAsiento` int(5) NOT NULL,
   `tipoServicio` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `entredestinos_reservas`
+--
+
+INSERT INTO `entredestinos_reservas` (`id`, `idvuelo`, `idusuario`, `tipoAsiento`, `numeroAsiento`, `tipoServicio`) VALUES
+(2, 1, 61, 'general', 112, 'standard');
 
 -- --------------------------------------------------------
 
@@ -350,7 +360,8 @@ CREATE TABLE `suborbitales_pagos` (
 INSERT INTO `suborbitales_pagos` (`id`, `fechayhora`, `desde`, `matricula`, `usuario`, `tipoAsiento`, `numeroAsiento`, `servicio`, `id_preferencia`) VALUES
 (13, '2021-11-29 09:00:00', 'Buenos aires', 'O9', 61, 'general', 4, 'gourmet', '186927836-e0fe3ddc-1c1f-4c9d-af82-b18f9c6dc28a'),
 (14, '2021-11-29 09:00:00', 'Buenos aires', 'O9', 61, 'general', 6, 'gourmet', '186927836-71175527-51f0-48c5-a8a8-d994460d6181'),
-(15, '0000-00-00 00:00:00', 'Buenos Aires', 'AA2', 61, 'general', 226, 'standard', '186927836-8339f997-587d-41d2-b1fb-7e6058b58bff');
+(15, '0000-00-00 00:00:00', 'Buenos Aires', 'AA2', 61, 'general', 226, 'standard', '186927836-8339f997-587d-41d2-b1fb-7e6058b58bff'),
+(16, '2021-11-30 13:00:00', 'Ankara', 'O9', 61, 'general', 2, 'standard', '186927836-5c45d0d8-01fb-4805-b5a7-2cabbef30524');
 
 -- --------------------------------------------------------
 
@@ -377,7 +388,9 @@ INSERT INTO `suborbitales_reservas` (`id`, `fechayhora`, `desde`, `matricula`, `
 (65, '2021-11-29 09:00:00', 'Buenos aires', 'O9', NULL, NULL, NULL, NULL),
 (66, '2021-11-29 09:00:00', 'Buenos aires', 'O9', 59, 'general', 4, 'gourmet'),
 (67, '1970-01-01 00:00:00', '', 'O7', NULL, NULL, NULL, NULL),
-(68, '2021-11-29 09:00:00', 'Buenos aires', 'O9', 1, 'general', 6, 'gourmet');
+(68, '2021-11-29 09:00:00', 'Buenos aires', 'O9', 1, 'general', 6, 'gourmet'),
+(69, '2021-11-30 13:00:00', 'Ankara', 'O9', NULL, NULL, NULL, NULL),
+(70, '2021-11-30 13:00:00', 'Ankara', 'O9', 61, 'general', 2, 'standard');
 
 -- --------------------------------------------------------
 
@@ -532,8 +545,8 @@ ALTER TABLE `entredestinos_pagos`
 --
 ALTER TABLE `entredestinos_reservas`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `vuelo_fk` (`idvuelo`),
-  ADD KEY `usuario_fk` (`idusuario`);
+  ADD KEY `usuario_fk` (`idusuario`),
+  ADD KEY `vuelo_fk` (`idvuelo`);
 
 --
 -- Indices de la tabla `modelos`
@@ -639,13 +652,13 @@ ALTER TABLE `entredestinos`
 -- AUTO_INCREMENT de la tabla `entredestinos_pagos`
 --
 ALTER TABLE `entredestinos_pagos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `entredestinos_reservas`
 --
 ALTER TABLE `entredestinos_reservas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `modelos`
@@ -669,13 +682,13 @@ ALTER TABLE `suborbitales`
 -- AUTO_INCREMENT de la tabla `suborbitales_pagos`
 --
 ALTER TABLE `suborbitales_pagos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `suborbitales_reservas`
 --
 ALTER TABLE `suborbitales_reservas`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- AUTO_INCREMENT de la tabla `tour`
@@ -716,7 +729,7 @@ ALTER TABLE `vuelo`
 --
 ALTER TABLE `entredestinos_reservas`
   ADD CONSTRAINT `usuario_fk` FOREIGN KEY (`idusuario`) REFERENCES `usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `vuelo_fk` FOREIGN KEY (`idvuelo`) REFERENCES `vuelo` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `vuelo_fk` FOREIGN KEY (`idvuelo`) REFERENCES `entredestinos` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `nave_espacial`
