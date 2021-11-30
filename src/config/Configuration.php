@@ -1,8 +1,6 @@
 <?php
 
 static $DIAS = array("Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado");
-static $EDBS = array("EEI", "Marte", "Luna", "Orbital Hotel");
-static $EDAK = array("EEI", "Luna", "Ganimedes", "Europa","IO","Encedalo","Titan");
 
 class Configuration
 {
