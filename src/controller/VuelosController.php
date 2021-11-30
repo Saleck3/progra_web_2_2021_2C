@@ -489,70 +489,50 @@ class VuelosController
     function imprimirAsientos($cantidadDeAsientosPorTipo, $asientosOcupadosDelVuelo)
     {
         $res = array();
-        $numeroAsiento=0;
+
+        for($i = 0; $i<sizeof($asientosOcupadosDelVuelo); $i++){
+            $indice = $asientosOcupadosDelVuelo[$i];
+            $asientosOcupadosDelVueloDos[$indice ['tipoAsiento']][$indice ['numeroAsiento']] = $indice['numeroAsiento'];
+        }
 
         $res["general"] = $res["familiar"] = $res["suite"] = "";
         for ($i = 0; $i < $cantidadDeAsientosPorTipo["cap_gen"]; $i++)
         {
-            if(isset($asientosOcupadosDelVuelo[$i]['tipoAsiento']) && isset($asientosOcupadosDelVuelo[$i]['numeroAsiento']) )
+            if(isset($asientosOcupadosDelVueloDos['general'][$i]))
             {
-                if($asientosOcupadosDelVuelo[$i]['tipoAsiento'] == 'general')
-                {
-                    $numeroAsiento = (int)$asientosOcupadosDelVuelo[$i]['numeroAsiento'];
-                    $res["general"] .= '<input type="button" onclick="seleccionarAsiento.call(this)"  class="seat" id="general" name="general" value="' . $i . '" ></i>';
-
-                }
-            }else
-            {
-                if($numeroAsiento == $i && $numeroAsiento>0){
-                    $res["general"] .= '<input type="button"  class="reserved" id="general" name="general" value="' . $numeroAsiento . '" disabled></i>';
-                }
-                else{
-                    $res["general"] .= '<input type="button" onclick="seleccionarAsiento.call(this)"  class="seat" id="general" name="general" value="' . $i . '" ></i>';
-                }
+                $res["general"] .=  '<input type="radio" id="general" name="general" value="'.$i.'" disabled>
+                                    <label for="html">'.$i.'</label>';
             }
+            else{
+                $res["general"] .= '<input type="radio" id="general" name="general" value="'.$i.'">
+                                    <label for="html">'.$i.'</label>';
+            }    
         }
 
         for ($i = 0; $i < $cantidadDeAsientosPorTipo["cap_fam"]; $i++)
         {
-            if(isset($asientosOcupadosDelVuelo[$i]['tipoAsiento']) && isset($asientosOcupadosDelVuelo[$i]['numeroAsiento']) )
+            if(isset($asientosOcupadosDelVueloDos['familiar'][$i]))
             {
-                if($asientosOcupadosDelVuelo[$i]['tipoAsiento'] == 'familiar')
-                {
-                    $numeroAsiento = (int)$asientosOcupadosDelVuelo[$i]['numeroAsiento'];
-                    $res["familiar"] .= '<input type="button" onclick="seleccionarAsiento.call(this)"  class="seat" id="familiar" name="familiar" value="' . $i . '" ></i>';
-
-                }
-            }else
-            {
-                if($numeroAsiento == $i && $numeroAsiento>0){
-                    $res["familiar"] .= '<input type="button"  class="reserved" id="familiar" name="familiar" value="' . $numeroAsiento . '" disabled></i>';
-                }
-                else{
-                    $res["familiar"] .= '<input type="button" onclick="seleccionarAsiento.call(this)"  class="seat" id="familiar" name="familiar" value="' . $i . '" ></i>';
-                }
+                $res["familiar"] .=  '<input type="radio" id="general" name="familiar" value="'.$i.'" disabled>
+                                    <label for="html">'.$i.'</label>';
             }
+            else{
+                $res["familiar"] .= '<input type="radio" id="general" name="familiar" value="'.$i.'">
+                                    <label for="html">'.$i.'</label>';
+            }   
         }
 
         for ($i = 0; $i < $cantidadDeAsientosPorTipo["cap_sui"]; $i++)
         {
-            if(isset($asientosOcupadosDelVuelo[$i]['tipoAsiento']) && isset($asientosOcupadosDelVuelo[$i]['numeroAsiento']) )
+            if(isset($asientosOcupadosDelVueloDos['suite'][$i]))
             {
-                if($asientosOcupadosDelVuelo[$i]['tipoAsiento'] == 'familiar')
-                {
-                    $numeroAsiento = (int)$asientosOcupadosDelVuelo[$i]['numeroAsiento'];
-                    $res["suite"] .= '<input type="button" onclick="seleccionarAsiento.call(this)"  class="seat" id="suite" name="suite" value="' . $i . '" ></i>';
-
-                }
-            }else
-            {
-                if($numeroAsiento == $i && $numeroAsiento>0){
-                    $res["suite"] .= '<input type="button"  class="reserved" id="suite" name="suite" value="' . $numeroAsiento . '" disabled></i>';
-                }
-                else{
-                    $res["suite"] .= '<input type="button" onclick="seleccionarAsiento.call(this)"  class="seat" id="suite" name="suite" value="' . $i . '" ></i>';
-                }
+                $res["suite"] .=  '<input type="radio" id="general" name="suite" value="'.$i.'" disabled>
+                                    <label for="html">'.$i.'</label>';
             }
+            else{
+                $res["suite"] .= '<input type="radio" id="general" name="suite" value="'.$i.'">
+                                    <label for="html">'.$i.'</label>';
+            }  
         }
 
         return $res;

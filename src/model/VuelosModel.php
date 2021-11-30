@@ -219,4 +219,5 @@ class VuelosModel
         and matricula = '$matricula'";
         return $this->database->query($sql);
     }
+
 }
