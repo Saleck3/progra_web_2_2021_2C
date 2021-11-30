@@ -13,40 +13,21 @@
             </select>
             </div>
             <div class="w3-quarter w3-container">
-            <label for="desde" >Desde</label>
-            <select class="w3-select" name="desde" id="desde">
-                <option value="" disabled selected>Seleccione Destino</option>
-                {{#desde}}
-                <option value="{{desde}}">{{desde}}</option>
-                {{/desde}}
-                <!-- <option value="orbiter hotel">Orbiter Hotel</option>
+            <label for="hasta" >Destino</label>
+
+            <select class="w3-select " name="hasta" id="hasta">
+            <option value="" disabled selected>Seleccione Destino</option>
+            <option value="EEI">EEI</option> 
+                <option value="orbiter hotel">Orbiter Hotel</option>
                 <option value="luna">Luna</option>
                 <option value="marte">Marte</option>
-                <option value="genimedes">Genimedes</option>
+                <option value="ganimedes">Ganimedes</option>
                 <option value="europa">Europa</option>
                 <option value="io">Io</option>
                 <option value="encedalo">Encedalo</option>
                 <option value="titan">Titán</option>
                 <option value="buenos aires">Buenos Aires</option>
-                <option value="ankara">Ankara</option> -->
-            </select>
-            </div>
-            <div class="w3-quarter w3-container">
-            <label for="hasta" >Hasta</label>
-
-            <select class="w3-select " name="hasta" id="hasta">
-            <option value="" disabled selected>Seleccione Destino</option>
-            <option value="estacion espacial">Estación Espacial Internacional</option>
-            <option value="orbiter hotel">Orbiter Hotel</option>
-            <option value="luna">Luna</option>
-            <option value="marte">Marte</option>
-            <option value="genimedes">Genimedes</option>
-            <option value="europa">Europa</option>
-            <option value="io">Io</option>
-            <option value="encedalo">Encedalo</option>
-            <option value="titan">Titán</option>
-            <option value="buenos aires">Buenos Aires</option>
-            <option value="ankara">Ankara</option>
+                <option value="ankara">Ankara</option> 
             </select>
             </div>
             <div class="w3-quarter w3-container ">
@@ -66,24 +47,29 @@
 
     <table class="w3-table-all  w3-centered w3-margin-bottom"  >
         <tbody>
-        <tr class="w3-black">
-            <th>Día y Horario</th>
-            <th>Desde</th>
-            <th>Hasta</th>
-            <th>Duración</th>
-        </tr>
+            <tr class="w3-black">
+                <th>Fecha y hora</th>
+                <th>Partida</th>
+                <th>Destino</th>
+                <th>Duración</th>
+                <th>Reservar</th>
+            </tr>
         </tbody>
         {{#vuelos}}
+        <form action="/vuelos/entreDestinos_reserva" method="post">
+            <input type="hidden" name="idvuelo" value="{{id}}"></input>
         <tr>
-            <td>{{dia}}</td>
-            <td>{{partida}}</td>
-            <td>{{destino}}</td>
-            <td>{{duracion}}</td>
+            <td><input class="hidden" name="fechayhora" value="{{fechayhora}}">{{fechayhora}}</input></td>
+            <td><input class="hidden" name="partida" value="{{partida}}">{{partida}}</input></td>
+            <td><input class="hidden" name="destino" value="{{destino}}">{{destino}}</input></td>
+            <td><input class="hidden" name="duracion" value="{{duracion}}">{{duracion}} Horas</input></td>
             <td>
-                <a class="w3-button w3-round-xxlarge w3-center w3-black" href="/reservaVuelo">Reservar</a>
+                <input type="submit" class="w3-button w3-round-xxlarge w3-center w3-black"
+                       value="Reservar!"></button>
             </td>
-
         </tr>
+        
+    </form>
         {{/vuelos}}
     </table>
 </div>
