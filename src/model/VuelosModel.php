@@ -98,9 +98,9 @@ class VuelosModel
     public function asignarMatriculaTour($fecha, $hora, $desde)
     {
         $sql = "SELECT matricula FROM GauchoRocket.modelos m inner join nave_espacial ne on m.id = ne.modelo where m.modelo like 'Guanaco'";
-        $matriculas = $this->database->query($sql);
+        $matricula = $this->database->query($sql);
         
-        $matriculaAInsertar = $matriculas[rand(0, sizeof($matriculas))]["matricula"];
+        $matriculaAInsertar = $matricula[rand(0, sizeof($matricula))]["matricula"];
         
         $sql = "INSERT INTO tour_reservas (fechayhora, matricula,desde)
                 VALUES ('$fecha $hora','$matriculaAInsertar', '$desde');";
@@ -214,6 +214,16 @@ class VuelosModel
     {
         $sql = "SELECT tipoAsiento,numeroAsiento 
         FROM suborbitales_reservas 
+        WHERE fechayhora = '$fecha $hora' 
+        and desde = '$partida'
+        and matricula = '$matricula'";
+        return $this->database->query($sql);
+    }
+
+    public function asientosReservadosTour($fecha,$hora,$partida,$matricula)
+    {
+        $sql = "SELECT tipoAsiento,numeroAsiento 
+        FROM tour_reservas 
         WHERE fechayhora = '$fecha $hora' 
         and desde = '$partida'
         and matricula = '$matricula'";
