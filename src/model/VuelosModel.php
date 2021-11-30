@@ -80,7 +80,7 @@ class VuelosModel
         $sql = "SELECT matricula FROM tour_reservas where fechayhora = '" . $fecha . ' ' . $hora . "'and desde = '$partida' and usuario IS NULL;";
         return $this->database->query($sql);
     }
-
+    
     public function matriculaVueloEntreDestinos($vuelo)
     {
         $sql = "SELECT matricula 
@@ -142,7 +142,7 @@ class VuelosModel
             ",'" . $datos["servicio"] . "' );";
         return $this->database->insert($sql);
     }
-
+    
     
     public function usuarioTienePasajeVuelo($fecha, $hora, $partida, $id_usuario)
     {
@@ -155,7 +155,7 @@ class VuelosModel
         $sql = "SELECT * FROM suborbitales_reservas where fechayhora = '$fecha $hora' and desde = '$partida' and tipoAsiento = '$tipoAsiento' and numeroAsiento = $numeroAsiento;";
         return $this->database->query($sql);
     }
-
+    
     public function asientoOcupadoEntreDestinos($idvuelo, $tipoAsiento, $numeroAsiento)
     {
         $sql = "SELECT * FROM entredestinos_reservas where idvuelo = $idvuelo and tipoAsiento = '$tipoAsiento' and numeroAsiento = $numeroAsiento;";
@@ -167,7 +167,7 @@ class VuelosModel
         $sql = "SELECT * FROM tour_reservas where fechayhora = '$fecha $hora' and desde = '$partida' and usuario = $id_usuario;";
         return $this->database->query($sql);
     }
-
+    
     public function usuarioTienePasajeVueloEntreDestinos($idvuelo, $id_usuario)
     {
         $sql = "SELECT * FROM entredestinos_reservas where idvuelo = '$idvuelo'and idusuario = $id_usuario;";
@@ -205,11 +205,11 @@ class VuelosModel
         
         return $this->database->insert($sql);
     }
-
+    
     public function guardarPagoEntreDestinos($datos)
     {
-        $sql = "INSERT INTO entredestinos_pagos(idvuelo, idusuario, tipoAsiento, numeroAsiento,tipoServicio, id_preferencia) 
-        VALUES (".$datos['idvuelo'].",".$datos['id_usuario'].",'".$datos['tipo_asiento']."','".$datos['num_asiento']."','".$datos['servicio']."','".$datos['preferencia']."')";
+        $sql = "INSERT INTO entredestinos_pagos(idvuelo, idusuario, tipoAsiento, numeroAsiento,servicio, id_preferencia)
+        VALUES (" . $datos['idvuelo'] . "," . $datos['id_usuario'] . ",'" . $datos['tipo_asiento'] . "','" . $datos['num_asiento'] . "','" . $datos['servicio'] . "','" . $datos['preferencia'] . "')";
         
         return $this->database->insert($sql);
     }
@@ -236,14 +236,14 @@ class VuelosModel
         $sql = "DELETE FROM tour_pagos where id_preferencia = '$preferencia';";
         return $this->database->delete($sql);
     }
-
+    
     public function eliminarPagoRealizadoEntreDestinos($preferencia)
     {
         $sql = "DELETE FROM entredestinos_pagos where id_preferencia = '$preferencia';";
         return $this->database->delete($sql);
     }
-
-    public function asientosReservados($fecha,$hora,$partida,$matricula)
+    
+    public function asientosReservados($fecha, $hora, $partida, $matricula)
     {
         $sql = "SELECT tipoAsiento,numeroAsiento 
         FROM suborbitales_reservas 
@@ -252,8 +252,8 @@ class VuelosModel
         and matricula = '$matricula'";
         return $this->database->query($sql);
     }
-
-    public function asientosReservadosTour($fecha,$hora,$partida,$matricula)
+    
+    public function asientosReservadosTour($fecha, $hora, $partida, $matricula)
     {
         $sql = "SELECT tipoAsiento,numeroAsiento 
         FROM tour_reservas 
@@ -262,28 +262,29 @@ class VuelosModel
         and matricula = '$matricula'";
         return $this->database->query($sql);
     }
-
-    public function asientosReservadosEntreDestinos($fechayhora,$partida,$matricula)
+    
+    public function asientosReservadosEntreDestinos($fechayhora, $partida, $matricula)
     {
         $sql = "SELECT tipoAsiento,numeroAsiento 
         FROM entredestinos_reservas er
         INNER JOIN entredestinos ed on ed.id = er.idvuelo
         WHERE ed.fechayhora = '$fechayhora' 
-        and ed.partida = '$partida'
+        and ed.desde = '$partida'
         and ed.matricula = '$matricula'";
         return $this->database->query($sql);
     }
-
-    public function recuperarPagoEntreDestinos($id_preferencia){
-        $sql = "SELECT * FROM entredestinos_pagos where id_preferencia = '$id_preferencia';";
+    
+    public function recuperarPagoEntreDestinos($id_preferencia)
+    {
+        $sql = "SELECT * FROM entredestinos_pagos edp INNER JOIN entredestinos ed ON edp.idvuelo = ed.id where id_preferencia = '$id_preferencia';";
         return $this->database->query($sql);
     }
-
+    
     public function generarReservaEntreDestinos($datos)
     {
-        $sql = "INSERT INTO entredestinos_reservas(idvuelo, idusuario, tipoAsiento, numeroAsiento,tipoServicio) 
-        VALUES (".$datos['idvuelo'].",".$datos['idusuario'].",'".$datos['tipoAsiento']."','".$datos['numeroAsiento']."','".$datos['tipoServicio']."');";
+        $sql = "INSERT INTO entredestinos_reservas(idvuelo, idusuario, tipoAsiento, numeroAsiento,servicio)
+        VALUES (" . $datos['idvuelo'] . "," . $datos['idusuario'] . ",'" . $datos['tipoAsiento'] . "','" . $datos['numeroAsiento'] . "','" . $datos['servicio'] . "');";
         return $this->database->insert($sql);
     }
-
+    
 }
