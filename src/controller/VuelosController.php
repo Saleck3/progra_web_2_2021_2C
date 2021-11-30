@@ -573,14 +573,14 @@ class VuelosController
         
         $res = array();
         
-        for ($i = 0; $i < sizeof($asientosOcupadosDelVuelo); $i++) {
-            $indice = $asientosOcupadosDelVuelo[$i];
-            $asientosOcupadosDelVueloDos[$indice ['tipoAsiento']][$indice ['numeroAsiento']] = $indice['numeroAsiento'];
-        }
-    
-        //Si tengo una sola reserva, el for hace cualquier cosa asi que lo piso
+        //Si tengo una sola reserva, el for hace cualquier cosa asi que chequeo
         if(isset($asientosOcupadosDelVuelo["tipoAsiento"])){
             $asientosOcupadosDelVueloDos[$asientosOcupadosDelVuelo ['tipoAsiento']][$asientosOcupadosDelVuelo ['numeroAsiento']] = $asientosOcupadosDelVuelo['numeroAsiento'];
+        }else{
+            for ($i = 0; $i < sizeof($asientosOcupadosDelVuelo); $i++) {
+                $indice = $asientosOcupadosDelVuelo[$i];
+                $asientosOcupadosDelVueloDos[$indice ['tipoAsiento']][$indice ['numeroAsiento']] = $indice['numeroAsiento'];
+            }
         }
     
         $res["general"] = $res["familiar"] = $res["suite"] = "";
