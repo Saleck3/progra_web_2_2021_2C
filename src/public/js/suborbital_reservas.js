@@ -1,6 +1,9 @@
 window.onload = function () {
     var selectorAsiento = document.getElementById("tipo_asiento");
     selectorAsiento.addEventListener("change", cambiarAsientos);
+    document.getElementById("general_container").style.display = 'none';
+    document.getElementById("familiar_container").style.display = 'none';
+    document.getElementById("suite_container").style.display = 'none';
 }
 
 function cambiarAsientos() {
@@ -11,19 +14,19 @@ function cambiarAsientos() {
 
     switch (this.value) {
         case "general":
-            asientoGeneral.style.display = 'block';
+            asientoGeneral.style.display = 'flex';
             asientofamiliar.style.display = 'none';
             asientoSuite.style.display = 'none';
             break;
         case "familiar":
             asientoGeneral.style.display = 'none';
-            asientofamiliar.style.display = 'block';
+            asientofamiliar.style.display = 'flex';
             asientoSuite.style.display = 'none';
             break;
         case "suite":
             asientoGeneral.style.display = 'none';
             asientofamiliar.style.display = 'none';
-            asientoSuite.style.display = 'block';
+            asientoSuite.style.display = 'flex';
             break;
     }
 }

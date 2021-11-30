@@ -163,7 +163,7 @@ class VuelosModel
     
     public function tipoUsuario($idUsuario)
     {
-        $sql = "SELECT tipo FROM Usuario where id = $idUsuario;";
+        $sql = "SELECT tipo FROM usuario where id = $idUsuario;";
         return $this->database->query($sql);
     }
     
