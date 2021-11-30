@@ -14,13 +14,6 @@
                 <li>Tipo y numero de asiento: {{tipoAsiento}} {{numeroAsiento}}</li>
                 <li>Servicio: {{servicio}}</li>
             </ul>
-            {{#id_preferencia}}
-            <form class="w3-center w3-margin" action="/vuelos/generarComprobante">
-                <span class="w3-margin-top w3-margin-bottom w3-deep-orange w3-button w3-round-xlarge">Pendiente de pago!</span>
-                <script src="https://www.mercadopago.com.ar/integrations/v1/web-payment-checkout.js"
-                        data-preference-id="{{id_preferencia}}"></script>
-            </form>
-            {{/id_preferencia}}
             {{/suborbitales}}
             {{^suborbitales}}
             <h3>Usted no posee reservas de vuelos suborbitales</h3>
@@ -37,10 +30,19 @@
         <div class="w3-container ">
             <h2 class="w3-text-black">Entre Destinos</h2>
             {{#entre_destinos}}
-            <h3>Proximamente</h3>
+            <ul>
+                <li><h4>Numero de reserva: {{id}}</h4></li>
+                <li>Fecha y hora de salida: {{fechayhora}}</li>
+                <li>Aeropuerto de salida: {{desde}}</li>
+                <li>Aeronave: {{matricula}}</li>
+                <li>Tipo y numero de asiento: {{tipoAsiento}} {{numeroAsiento}}</li>
+                <li>Servicio: {{servicio}}</li>
+            </ul>
             {{/entre_destinos}}
             {{^entre_destinos}}
-            <h3>Proximamente</h3>
+            <h3>Usted no posee reservas de vuelos Entre Destinos</h3>
+            <a href="/vuelos/entreDestinos"
+               class="w3-margin-top w3-margin-bottom w3-deep-purple w3-button w3-round-xlarge">Buscar Alguno</a>
             {{/entre_destinos}}
         </div>
     </div>

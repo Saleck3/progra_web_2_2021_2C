@@ -332,7 +332,7 @@ class VuelosController
         
         //Segun el tipo de avion, los asientos que tenga
         $cantidadDeAsientosPorTipo = $this->vuelosModel->cantidadAsientosPorTipo($data["matricula"]);
-        $asientosOcupadosDelVuelo = $this->vuelosModel->asientosReservadosEntreDestinos($data["fechayhora"], $data["partida"], $data["matricula"]);
+        $asientosOcupadosDelVuelo = $this->vuelosModel->asientosReservadosEntreDestinos($data["idvuelo"]);
         $data["asientos"] = $this->imprimirAsientos($cantidadDeAsientosPorTipo, $asientosOcupadosDelVuelo);
         
         echo $this->printer->render("view/entreDestinos_reservaView.html", $data);
@@ -570,13 +570,19 @@ class VuelosController
     
     function imprimirAsientos($cantidadDeAsientosPorTipo, $asientosOcupadosDelVuelo)
     {
+        
         $res = array();
         
         for ($i = 0; $i < sizeof($asientosOcupadosDelVuelo); $i++) {
             $indice = $asientosOcupadosDelVuelo[$i];
             $asientosOcupadosDelVueloDos[$indice ['tipoAsiento']][$indice ['numeroAsiento']] = $indice['numeroAsiento'];
         }
-        
+    
+        //Si tengo una sola reserva, el for hace cualquier cosa asi que lo piso
+        if(isset($asientosOcupadosDelVuelo["tipoAsiento"])){
+            $asientosOcupadosDelVueloDos[$asientosOcupadosDelVuelo ['tipoAsiento']][$asientosOcupadosDelVuelo ['numeroAsiento']] = $asientosOcupadosDelVuelo['numeroAsiento'];
+        }
+    
         $res["general"] = $res["familiar"] = $res["suite"] = "";
         for ($i = 0; $i < $cantidadDeAsientosPorTipo["cap_gen"]; $i++) {
             if (isset($asientosOcupadosDelVueloDos['general'][$i])) {

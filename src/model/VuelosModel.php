@@ -263,14 +263,11 @@ class VuelosModel
         return $this->database->query($sql);
     }
     
-    public function asientosReservadosEntreDestinos($fechayhora, $partida, $matricula)
+    public function asientosReservadosEntreDestinos($idvuelo)
     {
         $sql = "SELECT tipoAsiento,numeroAsiento 
         FROM entredestinos_reservas er
-        INNER JOIN entredestinos ed on ed.id = er.idvuelo
-        WHERE ed.fechayhora = '$fechayhora' 
-        and ed.desde = '$partida'
-        and ed.matricula = '$matricula'";
+        WHERE er.idvuelo = $idvuelo";
         return $this->database->query($sql);
     }
     
