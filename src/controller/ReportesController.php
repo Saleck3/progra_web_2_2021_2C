@@ -14,6 +14,7 @@ class ReportesController
     public function show()
     {
         $data["suborbitales"] = $this->model->getSuborbitales($_SESSION["id"]);
+        $data["entre_destinos"] = $this->model->getEntreDestinos($_SESSION["id"]);
         $data["tour"] = $this->model->getTours($_SESSION["id"]);
         echo $this->printer->render("view/misReservasView.html", $data);
     }

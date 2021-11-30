@@ -21,4 +21,10 @@ class ReportesModel
         return $this->database->query($SQL);
     }
     
+    public function getEntreDestinos($usuario)
+    {
+        $SQL = "SELECT * FROM entredestinos_reservas_completo where idusuario = $usuario";
+        return $this->database->query($SQL);
+    }
+    
 }
