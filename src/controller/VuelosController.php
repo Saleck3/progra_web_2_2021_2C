@@ -552,15 +552,19 @@ class VuelosController
     public
     function errorDePago()
     {
-        //TODO generar error de pago
-        echo "Hubo un error en el pago";
+        $_SESSION["mensaje"]["class"] = "error";
+        $_SESSION["mensaje"]["mensaje"] = "Hubo un error en el pago";
+        header('Location: /home');
+        die();
     }
     
     public
     function cobroPendiente()
     {
-        //TODO generar Pago pendiente
-        echo "El pago esta pendiente de cobro";
+        $_SESSION["mensaje"]["class"] = "error";
+        $_SESSION["mensaje"]["mensaje"] = "El pago esta pendiente de cobro";
+        header('Location: /home');
+        die();
     }
     
     
