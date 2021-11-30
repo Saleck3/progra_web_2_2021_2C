@@ -275,7 +275,7 @@ class VuelosController
         
         //Segun el tipo de avion, los asientos que tenga
         $cantidadDeAsientosPorTipo = $this->vuelosModel->cantidadAsientosPorTipo($data["matricula"]);
-        $asientosOcupadosDelVuelo = $this->vuelosModel->asientosReservadosTour($data["fecha"], $data["horario"], $data["partida"], $data["matricula"]);
+        $asientosOcupadosDelVuelo = $this->vuelosModel->asientosReservadosTour($data["fecha"],$data["horario"],$data["partida"],$data["matricula"]);
         $data["asientos"] = $this->imprimirAsientos($cantidadDeAsientosPorTipo, $asientosOcupadosDelVuelo);
         
         //armar el combo box segun la cantidad
