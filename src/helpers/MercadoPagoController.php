@@ -33,12 +33,12 @@ class MercadoPagoController
         $item->description = $descripcion;
         $item->quantity = 1;
         $item->unit_price = $costo;
+        $preference->items = array($item);
         $preference->back_urls = array(
             "success" => "http://" . $_SERVER['HTTP_HOST'] . "/vuelos/generarComprobante",
             "failure" => "http://" . $_SERVER['HTTP_HOST'] . "/vuelos/errorDePago",
             "pending" => "http://" . $_SERVER['HTTP_HOST'] . "/vuelos/cobroPendiente"
         );
-        $preference->items = array($item);
         $preference->external_reference = $referencia;
         $preference->save();
         return $preference;

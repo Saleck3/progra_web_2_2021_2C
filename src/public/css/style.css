@@ -33,7 +33,7 @@ body {
     padding: 1.5em;
     color: var(--color_contextual_oscuro);
     border: var(--color_contextual_oscuro) 3px solid;
-        background-color: var(--color_contextual_claro);
+    background-color: var(--color_contextual_claro);
 }
 
 .exito {
@@ -74,7 +74,6 @@ footer {
     width: 100%;
 
 
-
 }
 
 a {
@@ -90,3 +89,66 @@ a {
     width: 1060px;
     height: 615px;
 }
+
+.selected {
+    border-style: inset;
+
+    background-color: #0A0;
+    color: #0F0;
+}
+
+.reserved {
+    border-style: outset;
+    padding: 1em;
+    background-color: gray;
+    color: darkred;
+}
+
+.asientos_container {
+    flex-wrap: wrap;
+}
+
+.asientos {
+    display: flex;
+    flex-direction: column;
+}
+
+.asientos input[type="radio"] {
+    display: none;
+}
+
+.asientos label::before {
+    content: var(--check);
+    display: inline-block;
+    height: 14px;
+    width: 15px;
+    border-radius: var(--radio);
+    margin: 4px 10px 0;
+    line-height: 13px;
+    min-width: 15px;
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+}
+
+input[type="radio"] + label {
+    --check: '\f007';
+    --radio: 50%;
+    font-size: 1.2em;
+}
+
+.asientos input[type="radio"]:checked + label::before, .radio_barra input[type="checkbox"]:checked + label::before {
+    content: var(--check);
+    text-align: center;
+    border: none;
+    color: green;
+}
+
+.asientos input[type="radio"]:disabled + label::before, .radio_barra input[type="checkbox"]:disabled + label::before {
+    color: red;
+    content: var(--check);
+    text-align: center;
+    border: none;
+}
+

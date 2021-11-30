@@ -1,5 +1,7 @@
 {{> header}}
+
 <script src="/public/js/suborbital_reservas.js" crossorigin="anonymous"></script>
+<script src="/public/js/asientos.js"></script>
 <div class="w3-container w3-black ">
     <h3>Reserva</h3>
 </div>
@@ -7,16 +9,15 @@
 
     <h2 class="w3-margin">Datos de la reserva</h2>
     <div class="w3-container w3-content">
-        <form class="w3-container " action="/vuelos/generarPagoTour" method="post">
-            <label class="w3-margin-bottom" for="fecha">Fecha</label>
-            <input class="w3-input w3-margin-bottom" type="date" id="fecha" name="fecha" value="{{fecha}}" readonly>
-            <label class="w3-margin-bottom" for="hora">hora</label>
-            <input class="w3-input w3-margin-bottom" type="text" id="hora" name="hora" value="{{horario}}" readonly>
-            <label class="w3-margin-bottom" for="partida">Aeropuerto de salida</label>
-            <input class="w3-input w3-margin-bottom" type="text" id="partida" name="partida" value="{{partida}}"
+        <form class="w3-container " action="/vuelos/generarPagoEntreDestinos" method="post">
+            <input type="hidden" name="idvuelo" value="{{idvuelo}}"></input>
+            <label class="w3-margin-bottom" for="fecha">Fecha y hora</label>
+            <input class="w3-input w3-margin-bottom" type="datetime" id="fecha" name="fechayhora" value="{{fechayhora}}" readonly>
+            <label class="w3-margin-bottom" for="desde">Aeropuerto de salida</label>
+            <input class="w3-input w3-margin-bottom" type="text" id="desde" name="partida" value="{{desde}}"
                    readonly></input>
-            <label class="w3-margin-bottom" for="hora">Duracion del vuelo</label>
-            <input class="w3-input w3-margin-bottom" name="duracion" value="{{duracion}} Horas" readonly>
+            <label class="w3-margin-bottom" for="duracion">Duracion del vuelo</label>
+            <input class="w3-input w3-margin-bottom" id="duracion" name="duracion" value="{{duracion}} Horas" readonly>
             <label class="w3-margin-bottom" for="matricula">Aeronave</label>
             <input class="w3-input w3-margin-bottom" name="matricula" id="matricula" value="{{matricula}}"
                    readonly></input>
@@ -24,26 +25,26 @@
             <select class="w3-select w3-margin-bottom" name="tipo_asiento" id="tipo_asiento">
                 {{#asientos}}
                 <option selected disabled>Seleccione</option>
-                    {{#general}}
-                    <option value="general">General</option>
-                    {{/general}}
-                    {{#familiar}}
-                    <option value="familiar">Familiar</option>
-                    {{/familiar}}
-                    {{#suite}}
-                    <option value="suite">Suite</option>
-                    {{/suite}}
+                {{#general}}
+                <option value="general">General</option>
+                {{/general}}
+                {{#familiar}}
+                <option value="familiar">Familiar</option>
+                {{/familiar}}
+                {{#suite}}
+                <option value="suite">Suite</option>
+                {{/suite}}
                 {{/asientos}}
             </select>
             <label class="w3-margin-bottom" >Numero de asiento</label><br>
             {{#asientos}}
-            <div id="general_container" class="w3-margin-bottom asientos_container" hidden>
+            <div id="general_container" class="w3-margin-bottom asientos_container">
                 {{{general}}}
             </div>
-            <div id="familiar_container" class="w3-margin-bottom asientos_container" hidden>
+            <div id="familiar_container" class="w3-margin-bottom asientos_container" >
                 {{{familiar}}}
             </div>
-            <div id="suite_container" class="w3-margin-bottom asientos_container" hidden>
+            <div id="suite_container" class="w3-margin-bottom asientos_container">
                 {{{suite}}}
             </div>
             {{/asientos}}

@@ -11,7 +11,7 @@ class ReservasModel
     
     public function getTipo($idUsuario)
     {
-        $SQL = "select tipo from Usuario where id = $idUsuario;";
+        $SQL = "select tipo from usuario where id = $idUsuario;";
         
         $res = $this->database->query($SQL);
         
