@@ -283,7 +283,6 @@ class VuelosModel
     {
         $sql = "INSERT INTO entredestinos_reservas(idvuelo, idusuario, tipoAsiento, numeroAsiento,tipoServicio) 
         VALUES (".$datos['idvuelo'].",".$datos['idusuario'].",'".$datos['tipoAsiento']."','".$datos['numeroAsiento']."','".$datos['tipoServicio']."');";
-        
         return $this->database->insert($sql);
     }
 

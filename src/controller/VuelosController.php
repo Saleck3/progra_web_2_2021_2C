@@ -389,7 +389,6 @@ class VuelosController
 
     function generarComprobante()
     {
-        var_dump($_GET);
         //Chequear el ok del pago
         if ($_GET["collection_status"] != 'approved') {
             $_SESSION["mensaje"]["class"] = "error";
@@ -398,13 +397,12 @@ class VuelosController
             die();
         }
         //llamar a los datos en la BD
-        $data["referencia"] = $_GET["external_reference"];
-        if($data["referencia"] == "entredestinos"){
+        if($_GET["external_reference"] == "entredestinos"){
             $data = $this->vuelosModel->recuperarPagoEntreDestinos($_GET["preference_id"]);
         }else{
             $data = $this->vuelosModel->recuperarPago($_GET["preference_id"]);
         }
-
+        $data["referencia"] = $_GET["external_reference"];
         if (!$data) {
             $_SESSION["mensaje"]["class"] = "error";
             $_SESSION["mensaje"]["mensaje"] = "Error al recuperar el pago";
@@ -424,15 +422,14 @@ class VuelosController
                 $this->vuelosModel->eliminarPagoRealizadoEntreDestinos($_GET["preference_id"]);
             }
         }
-
         //Genero la reserva segun el tipo de vuelo
-        if ($data["referencia"] == "suborbital") {
+        if ($_GET["external_reference"] == "suborbital") {
             $idReserva = $this->vuelosModel->generarReservaSuborbital($data);
         }
-        if ($data["referencia"] == "tour") {
+        if ($_GET["external_reference"] == "tour") {
             $idReserva = $this->vuelosModel->generarReservaTour($data);
         }
-        if ($data["referencia"] == "entredestinos") {
+        if ($_GET["external_reference"] == "entredestinos") {
             $idReserva = $this->vuelosModel->generarReservaEntreDestinos($data);
         }
 
