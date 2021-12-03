@@ -78,9 +78,9 @@
     'normal' => $fontDir . '/DejaVuSerif',
   ),
   'raleway' => array(
-    'normal' => $fontDir . '/_33b999b0bb82efe5dc2cc0253094d78d',
+    'normal' => $fontDir . '/raleway_normal_33b999b0bb82efe5dc2cc0253094d78d',
   ),
   'fontawesome' => array(
-    'normal' => $fontDir . '/_7ea195556637d817f455524c7885b526',
+    'normal' => $fontDir . '/fontawesome_normal_7ea195556637d817f455524c7885b526',
   ),
 ) ?>
