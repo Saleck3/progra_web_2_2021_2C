@@ -81,7 +81,7 @@ CREATE TABLE `entredestinos` (
   `duracion` int(11) NOT NULL,
   `matricula` varchar(5) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -90,7 +90,7 @@ CREATE TABLE `entredestinos` (
 
 LOCK TABLES `entredestinos` WRITE;
 /*!40000 ALTER TABLE `entredestinos` DISABLE KEYS */;
-INSERT INTO `entredestinos` VALUES (1,'2021-12-03 12:00:00','Buenos Aires','Luna',9,'AA2'),(2,'2021-12-08 09:00:00','Ankara','europa',50,'BA4');
+INSERT INTO `entredestinos` VALUES (1,'2021-12-03 12:00:00','Buenos Aires','Luna',9,'AA2'),(2,'2021-12-08 09:00:00','Ankara','europa',50,'BA4'),(3,'2021-12-09 09:00:00','Ankara','europa',50,'BA3');
 /*!40000 ALTER TABLE `entredestinos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -112,7 +112,7 @@ CREATE TABLE `entredestinos_pagos` (
   PRIMARY KEY (`id`),
   KEY `vuelo_fk` (`idvuelo`),
   KEY `usuario_fk` (`idusuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -124,29 +124,6 @@ LOCK TABLES `entredestinos_pagos` WRITE;
 INSERT INTO `entredestinos_pagos` VALUES (1,1,61,'general',1,'gourmet','186927836-21f9bcf9-6389-43bf-a2df-82edfe9c035f'),(2,1,61,'general',133,'standard','186927836-758f21bb-3683-405b-9599-366955f3cd6e'),(3,1,61,'general',1,'standard','186927836-cd26aa55-dd94-4448-a928-7b31dee0b3c7'),(4,1,59,'familiar',4,'standard','186927836-861aaaaf-0b1f-48cb-ada5-bd9c00c3e313');
 /*!40000 ALTER TABLE `entredestinos_pagos` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Temporary view structure for view `entredestinos_pagos_completo`
---
-
-DROP TABLE IF EXISTS `entredestinos_pagos_completo`;
-/*!50001 DROP VIEW IF EXISTS `entredestinos_pagos_completo`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `entredestinos_pagos_completo` AS SELECT 
- 1 AS `id`,
- 1 AS `idvuelo`,
- 1 AS `fechayhora`,
- 1 AS `desde`,
- 1 AS `destino`,
- 1 AS `matricula`,
- 1 AS `duracion`,
- 1 AS `idusuario`,
- 1 AS `tipoAsiento`,
- 1 AS `numeroAsiento`,
- 1 AS `servicio`,
- 1 AS `id_preferencia`*/;
-SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `entredestinos_reservas`
@@ -167,7 +144,7 @@ CREATE TABLE `entredestinos_reservas` (
   KEY `vuelo_fk_idx` (`idvuelo`),
   CONSTRAINT `usuario_fk` FOREIGN KEY (`idusuario`) REFERENCES `usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `vuelo_fk` FOREIGN KEY (`idvuelo`) REFERENCES `entredestinos` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -176,31 +153,9 @@ CREATE TABLE `entredestinos_reservas` (
 
 LOCK TABLES `entredestinos_reservas` WRITE;
 /*!40000 ALTER TABLE `entredestinos_reservas` DISABLE KEYS */;
-INSERT INTO `entredestinos_reservas` VALUES (2,1,59,'familiar',4,'standard'),(4,2,59,'general',4,'standard');
+INSERT INTO `entredestinos_reservas` VALUES (2,1,58,'familiar',4,'standard'),(4,2,58,'general',4,'standard'),(6,3,58,'suite',4,'standard');
 /*!40000 ALTER TABLE `entredestinos_reservas` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Temporary view structure for view `entredestinos_reservas_completo`
---
-
-DROP TABLE IF EXISTS `entredestinos_reservas_completo`;
-/*!50001 DROP VIEW IF EXISTS `entredestinos_reservas_completo`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `entredestinos_reservas_completo` AS SELECT 
- 1 AS `id`,
- 1 AS `idvuelo`,
- 1 AS `fechayhora`,
- 1 AS `desde`,
- 1 AS `destino`,
- 1 AS `matricula`,
- 1 AS `duracion`,
- 1 AS `idusuario`,
- 1 AS `tipoAsiento`,
- 1 AS `numeroAsiento`,
- 1 AS `servicio`*/;
-SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `modelos`
@@ -231,24 +186,6 @@ LOCK TABLES `modelos` WRITE;
 INSERT INTO `modelos` VALUES (2,'Calandria','Orbital',300,'1,2,3',200,75,25),(3,'Colibri','Orbital',120,'1,2,3',100,18,2),(4,'Zorzal','BA',100,'2,3',50,0,50),(5,'Carancho','BA',110,'2,3',110,0,0),(6,'Aguilucho','BA',60,'2,3',0,50,10),(7,'Canario','BA',80,'2,3',0,70,10),(8,'Aguila','AA',300,'2,3',200,75,25),(9,'Condor','AA',350,'2,3',300,10,40),(10,'Halcon','AA',200,'3',150,25,25),(11,'Guanaco','AA',100,'3',0,0,100);
 /*!40000 ALTER TABLE `modelos` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Temporary view structure for view `modelosynaves`
---
-
-DROP TABLE IF EXISTS `modelosynaves`;
-/*!50001 DROP VIEW IF EXISTS `modelosynaves`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `modelosynaves` AS SELECT 
- 1 AS `matricula`,
- 1 AS `modelo`,
- 1 AS `tipo`,
- 1 AS `capacidadTotal`,
- 1 AS `cap_gen`,
- 1 AS `cap_fam`,
- 1 AS `cap_sui`*/;
-SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `nave_espacial`
@@ -352,7 +289,7 @@ CREATE TABLE `suborbitales_pagos` (
   PRIMARY KEY (`id`),
   KEY `usuario_idx` (`usuario`),
   CONSTRAINT `usuario` FOREIGN KEY (`usuario`) REFERENCES `usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -386,7 +323,7 @@ CREATE TABLE `suborbitales_reservas` (
   KEY `usuario_idx` (`usuario`),
   KEY `matricula_idx` (`matricula`),
   CONSTRAINT `suborbitales_reservas_ibfk_1` FOREIGN KEY (`usuario`) REFERENCES `usuario` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -395,7 +332,7 @@ CREATE TABLE `suborbitales_reservas` (
 
 LOCK TABLES `suborbitales_reservas` WRITE;
 /*!40000 ALTER TABLE `suborbitales_reservas` DISABLE KEYS */;
-INSERT INTO `suborbitales_reservas` VALUES (65,'2021-11-29 09:00:00','Buenos aires','O9',NULL,NULL,NULL,NULL),(66,'2021-11-29 09:00:00','Buenos aires','O9',59,'general',4,'gourmet'),(67,'1970-01-01 00:00:00','','O7',NULL,NULL,NULL,NULL),(68,'2021-11-29 09:00:00','Buenos aires','O9',1,'general',6,'gourmet'),(69,'2021-12-06 09:00:00','Ankara','O2',NULL,NULL,NULL,NULL),(72,'2021-12-06 09:00:00','Ankara','O2',61,'general',15,'gourmet'),(73,'2021-12-06 09:00:00','Ankara','O2',61,'general',14,'gourmet'),(74,'2021-12-06 09:00:00','Ankara','O2',61,'general',13,'gourmet'),(75,'2021-12-06 09:00:00','Ankara','O2',61,'general',12,'gourmet'),(76,'2021-12-06 09:00:00','Ankara','O2',61,'general',11,'gourmet'),(77,'2021-12-06 09:00:00','Ankara','O2',61,'general',10,'gourmet');
+INSERT INTO `suborbitales_reservas` VALUES (65,'2021-11-29 09:00:00','Buenos aires','O9',NULL,NULL,NULL,NULL),(66,'2021-11-29 09:00:00','Buenos aires','O9',59,'general',4,'gourmet'),(67,'1970-01-01 00:00:00','','O7',NULL,NULL,NULL,NULL),(68,'2021-11-29 09:00:00','Buenos aires','O9',1,'general',6,'gourmet'),(69,'2021-12-06 09:00:00','Ankara','O2',NULL,NULL,NULL,NULL),(72,'2021-12-06 09:00:00','Ankara','O2',61,'general',15,'gourmet'),(73,'2021-12-06 09:00:00','Ankara','O2',61,'general',14,'gourmet'),(74,'2021-12-06 09:00:00','Ankara','O2',61,'general',13,'gourmet'),(75,'2021-12-06 09:00:00','Ankara','O2',61,'general',12,'gourmet'),(76,'2021-12-06 09:00:00','Ankara','O2',61,'general',11,'gourmet'),(77,'2021-12-06 09:00:00','Ankara','O2',61,'general',10,'gourmet'),(78,'2021-12-06 09:00:00','Buenos aires','O3',NULL,NULL,NULL,NULL),(79,'2021-12-06 18:00:00','Buenos aires','O7',NULL,NULL,NULL,NULL),(80,'2021-12-06 13:00:00','Buenos aires','O6',NULL,NULL,NULL,NULL),(81,'2021-12-06 13:00:00','Buenos aires','O6',59,'familiar',3,'standard');
 /*!40000 ALTER TABLE `suborbitales_reservas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -553,60 +490,6 @@ LOCK TABLES `vuelo` WRITE;
 /*!40000 ALTER TABLE `vuelo` DISABLE KEYS */;
 /*!40000 ALTER TABLE `vuelo` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Final view structure for view `entredestinos_pagos_completo`
---
-
-/*!50001 DROP VIEW IF EXISTS `entredestinos_pagos_completo`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `entredestinos_pagos_completo` AS select `edp`.`id` AS `id`,`edp`.`idvuelo` AS `idvuelo`,`ed`.`fechayhora` AS `fechayhora`,`ed`.`desde` AS `desde`,`ed`.`destino` AS `destino`,`ed`.`matricula` AS `matricula`,`ed`.`duracion` AS `duracion`,`edp`.`idusuario` AS `idusuario`,`edp`.`tipoAsiento` AS `tipoAsiento`,`edp`.`numeroAsiento` AS `numeroAsiento`,`edp`.`servicio` AS `servicio`,`edp`.`id_preferencia` AS `id_preferencia` from (`entredestinos_pagos` `edp` join `entredestinos` `ed` on((`edp`.`idvuelo` = `ed`.`id`))) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `entredestinos_reservas_completo`
---
-
-/*!50001 DROP VIEW IF EXISTS `entredestinos_reservas_completo`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `entredestinos_reservas_completo` AS select `edr`.`id` AS `id`,`edr`.`idvuelo` AS `idvuelo`,`ed`.`fechayhora` AS `fechayhora`,`ed`.`desde` AS `desde`,`ed`.`destino` AS `destino`,`ed`.`matricula` AS `matricula`,`ed`.`duracion` AS `duracion`,`edr`.`idusuario` AS `idusuario`,`edr`.`tipoAsiento` AS `tipoAsiento`,`edr`.`numeroAsiento` AS `numeroAsiento`,`edr`.`servicio` AS `servicio` from (`entredestinos_reservas` `edr` join `entredestinos` `ed` on((`edr`.`idvuelo` = `ed`.`id`))) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `modelosynaves`
---
-
-/*!50001 DROP VIEW IF EXISTS `modelosynaves`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_general_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `modelosynaves` AS select `ne`.`matricula` AS `matricula`,`m`.`modelo` AS `modelo`,`m`.`tipo` AS `tipo`,`m`.`capacidadTotal` AS `capacidadTotal`,`m`.`cap_gen` AS `cap_gen`,`m`.`cap_fam` AS `cap_fam`,`m`.`cap_sui` AS `cap_sui` from (`nave_espacial` `ne` join `modelos` `m` on((`m`.`id` = `ne`.`modelo`))) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -617,4 +500,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-11-30 12:10:18
+-- Dump completed on 2021-11-30 16:26:59
