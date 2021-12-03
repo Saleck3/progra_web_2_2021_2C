@@ -574,7 +574,7 @@ class VuelosController
         $res = array();
         
         //Si tengo una sola reserva, el for hace cualquier cosa asi que chequeo
-        if(isset($asientosOcupadosDelVuelo["tipoAsiento"])){
+        if(isset($asientosOcupadosDelVuelo["tipoAsiento"]) && $asientosOcupadosDelVuelo["tipoAsiento"] != NULL) {
             $asientosOcupadosDelVueloDos[$asientosOcupadosDelVuelo ['tipoAsiento']][$asientosOcupadosDelVuelo ['numeroAsiento']] = $asientosOcupadosDelVuelo['numeroAsiento'];
         }else{
             for ($i = 0; $i < sizeof($asientosOcupadosDelVuelo); $i++) {
