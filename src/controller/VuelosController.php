@@ -10,8 +10,9 @@ class VuelosController
     private $qr;
     private $MP;
     private $mailer;
+    private $seguridad;
     
-    public function __construct($logger, $printer, $vuelosModel, $pdf, $qr, $mailer, $MP)
+    public function __construct($logger, $printer, $vuelosModel, $pdf, $qr, $mailer, $MP, $seguridad)
     {
         $this->vuelosModel = $vuelosModel;
         $this->log = $logger;
@@ -20,6 +21,7 @@ class VuelosController
         $this->qr = $qr;
         $this->MP = $MP;
         $this->mailer = $mailer;
+        $this->seguridad = $seguridad;
     }
     
     function show()
@@ -29,12 +31,14 @@ class VuelosController
     
     function entreDestinos()
     {
+        $this->seguridad->estaLogueado($_SESSION["id"], null);
         $data['vuelos'] = $this->vuelosModel->getVuelosED();
         echo $this->printer->render("view/entreDestinosView.html", $data);
     }
     
     function tour()
     {
+        $this->seguridad->estaLogueado($_SESSION["id"], null);
         $data["hoy"] = $this->primerDomingo(date('Y-m-d'));
         
         if (isset($_POST["date"])) {
@@ -107,7 +111,7 @@ class VuelosController
     
     function suborbital()
     {
-        
+        $this->seguridad->estaLogueado($_SESSION["id"], null);
         $data["hoy"] = date('Y-m-d');
         if (isset($_POST["date"]) && $_POST["date"]) {
             $data['diaSeleccionado'] = $_POST["date"];

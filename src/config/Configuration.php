@@ -18,7 +18,7 @@ class Configuration
     {
         require_once("controller/VuelosController.php");
         return new VuelosController($this->getLogger(), $this->createPrinter(), $this->createVuelosModel(),
-            $this->createPdfController(), $this->createQrController(), $this->createMailer(), $this->createMercadoPagoController());
+            $this->createPdfController(), $this->createQrController(), $this->createMailer(), $this->createMercadoPagoController(), $this->createSeguridadController());
     }
 
     private function createUsuarioModel()
@@ -136,5 +136,11 @@ class Configuration
     {
         require_once 'model/ReportesModel.php';
         return new ReportesModel($this->getDatabase());
+    }
+
+    public function createSeguridadController()
+    {
+        require_once "helpers/SeguridadController.php";
+        return new SeguridadController();
     }
 }
