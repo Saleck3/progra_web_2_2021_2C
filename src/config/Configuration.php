@@ -93,7 +93,7 @@ class Configuration
     public function createReservasController()
     {
         require_once("controller/ReservasController.php");
-        return new ReservasController($this->createPrinter(), $this->createReservasModel(), $this->createUsuarioModel(), $this->createMailer());
+        return new ReservasController($this->createPrinter(), $this->createReservasModel(), $this->createUsuarioModel(), $this->createMailer(), $this->createSeguridadController());
     }
 
     public function createDebugController()
@@ -129,7 +129,7 @@ class Configuration
     public function createReportesController()
     {
         require_once 'controller/ReportesController.php';
-        return new ReportesController($this->createReportesModel(), $this->createPrinter());
+        return new ReportesController($this->createReportesModel(), $this->createPrinter(), $this->createSeguridadController());
     }
 
     public function createReportesModel()
