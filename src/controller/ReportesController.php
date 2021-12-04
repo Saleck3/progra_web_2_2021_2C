@@ -23,24 +23,20 @@ class ReportesController
 
         echo $this->printer->render("view/altaVuelosView.html");
     }
-//
-//    public function registrarVuelo(){
-//        $data["fecha"] = $_POST["fecha"];
-//        $data["hora"] = $_POST["hora"];
-//        $data["partida"] = $_POST["partida"];
-//        $data["destino"] = $_POST["destino"];
-//        $data["duracion"] = $_POST["duracion"];
-//        $data["matricula"] = $_POST["matricula"];
-//            var_dump($data);
-//        if ($this->VuelosModel->registrarVueloEntreDestinos($data)) {
-//            $_SESSION["mensaje"]["class"] = "exito";
-//            $_SESSION["mensaje"]["mensaje"] = "Vuelo creado con exito";
-//            header('Location: /');
-//        } else {
-//            $_SESSION["mensaje"]["class"] = "error";
-//            $_SESSION["mensaje"]["mensaje"] = "Error al crear vuelo";
-//
-//            echo $this->printer->render("view/altaVuelosView.html");
-//        }
-//    }
+
+    public function ventas(){
+
+        echo $this->printer->render("view/reportesView.html");
+    }
+    public function datos(){
+
+
+        $ventas = array(
+            'suborbital'=>$this->model-> countSuborbitales(),
+            'tour'=>$this->model-> countTour(),
+            'entreDestinos'=>$this->model-> countEntreDestinos());
+
+        echo json_encode($ventas);
+    }
+
 }

@@ -23,8 +23,25 @@ class ReportesModel
     
     public function getEntreDestinos($usuario)
     {
-        $SQL = "SELECT * FROM entredestinos_reservas_completo where idusuario = $usuario";
+        $SQL = "SELECT * FROM entredestinos_reservas where idusuario = $usuario";
         return $this->database->query($SQL);
     }
-    
+
+    public function countSuborbitales(){
+        $sql = "SELECT COUNT(*) AS  a FROM suborbitales_reservas ";
+        $res = $this->database->query($sql);
+        return (int)$res['a'];
+    }
+
+    public function countTour(){
+        $sql = "SELECT COUNT(*) AS  a FROM tour_reservas ";
+        $res = $this->database->query($sql);
+        return (int)$res['a'];
+    }
+
+    public function countEntreDestinos(){
+        $sql = "SELECT COUNT(*) AS  a FROM entredestinos_reservas ";
+        $res= $this->database->query($sql);
+        return (int)$res['a'];
+    }
 }
