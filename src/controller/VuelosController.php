@@ -31,14 +31,12 @@ class VuelosController
     
     function entreDestinos()
     {
-        $this->seguridad->estaLogueado($_SESSION["id"], null);
         $data['vuelos'] = $this->vuelosModel->getVuelosED();
         echo $this->printer->render("view/entreDestinosView.html", $data);
     }
     
     function tour()
     {
-        $this->seguridad->estaLogueado($_SESSION["id"], null);
         $data["hoy"] = $this->primerDomingo(date('Y-m-d'));
         
         if (isset($_POST["date"])) {
@@ -111,7 +109,6 @@ class VuelosController
     
     function suborbital()
     {
-        $this->seguridad->estaLogueado($_SESSION["id"], null);
         $data["hoy"] = date('Y-m-d');
         if (isset($_POST["date"]) && $_POST["date"]) {
             $data['diaSeleccionado'] = $_POST["date"];
@@ -171,13 +168,8 @@ class VuelosController
     
     function suborbital_reserva()
     {
-        //Me aseguro que este logueado
-        if (!isset($_SESSION["id"])) {
-            $_SESSION["mensaje"]["class"] = "warning";
-            $_SESSION["mensaje"]["mensaje"] = "Debe loguearse para poder reservar un vuelo";
-            header('Location: /login');
-            die();
-        }
+        $this->seguridad->estaLogueado($_SESSION["id"], null);
+
         $tipo = $this->vuelosModel->tipoUsuario($_SESSION["id"]);
         if (!$tipo["tipo"]) {
             $_SESSION["mensaje"]["class"] = "warning";
@@ -231,13 +223,8 @@ class VuelosController
     
     function tour_reserva()
     {
-        //Me aseguro que este logueado
-        if (!isset($_SESSION["id"])) {
-            $_SESSION["mensaje"]["class"] = "warning";
-            $_SESSION["mensaje"]["mensaje"] = "Debe loguearse para poder reservar un vuelo";
-            header('Location: /login');
-            die();
-        }
+
+        $this->seguridad->estaLogueado($_SESSION["id"], null);
         
         $tipo = $this->vuelosModel->tipoUsuario($_SESSION["id"]);
         if (!$tipo["tipo"]) {
@@ -291,13 +278,7 @@ class VuelosController
     
     function entreDestinos_reserva()
     {
-        //Me aseguro que este logueado
-        if (!isset($_SESSION["id"])) {
-            $_SESSION["mensaje"]["class"] = "warning";
-            $_SESSION["mensaje"]["mensaje"] = "Debe loguearse para poder reservar un vuelo";
-            header('Location: /login');
-            die();
-        }
+        $this->seguridad->estaLogueado($_SESSION["id"], null);
         
         $tipo = $this->vuelosModel->tipoUsuario($_SESSION["id"]);
         if (!$tipo["tipo"]) {

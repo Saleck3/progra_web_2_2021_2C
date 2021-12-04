@@ -8,6 +8,7 @@ class SeguridadController{
     function estaLogueado($idUsuario, $esAdmin = null){
         if(!isset($idUsuario)){
             header('Location: /Login');
+            die();
         }
 
         if(isset($esAdmin)){
