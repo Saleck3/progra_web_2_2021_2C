@@ -18,7 +18,7 @@ class Configuration
     {
         require_once("controller/VuelosController.php");
         return new VuelosController($this->getLogger(), $this->createPrinter(), $this->createVuelosModel(),
-            $this->createPdfController(), $this->createQrController(), $this->createMailer(), $this->createMercadoPagoController());
+            $this->createPdfController(), $this->createQrController(), $this->createMailer(), $this->createMercadoPagoController(), $this->createSeguridadController());
     }
 
     private function createUsuarioModel()
@@ -93,7 +93,7 @@ class Configuration
     public function createReservasController()
     {
         require_once("controller/ReservasController.php");
-        return new ReservasController($this->createPrinter(), $this->createReservasModel(), $this->createUsuarioModel(), $this->createMailer());
+        return new ReservasController($this->createPrinter(), $this->createReservasModel(), $this->createUsuarioModel(), $this->createMailer(), $this->createSeguridadController());
     }
 
     public function createDebugController()
@@ -129,12 +129,18 @@ class Configuration
     public function createReportesController()
     {
         require_once 'controller/ReportesController.php';
-        return new ReportesController($this->createReportesModel(), $this->createPrinter());
+        return new ReportesController($this->createReportesModel(), $this->createPrinter(), $this->createSeguridadController());
     }
 
     public function createReportesModel()
     {
         require_once 'model/ReportesModel.php';
         return new ReportesModel($this->getDatabase());
+    }
+
+    public function createSeguridadController()
+    {
+        require_once "helpers/SeguridadController.php";
+        return new SeguridadController();
     }
 }

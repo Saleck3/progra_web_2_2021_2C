@@ -6,18 +6,21 @@ class ReservasController
     private $reservasModel;
     private $usuarioModel;
     private $mailer;
+    private $seguridad;
     
-    public function __construct($printer, $reservasModel, $usuarioModel, $mailer)
+    public function __construct($printer, $reservasModel, $usuarioModel, $mailer, $seguridad)
     {
         $this->printer = $printer;
         $this->reservasModel = $reservasModel;
         $this->usuarioModel = $usuarioModel;
         $this->mailer = $mailer;
+        $this->seguridad = $seguridad;
     }
     
     function show()
     {
-        
+        $this->seguridad->estaLogueado($_SESSION["id"], null);
+
         if (!$data["conTipo"] = $this->reservasModel->getTipo($_SESSION["id"])) {
             $data["sedes"] = $this->reservasModel->getSedes();
         }
