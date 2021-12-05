@@ -283,5 +283,15 @@ class VuelosModel
         VALUES (" . $datos['idvuelo'] . "," . $datos['idusuario'] . ",'" . $datos['tipoAsiento'] . "','" . $datos['numeroAsiento'] . "','" . $datos['servicio'] . "');";
         return $this->database->insert($sql);
     }
-    
+
+    public function registrarVueloEntreDestinos($data)
+
+    {
+
+        $sql = "INSERT INTO entredestinos(fechayhora, desde, destino, duracion, matricula) 
+                VALUES ('" . $data["fecha"] . " " . $data["hora"] . "','".$data["partida"]."','".$data["destino"]."','".$data["duracion"]."','".$data["matricula"]."');";
+
+        return $this->database->insert($sql);
+    }
+
 }

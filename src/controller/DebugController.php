@@ -14,6 +14,7 @@ class DebugController
     
     function show()
     {
+        SeguridadController::estaLogueado();
         $_SESSION["debug"] = TRUE;
         $_SESSION["mensaje"]["class"] = "exito";
         $_SESSION["mensaje"]["mensaje"] = "Modo debug iniciado";

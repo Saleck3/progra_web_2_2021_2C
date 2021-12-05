@@ -1,0 +1,57 @@
+{{> header}}
+<div class="w3-container w3-black ">
+    <h3>Alta de Vuelos Entre Destinos</h3>
+</div>
+
+</div>
+<div id="registrarme" class="w3-container w3-content w3-white w3-margin-top w3-margin-bottom w3-round-xlarge">
+
+    <h2 class="w3-margin">Datos del vuelo</h2>
+    <div class="w3-container w3-content">
+        <form class="w3-container " action="/vuelos/registrarVuelo" method="post">
+            <label class="w3-margin-bottom" for="fecha">seleccione la fecha del vuelo:</label>
+            <input class="w3-input w3-margin-bottom" type="date" id="fecha" name="fecha">
+            <label class="w3-margin-bottom" for="hora">seleccione la hora del vuelo:</label>
+            <input class="w3-input w3-margin-bottom" type="time" id="hora" name="hora" step="2" required>
+
+            <label class="w3-margin-bottom" for="partida">Aeropuerto de salida</label>
+            <select class="w3-select w3-margin-bottom" name="partida" id="partida">
+                <option value="" disabled selected>Seleccione Partida</option>
+                <option value="EEI">EEI</option>
+                <option value="orbiter hotel">Orbiter Hotel</option>
+                <option value="luna">Luna</option>
+                <option value="marte">Marte</option>
+                <option value="ganimedes">Ganimedes</option>
+                <option value="europa">Europa</option>
+                <option value="io">Io</option>
+                <option value="encedalo">Encedalo</option>
+                <option value="titan">Titán</option>
+                <option value="buenos aires">Buenos Aires</option>
+                <option value="ankara">Ankara</option>
+            </select>
+            <label class="w3-margin-bottom" for="destino">Aeropuerto de llegada</label>
+            <select class="w3-select w3-margin-bottom" name="destino" id="destino">
+                <option value="" disabled selected>Seleccione Destino</option>
+                <option value="EEI">EEI</option>
+                <option value="orbiter hotel">Orbiter Hotel</option>
+                <option value="luna">Luna</option>
+                <option value="marte">Marte</option>
+                <option value="ganimedes">Ganimedes</option>
+                <option value="europa">Europa</option>
+                <option value="io">Io</option>
+                <option value="encedalo">Encedalo</option>
+                <option value="titan">Titán</option>
+                <option value="buenos aires">Buenos Aires</option>
+                <option value="ankara">Ankara</option>
+            </select>
+            <label class="w3-margin-bottom" for="duracion">Duracion del vuelo horas</label>
+            <input class="w3-input w3-margin-bottom" type="number" id="duracion" name="duracion">
+            <label class="w3-margin-bottom" for="matricula">Matricula Aeronave</label>
+            <input class="w3-input w3-margin-bottom" name="matricula" id="matricula">
+
+
+            <input type="submit" class="w3-button w3-black w3-margin-bottom w3-round-xlarge" value="Confirmar">
+        </form>
+    </div>
+</div>
+{{> footer}}
