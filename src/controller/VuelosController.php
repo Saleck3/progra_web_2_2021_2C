@@ -10,9 +10,8 @@ class VuelosController
     private $qr;
     private $MP;
     private $mailer;
-    private $seguridad;
     
-    public function __construct($logger, $printer, $vuelosModel, $pdf, $qr, $mailer, $MP, $seguridad)
+    public function __construct($logger, $printer, $vuelosModel, $pdf, $qr, $mailer, $MP)
     {
         $this->vuelosModel = $vuelosModel;
         $this->log = $logger;
@@ -21,12 +20,37 @@ class VuelosController
         $this->qr = $qr;
         $this->MP = $MP;
         $this->mailer = $mailer;
-        $this->seguridad = $seguridad;
     }
+    
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //Funciones publicas
     
     function show()
     {
         echo $this->printer->render("view/vuelosView.html");
+    }
+    
+    function suborbital()
+    {
+        $data["hoy"] = date('Y-m-d');
+        if (isset($_POST["date"]) && $_POST["date"]) {
+            $data['diaSeleccionado'] = $_POST["date"];
+            $data['vuelos'] = $this->vuelosModel->getVuelosDia($data["diaSeleccionado"], $_POST["desde"]);
+        } else if (isset($_POST["desde"])) {
+            $data['vuelos'] = $this->vuelosModel->getVuelosDesde($_POST["desde"]);
+        } else {
+            $data['vuelos'] = $this->vuelosModel->getVuelos();
+        }
+        
+        //Agrego debug porque seria raro tenes vacios
+        if (sizeof($data['vuelos']) == 0 && isset($_SESSION["debug"])) {
+            var_dump($_POST);
+        }
+        
+        //Agrego los dias, si me llego un dia paso ese, sino, la fecha de hoy
+        $this->agregarDia($data['vuelos'], isset($data["diaSeleccionado"]) ? $data["diaSeleccionado"] : $data["hoy"]);
+        
+        echo $this->printer->render("view/suborbitalView.html", $data);
     }
     
     function entreDestinos()
@@ -55,121 +79,13 @@ class VuelosController
         echo $this->printer->render("view/tourView.html", $data);
     }
     
-    function agregarFechasDeVuelo($vuelos, $fecha)
-    {
-        $esDomingo = strtotime($fecha);
-        global $DIAS;
-        $resultado = array();
-        
-        for ($i = 0; sizeof($resultado) < 15; $i++) {
-            if (!isset($vuelos[$i])) {
-                $i = 0;
-            }
-            $vuelos[$i]["nroDia"] = strtotime("+" . sizeof($resultado) . " week", $esDomingo);
-            $vuelos[$i]["nroDia"] = date("d/m/Y", $vuelos[$i]["nroDia"]);
-            array_push($resultado, $vuelos[$i]);
-        }
-        return $resultado;
-    }
-    
-    function primerDomingo($fecha)
-    {
-        $num = strtotime($fecha);
-        $fechaConvertir = date('w', $num);
-        switch ($fechaConvertir) {
-            case 1:
-                $numLunes = strtotime("+6 day", $num);
-                return $fecha = date("Y-m-d", $numLunes);
-                break;
-            case 2:
-                $numMartes = strtotime("+5 day", $num);
-                return $fecha = date("Y-m-d", $numMartes);
-                break;
-            case 3:
-                $numMiercoles = strtotime("+4 day", $num);
-                return $fecha = date("Y-m-d", $numMiercoles);
-                break;
-            case 4:
-                $numJueves = strtotime("+3 day", $num);
-                return $fecha = date("Y-m-d", $numJueves);
-                break;
-            case 5:
-                $numViernes = strtotime("+2 day", $num);
-                return $fecha = date("Y-m-d", $numViernes);
-                break;
-            case 6:
-                $numSabado = strtotime("+1 day", $num);
-                return $fecha = date("Y-m-d", $numSabado);
-                break;
-            default:
-                return $fecha;
-                break;
-        }
-    }
-    
-    function suborbital()
-    {
-        $data["hoy"] = date('Y-m-d');
-        if (isset($_POST["date"]) && $_POST["date"]) {
-            $data['diaSeleccionado'] = $_POST["date"];
-            $data['vuelos'] = $this->vuelosModel->getVuelosDia($data["diaSeleccionado"], $_POST["desde"]);
-        } else if (isset($_POST["desde"])) {
-            $data['vuelos'] = $this->vuelosModel->getVuelosDesde($_POST["desde"]);
-        } else {
-            $data['vuelos'] = $this->vuelosModel->getVuelos();
-        }
-        
-        //Agrego debug porque seria raro tenes vacios
-        if (sizeof($data['vuelos']) == 0 && isset($_SESSION["debug"])) {
-            var_dump($_POST);
-        }
-        
-        //Agrego los dias, si me llego un dia paso ese, sino, la fecha de hoy
-        $this->agregarDia($data['vuelos'], isset($data["diaSeleccionado"]) ? $data["diaSeleccionado"] : $data["hoy"]);
-        
-        echo $this->printer->render("view/suborbitalView.html", $data);
-    }
-    
-    /**
-     * Agrega el numero del dia a todos los vuelos
-     *
-     * @param $array Array de vuelos
-     * @param $fechaEstatica fecha del vuelo o fecha de donde empezar a contar
-     */
-    private function agregarDia(&$array, $fechaEstatica)
-    {
-        //convierto a formato unix
-        $fechaEstatica = strtotime($fechaEstatica);
-        
-        global $DIAS;
-        $numeros = array();
-        
-        //Segun el nombre del dia, seteo el numero
-        //Si hoy es sabado 15, el $numeros en sabado va a tener 15
-        //Luego, va a recorrer, por lo que el viernes va a ser hoy +6 = 21
-        //el array quedaria
-        // Sabado => 15
-        // Domingo => 16
-        // Lunes => 17
-        // etc
-        for ($i = -1; $i <= 6; $i++) {
-            //El dia de entrada, mas los dias que ya recorri
-            $n = strtotime("+$i day", $fechaEstatica);
-            
-            //$DIAS tiene del 0 al 6, empezando por domingo
-            $numeros[$DIAS[date('w', $n)]] = $n;
-        }
-        
-        //Segun el dia del vuelo, asigno "nroDia"
-        foreach ($array as &$vuelo) {
-            $vuelo["nroDia"] = date("d/m/Y", $numeros[$vuelo["dia"]]);
-        }
-    }
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //Funciones de reservas
     
     function suborbital_reserva()
     {
-        $this->seguridad->estaLogueado($_SESSION["id"], null);
-
+        SeguridadController::estaLogueado();
+        
         $tipo = $this->vuelosModel->tipoUsuario($_SESSION["id"]);
         if (!$tipo["tipo"]) {
             $_SESSION["mensaje"]["class"] = "warning";
@@ -220,11 +136,10 @@ class VuelosController
         echo $this->printer->render("view/suborbital_reservaView.html", $data);
     }
     
-    
     function tour_reserva()
     {
-
-        $this->seguridad->estaLogueado($_SESSION["id"], null);
+        
+        SeguridadController::estaLogueado();
         
         $tipo = $this->vuelosModel->tipoUsuario($_SESSION["id"]);
         if (!$tipo["tipo"]) {
@@ -266,7 +181,7 @@ class VuelosController
         
         //Segun el tipo de avion, los asientos que tenga
         $cantidadDeAsientosPorTipo = $this->vuelosModel->cantidadAsientosPorTipo($data["matricula"]);
-        $asientosOcupadosDelVuelo = $this->vuelosModel->asientosReservadosTour($data["fecha"],$data["horario"],$data["partida"],$data["matricula"]);
+        $asientosOcupadosDelVuelo = $this->vuelosModel->asientosReservadosTour($data["fecha"], $data["horario"], $data["partida"], $data["matricula"]);
         $data["asientos"] = $this->imprimirAsientos($cantidadDeAsientosPorTipo, $asientosOcupadosDelVuelo);
         
         //armar el combo box segun la cantidad
@@ -278,7 +193,7 @@ class VuelosController
     
     function entreDestinos_reserva()
     {
-        $this->seguridad->estaLogueado($_SESSION["id"], null);
+        SeguridadController::estaLogueado();
         
         $tipo = $this->vuelosModel->tipoUsuario($_SESSION["id"]);
         if (!$tipo["tipo"]) {
@@ -323,9 +238,12 @@ class VuelosController
         echo $this->printer->render("view/entreDestinos_reservaView.html", $data);
     }
     
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //Funciones de pagos y confirmacion de reservas
     
     public function generarPago()
     {
+        SeguridadController::estaLogueado();
         
         $data = array();
         $data["fecha"] = $_POST["fecha"];
@@ -372,8 +290,32 @@ class VuelosController
         
     }
     
+    public function registrarVuelo()
+    {
+        SeguridadController::estaLogueado();
+        
+        $data["fecha"] = $_POST["fecha"];
+        $data["hora"] = $_POST["hora"];
+        $data["partida"] = $_POST["partida"];
+        $data["destino"] = $_POST["destino"];
+        $data["duracion"] = $_POST["duracion"];
+        $data["matricula"] = $_POST["matricula"];
+        if ($this->vuelosModel->registrarVueloEntreDestinos($data)) {
+            $_SESSION["mensaje"]["class"] = "exito";
+            $_SESSION["mensaje"]["mensaje"] = "Vuelo creado con exito";
+            header('Location:/');
+        } else {
+            $_SESSION["mensaje"]["class"] = "error";
+            $_SESSION["mensaje"]["mensaje"] = "Error al crear vuelo";
+            
+            echo $this->printer->render("view/altaVuelosView.html");
+        }
+    }
+    
     function generarComprobante()
     {
+        SeguridadController::estaLogueado();
+        
         //Chequear el ok del pago
         if ($_GET["collection_status"] != 'approved') {
             $_SESSION["mensaje"]["class"] = "error";
@@ -449,6 +391,8 @@ class VuelosController
     
     function generarPagoTour()
     {
+        SeguridadController::estaLogueado();
+        
         $data = array();
         $data["fecha"] = $_POST["fecha"];
         $data["hora"] = $_POST["hora"];
@@ -492,7 +436,7 @@ class VuelosController
     
     public function generarPagoEntreDestinos()
     {
-        
+        SeguridadController::estaLogueado();
         $data = array();
         $data["idvuelo"] = $_POST["idvuelo"];
         $data["tipo_asiento"] = $_POST["tipo_asiento"];
@@ -533,9 +477,7 @@ class VuelosController
         
     }
     
-    
-    public
-    function errorDePago()
+    public function errorDePago()
     {
         $_SESSION["mensaje"]["class"] = "error";
         $_SESSION["mensaje"]["mensaje"] = "Hubo un error en el pago";
@@ -543,8 +485,7 @@ class VuelosController
         die();
     }
     
-    public
-    function cobroPendiente()
+    public function cobroPendiente()
     {
         $_SESSION["mensaje"]["class"] = "error";
         $_SESSION["mensaje"]["mensaje"] = "El pago esta pendiente de cobro";
@@ -552,22 +493,112 @@ class VuelosController
         die();
     }
     
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //Funciones helper
     
-    function imprimirAsientos($cantidadDeAsientosPorTipo, $asientosOcupadosDelVuelo)
+    private function agregarFechasDeVuelo($vuelos, $fecha)
+    {
+        $esDomingo = strtotime($fecha);
+        global $DIAS;
+        $resultado = array();
+        
+        for ($i = 0; sizeof($resultado) < 15; $i++) {
+            if (!isset($vuelos[$i])) {
+                $i = 0;
+            }
+            $vuelos[$i]["nroDia"] = strtotime("+" . sizeof($resultado) . " week", $esDomingo);
+            $vuelos[$i]["nroDia"] = date("d/m/Y", $vuelos[$i]["nroDia"]);
+            array_push($resultado, $vuelos[$i]);
+        }
+        return $resultado;
+    }
+    
+    private function primerDomingo($fecha)
+    {
+        $num = strtotime($fecha);
+        $fechaConvertir = date('w', $num);
+        switch ($fechaConvertir) {
+            case 1:
+                $numLunes = strtotime("+6 day", $num);
+                return $fecha = date("Y-m-d", $numLunes);
+                break;
+            case 2:
+                $numMartes = strtotime("+5 day", $num);
+                return $fecha = date("Y-m-d", $numMartes);
+                break;
+            case 3:
+                $numMiercoles = strtotime("+4 day", $num);
+                return $fecha = date("Y-m-d", $numMiercoles);
+                break;
+            case 4:
+                $numJueves = strtotime("+3 day", $num);
+                return $fecha = date("Y-m-d", $numJueves);
+                break;
+            case 5:
+                $numViernes = strtotime("+2 day", $num);
+                return $fecha = date("Y-m-d", $numViernes);
+                break;
+            case 6:
+                $numSabado = strtotime("+1 day", $num);
+                return $fecha = date("Y-m-d", $numSabado);
+                break;
+            default:
+                return $fecha;
+                break;
+        }
+    }
+    
+    /**
+     * Agrega el numero del dia a todos los vuelos
+     *
+     * @param $array Array de vuelos
+     * @param $fechaEstatica fecha del vuelo o fecha de donde empezar a contar
+     */
+    private function agregarDia(&$array, $fechaEstatica)
+    {
+        //convierto a formato unix
+        $fechaEstatica = strtotime($fechaEstatica);
+        
+        global $DIAS;
+        $numeros = array();
+        
+        //Segun el nombre del dia, seteo el numero
+        //Si hoy es sabado 15, el $numeros en sabado va a tener 15
+        //Luego, va a recorrer, por lo que el viernes va a ser hoy +6 = 21
+        //el array quedaria
+        // Sabado => 15
+        // Domingo => 16
+        // Lunes => 17
+        // etc
+        for ($i = -1; $i <= 6; $i++) {
+            //El dia de entrada, mas los dias que ya recorri
+            $n = strtotime("+$i day", $fechaEstatica);
+            
+            //$DIAS tiene del 0 al 6, empezando por domingo
+            $numeros[$DIAS[date('w', $n)]] = $n;
+        }
+        
+        //Segun el dia del vuelo, asigno "nroDia"
+        foreach ($array as &$vuelo) {
+            $vuelo["nroDia"] = date("d/m/Y", $numeros[$vuelo["dia"]]);
+        }
+    }
+    
+    private function imprimirAsientos($cantidadDeAsientosPorTipo, $asientosOcupadosDelVuelo)
     {
         
         $res = array();
         
         //Si tengo una sola reserva, el for hace cualquier cosa asi que chequeo
-        if(isset($asientosOcupadosDelVuelo["tipoAsiento"]) && $asientosOcupadosDelVuelo["tipoAsiento"] != NULL) {
+        if (isset($asientosOcupadosDelVuelo["tipoAsiento"]) && $asientosOcupadosDelVuelo["tipoAsiento"] != NULL) {
             $asientosOcupadosDelVueloDos[$asientosOcupadosDelVuelo ['tipoAsiento']][$asientosOcupadosDelVuelo ['numeroAsiento']] = $asientosOcupadosDelVuelo['numeroAsiento'];
-        }else{
+        } else {
             for ($i = 0; $i < sizeof($asientosOcupadosDelVuelo); $i++) {
                 $indice = $asientosOcupadosDelVuelo[$i];
                 $asientosOcupadosDelVueloDos[$indice ['tipoAsiento']][$indice ['numeroAsiento']] = $indice['numeroAsiento'];
             }
         }
-    
+        
         $res["general"] = $res["familiar"] = $res["suite"] = "";
         for ($i = 0; $i < $cantidadDeAsientosPorTipo["cap_gen"]; $i++) {
             if (isset($asientosOcupadosDelVueloDos['general'][$i])) {
@@ -602,23 +633,5 @@ class VuelosController
         return $res;
         
     }
-    public function registrarVuelo(){
-        $data["fecha"] = $_POST["fecha"];
-        $data["hora"] = $_POST["hora"];
-        $data["partida"] = $_POST["partida"];
-        $data["destino"] = $_POST["destino"];
-        $data["duracion"] = $_POST["duracion"];
-        $data["matricula"] = $_POST["matricula"];
-        if ($this->vuelosModel->registrarVueloEntreDestinos($data)) {
-            $_SESSION["mensaje"]["class"] = "exito";
-            $_SESSION["mensaje"]["mensaje"] = "Vuelo creado con exito";
-            header('Location:/');
-        } else {
-            $_SESSION["mensaje"]["class"] = "error";
-            $_SESSION["mensaje"]["mensaje"] = "Error al crear vuelo";
-
-            echo $this->printer->render("view/altaVuelosView.html");
-        }
-    }
-
+    
 }
