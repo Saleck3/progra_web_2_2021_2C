@@ -112,7 +112,7 @@ CREATE TABLE `entredestinos_pagos` (
   PRIMARY KEY (`id`),
   KEY `vuelo_fk` (`idvuelo`),
   KEY `usuario_fk` (`idusuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -298,7 +298,7 @@ CREATE TABLE `suborbitales_pagos` (
 
 LOCK TABLES `suborbitales_pagos` WRITE;
 /*!40000 ALTER TABLE `suborbitales_pagos` DISABLE KEYS */;
-INSERT INTO `suborbitales_pagos` VALUES (13,'2021-11-29 09:00:00','Buenos aires','O9',61,'general',4,'gourmet','186927836-e0fe3ddc-1c1f-4c9d-af82-b18f9c6dc28a'),(14,'2021-11-29 09:00:00','Buenos aires','O9',61,'general',6,'gourmet','186927836-71175527-51f0-48c5-a8a8-d994460d6181'),(15,'0000-00-00 00:00:00','Buenos Aires','AA2',61,'general',226,'standard','186927836-8339f997-587d-41d2-b1fb-7e6058b58bff');
+INSERT INTO `suborbitales_pagos` VALUES (13,'2021-11-29 09:00:00','Buenos aires','O9',61,'general',4,'gourmet','186927836-e0fe3ddc-1c1f-4c9d-af82-b18f9c6dc28a'),(14,'2021-11-29 09:00:00','Buenos aires','O9',61,'general',6,'gourmet','186927836-71175527-51f0-48c5-a8a8-d994460d6181'),(15,'0000-00-00 00:00:00','Buenos Aires','AA2',61,'general',226,'standard','186927836-8339f997-587d-41d2-b1fb-7e6058b58bff'),(16,'2021-12-06 09:00:00','Buenos aires','O3',58,'familiar',3,'gourmet','186927836-937e7a6e-a185-4697-8cd4-e17e6829a3e7');
 /*!40000 ALTER TABLE `suborbitales_pagos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -323,7 +323,7 @@ CREATE TABLE `suborbitales_reservas` (
   KEY `usuario_idx` (`usuario`),
   KEY `matricula_idx` (`matricula`),
   CONSTRAINT `suborbitales_reservas_ibfk_1` FOREIGN KEY (`usuario`) REFERENCES `usuario` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=84 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -332,7 +332,7 @@ CREATE TABLE `suborbitales_reservas` (
 
 LOCK TABLES `suborbitales_reservas` WRITE;
 /*!40000 ALTER TABLE `suborbitales_reservas` DISABLE KEYS */;
-INSERT INTO `suborbitales_reservas` VALUES (65,'2021-11-29 09:00:00','Buenos aires','O9',NULL,NULL,NULL,NULL),(66,'2021-11-29 09:00:00','Buenos aires','O9',59,'general',4,'gourmet'),(67,'1970-01-01 00:00:00','','O7',NULL,NULL,NULL,NULL),(68,'2021-11-29 09:00:00','Buenos aires','O9',1,'general',6,'gourmet'),(69,'2021-12-06 09:00:00','Ankara','O2',NULL,NULL,NULL,NULL),(72,'2021-12-06 09:00:00','Ankara','O2',61,'general',15,'gourmet'),(73,'2021-12-06 09:00:00','Ankara','O2',61,'general',14,'gourmet'),(74,'2021-12-06 09:00:00','Ankara','O2',61,'general',13,'gourmet'),(75,'2021-12-06 09:00:00','Ankara','O2',61,'general',12,'gourmet'),(76,'2021-12-06 09:00:00','Ankara','O2',61,'general',11,'gourmet'),(77,'2021-12-06 09:00:00','Ankara','O2',61,'general',10,'gourmet'),(78,'2021-12-06 09:00:00','Buenos aires','O3',NULL,NULL,NULL,NULL),(79,'2021-12-06 18:00:00','Buenos aires','O7',NULL,NULL,NULL,NULL),(80,'2021-12-06 13:00:00','Buenos aires','O6',NULL,NULL,NULL,NULL),(81,'2021-12-06 13:00:00','Buenos aires','O6',59,'familiar',3,'standard');
+INSERT INTO `suborbitales_reservas` VALUES (65,'2021-11-29 09:00:00','Buenos aires','O9',NULL,NULL,NULL,NULL),(66,'2021-11-29 09:00:00','Buenos aires','O9',59,'general',4,'gourmet'),(67,'1970-01-01 00:00:00','','O7',NULL,NULL,NULL,NULL),(68,'2021-11-29 09:00:00','Buenos aires','O9',1,'general',6,'gourmet'),(69,'2021-12-06 09:00:00','Ankara','O2',NULL,NULL,NULL,NULL),(72,'2021-12-06 09:00:00','Ankara','O2',61,'general',15,'gourmet'),(73,'2021-12-06 09:00:00','Ankara','O2',61,'general',14,'gourmet'),(74,'2021-12-06 09:00:00','Ankara','O2',61,'general',13,'gourmet'),(75,'2021-12-06 09:00:00','Ankara','O2',61,'general',12,'gourmet'),(76,'2021-12-06 09:00:00','Ankara','O2',61,'general',11,'gourmet'),(77,'2021-12-06 09:00:00','Ankara','O2',61,'general',10,'gourmet'),(78,'2021-12-06 09:00:00','Buenos aires','O3',NULL,NULL,NULL,NULL),(79,'2021-12-06 18:00:00','Buenos aires','O7',NULL,NULL,NULL,NULL),(80,'2021-12-06 13:00:00','Buenos aires','O6',NULL,NULL,NULL,NULL),(81,'2021-12-06 13:00:00','Buenos aires','O6',59,'familiar',3,'standard'),(82,'2021-12-06 09:00:00','Buenos aires','O3',59,'general',24,'standard'),(83,'2021-12-06 09:00:00','Buenos aires','O3',58,'general',0,'gourmet');
 /*!40000 ALTER TABLE `suborbitales_reservas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -384,7 +384,7 @@ CREATE TABLE `tour_pagos` (
   PRIMARY KEY (`id`),
   KEY `usuario` (`usuario`),
   CONSTRAINT `tour_pagos_usuario` FOREIGN KEY (`usuario`) REFERENCES `usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -393,7 +393,7 @@ CREATE TABLE `tour_pagos` (
 
 LOCK TABLES `tour_pagos` WRITE;
 /*!40000 ALTER TABLE `tour_pagos` DISABLE KEYS */;
-INSERT INTO `tour_pagos` VALUES (12,'2021-12-05 09:00:00','Buenos aires','AA4',61,'suite',5,'standard','186927836-62d6d56c-bfd2-492f-baac-31d77cded6b5');
+INSERT INTO `tour_pagos` VALUES (12,'2021-12-05 09:00:00','Buenos aires','AA4',61,'suite',5,'standard','186927836-62d6d56c-bfd2-492f-baac-31d77cded6b5'),(13,'2022-01-23 09:00:00','Buenos aires','AA8',58,'suite',20,'gourmet','186927836-1456c0ac-95ca-434f-8c05-47f16a90a740');
 /*!40000 ALTER TABLE `tour_pagos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -416,7 +416,7 @@ CREATE TABLE `tour_reservas` (
   PRIMARY KEY (`id`),
   KEY `usuario` (`usuario`),
   CONSTRAINT `tour_reservas_ibfk_1` FOREIGN KEY (`usuario`) REFERENCES `usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -425,7 +425,7 @@ CREATE TABLE `tour_reservas` (
 
 LOCK TABLES `tour_reservas` WRITE;
 /*!40000 ALTER TABLE `tour_reservas` DISABLE KEYS */;
-INSERT INTO `tour_reservas` VALUES (15,'2021-12-05 09:00:00','Buenos aires','AA4',NULL,NULL,NULL,NULL),(16,'2021-12-05 09:00:00','Buenos aires','AA4',59,'suite',5,'standard'),(17,'2021-12-12 10:00:00','Ankara','AA4',NULL,NULL,NULL,NULL);
+INSERT INTO `tour_reservas` VALUES (15,'2021-12-05 09:00:00','Buenos aires','AA4',NULL,NULL,NULL,NULL),(16,'2021-12-05 09:00:00','Buenos aires','AA4',59,'suite',5,'standard'),(17,'2021-12-12 10:00:00','Ankara','AA4',NULL,NULL,NULL,NULL),(22,'2022-01-23 09:00:00','Buenos aires','AA8',NULL,NULL,NULL,NULL),(25,'2022-01-23 09:00:00','Buenos aires','AA8',58,'suite',20,'gourmet'),(26,'2022-01-23 09:00:00','Buenos aires','AA8',58,'suite',20,'gourmet');
 /*!40000 ALTER TABLE `tour_reservas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -458,7 +458,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (1,'Braian','Guzman','1988-09-04','brian_user@hotmail.com','81dc9bdb52d04dc20036dbd8313ed055',2,0,NULL),(2,'Elsie ','Vazquez','1998-08-19','elsie@hotmail.com','81dc9bdb52d04dc20036dbd8313ed055',1,0,NULL),(3,'Miguel','Vazquez','2018-12-04','miguel@hotmail.com','81dc9bdb52d04dc20036dbd8313ed055',0,0,NULL),(4,'alejandro','gonzalez','1996-12-17','saleck@saleck.com','81dc9bdb52d04dc20036dbd8313ed055',1,0,NULL),(58,'Alejandro','Gonzalez','1996-12-17','aledagonale@gmail.com','81dc9bdb52d04dc20036dbd8313ed055',2,3,NULL),(59,'alejandro','gonzalez','1996-12-17','boldar3@gmail.com','e10adc3949ba59abbe56e057f20f883e',2,3,NULL),(61,'Leandro','Gomez','1997-01-25','leandro.ariel.gomez1@gmail.com','827ccb0eea8a706c4c34a16891f84e7b',2,2,NULL);
+INSERT INTO `usuario` VALUES (1,'Braian','Guzman','1988-09-04','brian_user@hotmail.com','81dc9bdb52d04dc20036dbd8313ed055',2,0,NULL),(2,'Elsie ','Vazquez','1998-08-19','elsie@hotmail.com','81dc9bdb52d04dc20036dbd8313ed055',1,0,NULL),(3,'Miguel','Vazquez','2018-12-04','miguel@hotmail.com','81dc9bdb52d04dc20036dbd8313ed055',0,0,NULL),(4,'alejandro','gonzalez','1996-12-17','saleck@saleck.com','81dc9bdb52d04dc20036dbd8313ed055',1,0,NULL),(58,'Alejandro','Gonzalez','1996-12-17','aledagonale@gmail.com','81dc9bdb52d04dc20036dbd8313ed055',1,3,NULL),(59,'alejandro','gonzalez','1996-12-17','boldar3@gmail.com','e10adc3949ba59abbe56e057f20f883e',2,3,NULL),(61,'Leandro','Gomez','1997-01-25','leandro.ariel.gomez1@gmail.com','827ccb0eea8a706c4c34a16891f84e7b',2,2,NULL);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -500,4 +500,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-11-30 16:26:59
+-- Dump completed on 2021-12-06 20:16:46
