@@ -13,7 +13,7 @@ class ReportesController
     
     public function show()
     {
-        
+        (new SeguridadController)->estaLogueado();;
         $data["suborbitales"] = $this->model->getSuborbitales($_SESSION["id"]);
         $data["entre_destinos"] = $this->model->getEntreDestinos($_SESSION["id"]);
         $data["tour"] = $this->model->getTours($_SESSION["id"]);
