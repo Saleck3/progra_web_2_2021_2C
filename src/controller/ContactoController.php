@@ -2,15 +2,11 @@
 
 class ContactoController
 {
-    private $usuarioModel;
-    private $log;
     private $printer;
 
 
-    public function __construct($usuarioModel, $logger, $printer )
+    public function __construct($printer )
     {
-        $this->usuarioModel = $usuarioModel;
-        $this->log = $logger;
         $this->printer = $printer;
 
     }

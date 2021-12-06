@@ -24,7 +24,9 @@ class ReportesModel
     public function getEntreDestinos($usuario)
     {
         
-        $SQL = "select edp.id AS id,edp.idvuelo AS idvuelo,ed.fechayhora AS fechayhora,ed.desde AS desde,ed.destino AS destino,ed.matricula AS matricula,ed.duracion AS duracion,edp.idusuario AS idusuario,edp.tipoAsiento AS tipoAsiento,edp.numeroAsiento AS numeroAsiento,edp.servicio AS servicio,edp.id_preferencia AS id_preferencia from entredestinos_pagos edp join entredestinos ed on((edp.idvuelo = ed.id));";
+        $SQL = "SELECT *
+        from entredestinos_reservas edp join entredestinos ed on edp.idvuelo = ed.id
+        where edp.idusuario = $usuario";
         return $this->database->query($SQL);
     }
     

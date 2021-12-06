@@ -223,7 +223,7 @@ class VuelosController
         
         //chequear si ya alguien reservo en ese mismo vuelo, y traer la matricula
         $data["matricula"] = $this->vuelosModel->matriculaVueloEntreDestinos($data["idvuelo"]);
-        if ($data["matricula"] && $data["matricula"]["matricula"] != '') {
+        if ($data["matricula"] && $data["matricula"] != '') {
             
             //acomodo el array para que sea un string
             //sino mustache explota

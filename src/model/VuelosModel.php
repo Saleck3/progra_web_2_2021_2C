@@ -83,10 +83,10 @@ class VuelosModel
     
     public function matriculaVueloEntreDestinos($vuelo)
     {
-        $sql = "SELECT matricula 
+        $sql['matricula'] = "SELECT matricula 
                 FROM entredestinos 
                 where id = $vuelo";
-        return $this->database->query($sql);
+        return $this->database->query($sql["matricula"]);
     }
     
     public function asignarMatriculaOrbital($fecha, $hora, $desde)

@@ -23,7 +23,7 @@ class Configuration
     public function createContactoController(){
 
         require_once ("controller/ContactoController.php");
-        return new ContactoController($this->createUsuarioModel(), $this->getLogger(), $this->createPrinter());
+        return new ContactoController($this->createPrinter());
     }
     private function createUsuarioModel()
     {
