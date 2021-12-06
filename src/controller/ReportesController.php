@@ -13,7 +13,7 @@ class ReportesController
     
     public function show()
     {
-        (new SeguridadController)->estaLogueado();;
+        (new SeguridadController)->estaLogueado(TRUE);;
         $data["suborbitales"] = $this->model->getSuborbitales($_SESSION["id"]);
         $data["entre_destinos"] = $this->model->getEntreDestinos($_SESSION["id"]);
         $data["tour"] = $this->model->getTours($_SESSION["id"]);
@@ -47,7 +47,7 @@ class ReportesController
     {
         $resultado = array();
 
-//        consigo los datos
+//      consigo los datos
         $datos = $this->model->getDiasVuelos();
         
         foreach ($datos as $dato) {
