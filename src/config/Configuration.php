@@ -20,7 +20,11 @@ class Configuration
         return new VuelosController($this->getLogger(), $this->createPrinter(), $this->createVuelosModel(),
             $this->createPdfController(), $this->createQrController(), $this->createMailer(), $this->createMercadoPagoController());
     }
-    
+    public function createContactoController(){
+
+        require_once ("controller/ContactoController.php");
+        return new ContactoController($this->createUsuarioModel(), $this->getLogger(), $this->createPrinter());
+    }
     private function createUsuarioModel()
     {
         require_once("model/UsuarioModel.php");
@@ -92,7 +96,7 @@ class Configuration
     
     public function createReservasController()
     {
-        SeguridadController::estaLogueado();
+        (new SeguridadController)->estaLogueado();;
         require_once("controller/ReservasController.php");
         return new ReservasController($this->createPrinter(), $this->createReservasModel(), $this->createUsuarioModel(), $this->createMailer());
     }

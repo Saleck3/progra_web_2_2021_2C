@@ -22,25 +22,47 @@ class ReportesController
     
     public function AltaVuelos()
     {
-        SeguridadController::estaLogueado(TRUE);
+        (new SeguridadController)->estaLogueado(TRUE);
         echo $this->printer->render("view/altaVuelosView.html");
     }
     
     public function ventas()
     {
-        SeguridadController::estaLogueado(TRUE);
+        (new SeguridadController)->estaLogueado(TRUE);
         echo $this->printer->render("view/reportesView.html");
     }
     
     public function datos()
     {
-        SeguridadController::estaLogueado(TRUE);
+        (new SeguridadController)->estaLogueado(TRUE);
         $ventas = array(
             'suborbital' => $this->model->countSuborbitales(),
             'tour' => $this->model->countTour(),
             'entreDestinos' => $this->model->countEntreDestinos());
         
         echo json_encode($ventas);
+    }
+    
+    public function datossuborbitalSegunDias()
+    {
+        $resultado = array();
+
+//        consigo los datos
+        $datos = $this->model->getDiasVuelos();
+        
+        foreach ($datos as $dato) {
+            
+            $fecha = new DateTime($dato['dia']);
+            
+            if (!isset($resultado[$fecha->format('d')])) {
+                $resultado[$fecha->format('d')] = 0;
+            }
+            
+            $resultado[$fecha->format('d')] += 1;
+        }
+        
+        echo(json_encode($resultado));
+        
     }
     
 }
