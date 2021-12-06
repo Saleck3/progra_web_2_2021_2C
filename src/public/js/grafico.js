@@ -17,8 +17,8 @@ function drawChart() {
 
     // Set chart options
     var options = {'title':'Cantidad de vuelos por tipos:',
-        'width':350,
-        'height':280,
+        'width':500,
+        'height':400,
         'is3D':true,
 
         }
