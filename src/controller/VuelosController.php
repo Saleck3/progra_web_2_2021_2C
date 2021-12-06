@@ -84,7 +84,7 @@ class VuelosController
     
     function suborbital_reserva()
     {
-        SeguridadController::estaLogueado();
+        (new SeguridadController)->estaLogueado();;
         
         $tipo = $this->vuelosModel->tipoUsuario($_SESSION["id"]);
         if (!$tipo["tipo"]) {
@@ -139,7 +139,7 @@ class VuelosController
     function tour_reserva()
     {
         
-        SeguridadController::estaLogueado();
+        (new SeguridadController)->estaLogueado();
         
         $tipo = $this->vuelosModel->tipoUsuario($_SESSION["id"]);
         if (!$tipo["tipo"]) {
@@ -193,7 +193,7 @@ class VuelosController
     
     function entreDestinos_reserva()
     {
-        SeguridadController::estaLogueado();
+        (new SeguridadController)->estaLogueado();;
         
         $tipo = $this->vuelosModel->tipoUsuario($_SESSION["id"]);
         if (!$tipo["tipo"]) {
@@ -243,7 +243,7 @@ class VuelosController
     
     public function generarPago()
     {
-        SeguridadController::estaLogueado();
+        (new SeguridadController)->estaLogueado();;
         
         $data = array();
         $data["fecha"] = $_POST["fecha"];
@@ -292,7 +292,7 @@ class VuelosController
     
     public function registrarVuelo()
     {
-        SeguridadController::estaLogueado();
+        (new SeguridadController)->estaLogueado();;
         
         $data["fecha"] = $_POST["fecha"];
         $data["hora"] = $_POST["hora"];
@@ -314,7 +314,7 @@ class VuelosController
     
     function generarComprobante()
     {
-        SeguridadController::estaLogueado();
+        (new SeguridadController)->estaLogueado();;
         
         //Chequear el ok del pago
         if ($_GET["collection_status"] != 'approved') {
@@ -391,7 +391,7 @@ class VuelosController
     
     function generarPagoTour()
     {
-        SeguridadController::estaLogueado();
+        (new SeguridadController)->estaLogueado();;
         
         $data = array();
         $data["fecha"] = $_POST["fecha"];
@@ -436,7 +436,7 @@ class VuelosController
     
     public function generarPagoEntreDestinos()
     {
-        SeguridadController::estaLogueado();
+        (new SeguridadController)->estaLogueado();
         $data = array();
         $data["idvuelo"] = $_POST["idvuelo"];
         $data["tipo_asiento"] = $_POST["tipo_asiento"];
@@ -588,10 +588,11 @@ class VuelosController
     {
         
         $res = array();
-        
         //Si tengo una sola reserva, el for hace cualquier cosa asi que chequeo
-        if (isset($asientosOcupadosDelVuelo["tipoAsiento"]) && $asientosOcupadosDelVuelo["tipoAsiento"] != NULL) {
-            $asientosOcupadosDelVueloDos[$asientosOcupadosDelVuelo ['tipoAsiento']][$asientosOcupadosDelVuelo ['numeroAsiento']] = $asientosOcupadosDelVuelo['numeroAsiento'];
+        if (isset($asientosOcupadosDelVuelo["tipoAsiento"]) || $asientosOcupadosDelVuelo["tipoAsiento"] == NULL) {
+            if ($asientosOcupadosDelVuelo["tipoAsiento"] != NULL) {
+                $asientosOcupadosDelVueloDos[$asientosOcupadosDelVuelo ['tipoAsiento']][$asientosOcupadosDelVuelo ['numeroAsiento']] = $asientosOcupadosDelVuelo['numeroAsiento'];
+            }
         } else {
             for ($i = 0; $i < sizeof($asientosOcupadosDelVuelo); $i++) {
                 $indice = $asientosOcupadosDelVuelo[$i];

@@ -92,7 +92,7 @@ class Configuration
     
     public function createReservasController()
     {
-        SeguridadController::estaLogueado();
+        (new SeguridadController)->estaLogueado();;
         require_once("controller/ReservasController.php");
         return new ReservasController($this->createPrinter(), $this->createReservasModel(), $this->createUsuarioModel(), $this->createMailer());
     }
