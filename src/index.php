@@ -5,6 +5,7 @@ if (isset($_SESSION["debug"])) {
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
 }
+include_once("helpers/seguridadController.php");
 include_once("config/Configuration.php");
 
 $module = isset($_GET["module"]) ? $_GET["module"] : "home";

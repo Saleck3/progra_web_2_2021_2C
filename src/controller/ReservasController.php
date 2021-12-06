@@ -17,7 +17,6 @@ class ReservasController
     
     function show()
     {
-        
         if (!$data["conTipo"] = $this->reservasModel->getTipo($_SESSION["id"])) {
             $data["sedes"] = $this->reservasModel->getSedes();
         }

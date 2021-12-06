@@ -27,11 +27,11 @@ class MustachePrinter
             unset($_SESSION["mensaje"]);
         }
         //si es admin
-
-        if(isset($_SESSION["id_cargo"])== 1){
+        
+        if (isset($_SESSION["id_cargo"]) && $_SESSION["id_cargo"] == 1) {
             $data["admin"] = TRUE;
         }
-
+        
         
         $contentAsString = file_get_contents($template);
         return $this->mustache->render($contentAsString, $data);

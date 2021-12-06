@@ -107,8 +107,7 @@ class VuelosModel
     {
         $sql = "SELECT matricula FROM GauchoRocket.modelos m inner join nave_espacial ne on m.id = ne.modelo where m.modelo like 'Guanaco'";
         $matricula = $this->database->query($sql);
-        
-        $matriculaAInsertar = $matricula[rand(0, sizeof($matricula))]["matricula"];
+        $matriculaAInsertar = $matricula[rand(0, sizeof($matricula)-1)]["matricula"];
         
         $sql = "INSERT INTO tour_reservas (fechayhora, matricula,desde)
                 VALUES ('$fecha $hora','$matriculaAInsertar', '$desde');";
