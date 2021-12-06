@@ -32,7 +32,7 @@ class ReportesModel
     
     public function countSuborbitales()
     {
-        $sql = "SELECT COUNT(*) AS  a FROM suborbitales_reservas ";
+        $sql = "SELECT COUNT(*) AS  a FROM suborbitales_reservas";
         $res = $this->database->query($sql);
         return (int)$res['a'];
     }
